@@ -11,18 +11,18 @@ namespace AITradingProject.Agent
 {
     public abstract class Agent
     {
-        //TODO method documentation
+        //TODO method documentation - Daniel
 
         public abstract List<Offer> GetTrades(City city); 
         public abstract bool EvaluateTrade(Offer offer);
         public abstract void TradeCompleted(Offer offer, TradeStatus cc);
 
-        public virtual void PointGained(){ } //TODO consider implementation of producer/consumer
+        public virtual void PointGained(){ } //TODO consider implementation of producer/consumer - Troy for later
         public virtual void HealthLost(){ }
         public virtual void HealthGained(){ }
     }
 
-    public enum TradeStatus //TODO move to enum file
+    public enum TradeStatus //TODO move to enum file - Troy
     {
         Rejected, Successful, Unable
     }

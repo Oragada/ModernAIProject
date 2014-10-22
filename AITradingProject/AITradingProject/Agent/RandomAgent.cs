@@ -17,7 +17,7 @@ namespace AITradingProject.Agent
 
         public override List<Offer> GetTrades(City city)
         {
-            //TODO
+            //TODO - Daniel
             throw new NotImplementedException();
         }
 

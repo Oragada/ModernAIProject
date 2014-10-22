@@ -17,7 +17,7 @@ namespace AITradingProject.Model
         {
             city1 = first;
             city2 = second;
-            this.weight = weight;//TODO: Randomize it from static reference - remove weight from contructor
+            this.weight = weight;//TODO: Randomize it from static reference - remove weight from contructor - Troy
         }
 
 
@@ -31,7 +31,7 @@ namespace AITradingProject.Model
         /// <returns></returns>
         public City other(City city)
         {
-            //@TODO: should implement an other function with structs
+            //@TODO: should implement an other function with structs - Later
             return null;
             
         }

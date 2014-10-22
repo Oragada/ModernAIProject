@@ -10,17 +10,19 @@ namespace AITradingProject.Model
         private City[] cities;
         private int cityNum;
 
+        //TODO: Troy hele klassen
+
         public GameState(int cityNum)
         {
-            // TODO: Complete member initialization
+            //TOD Complete member initialization
             this.cityNum = cityNum;
         }
-        //TODO attributter
+        //TOD attributter
 
-        //TODO constructor
-        //TODO save state
-        //TODO do X on all cities - consume produce
-        //TODO offer an offor to a city
+        //TOD constructor
+        //TOD save state
+        //TOD do X on all cities - consume produce
+        //TOD offer an offor to a city
 
 
     }

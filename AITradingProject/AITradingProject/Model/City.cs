@@ -6,7 +6,7 @@ using System.Text;
 namespace AITradingProject.Model
 {
 
-    public enum Resource {Food, Water, Dolls};//TODO: move to own file
+    public enum Resource {Food, Water, Dolls};//TODO: move to own file - Troy
     public class City
     {
 
@@ -14,7 +14,7 @@ namespace AITradingProject.Model
         private Dictionary<Resource, int> resources;
         private Resource nativeResource;
         private int baseScale;
-        private int health = 10; //TODO: Decide on a start healt
+        private int health = 10; //TODO: Decide on a start healt - Later
         private int points = 0;
         private Edge[] edges;
         
@@ -23,12 +23,12 @@ namespace AITradingProject.Model
         {
             resources = startResources; 
             this.nativeResource = nativeResource; 
-            //baseScale = startBaseScale;  //TODO: randomize it between 1-3
+            //baseScale = startBaseScale;  //TODO: randomize it between 1-3 - Daniel
             this.ID = ID;
 
         }
         /// <summary>
-        /// TODO: make the thingemagin
+        /// TODO: make the thingemagin - Daniel
         /// </summary>
         /// <param name="e"></param>
         internal void addEdge(Edge e)
@@ -37,7 +37,7 @@ namespace AITradingProject.Model
 
         /// <summary>
         /// consumes the amount of resources designated in the Game state
-        /// TODO: create the consume method
+        /// TODO: create the consume method - Daniel
         /// </summary>
         internal void consume()
         {
@@ -45,11 +45,12 @@ namespace AITradingProject.Model
 
         /// <summary>
         /// Produces its native resource based on its baseScale
-        /// TODO: create the produce method
+        /// TODO: create the produce method - Daniel
         /// </summary>
         internal void produce()
         {
         }
 
+        //TODO change resources method - Daniel
     }
 }

@@ -27,7 +27,7 @@ namespace AITradingProject
 
         private void RunTurn()
         {
-            //TODO
+            //TODO Daniel
             //Production
 
             //Trade
@@ -37,7 +37,7 @@ namespace AITradingProject
 
         public void startGame()
         {
-            //TODO
+            //TODO Daniel
             //go through turns until something is achieved.
             //function is called from program.
         }
