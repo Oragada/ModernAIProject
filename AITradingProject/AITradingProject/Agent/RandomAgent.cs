@@ -26,7 +26,7 @@ namespace AITradingProject.Agent
             return rand.Next(2) != 0;
         }
 
-        public override void TradeCompleted(Offer offer, CompletionCriteria cc)
+        public override void TradeCompleted(Offer offer,  TradeStatus cc)
         {
         }
 

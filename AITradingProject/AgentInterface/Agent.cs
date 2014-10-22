@@ -4,9 +4,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using AITradingProject;
 
-namespace AgentInterface
+
+namespace AITradingProject.Agent
 {
     public abstract class Agent
     {
