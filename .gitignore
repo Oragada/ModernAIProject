@@ -42,3 +42,5 @@ Icon
 *.suo
 bin/*
 obj/*
+AITradingProject/AITradingProject/bin/*
+AITradingProject/AITradingProject/obj/*
