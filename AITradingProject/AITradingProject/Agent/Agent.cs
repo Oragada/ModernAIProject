@@ -7,7 +7,7 @@ using System.Threading;
 using AITradingProject;
 using AITradingProject.Model;
 
-namespace AgentInterface
+namespace AITradingProject.Agent
 {
     public abstract class Agent
     {

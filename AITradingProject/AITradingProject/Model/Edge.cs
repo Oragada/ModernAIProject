@@ -17,7 +17,7 @@ namespace AITradingProject.Model
         {
             city1 = first;
             city2 = second;
-            this.weight = weight;
+            this.weight = weight;//TODO: Randomize it from static reference - remove weight from contructor
         }
 
 

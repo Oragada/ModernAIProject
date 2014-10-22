@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agent.cs" />
+    <Compile Include="Agent\Agent.cs" />
+    <Compile Include="Agent\RandomAgent.cs" />
     <Compile Include="GameMaster.cs" />
     <Compile Include="Model\City.cs" />
     <Compile Include="Model\Edge.cs" />
