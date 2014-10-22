@@ -6,7 +6,7 @@ using System.Text;
 namespace AITradingProject.Model
 {
 
-    public enum Resource {Food, Water, Dolls};
+    public enum Resource {Food, Water, Dolls};//TODO: move to own file
     public class City
     {
 
@@ -16,14 +16,23 @@ namespace AITradingProject.Model
         private int baseScale;
         private int health = 10; //TODO: Decide on a start healt
         private int points = 0;
+        private Edge[] edges;
         
 
-        internal City(Dictionary<Resource, int> startResources, Resource nativeResource, int startBaseScale, int ID)
+        internal City(Dictionary<Resource, int> startResources, Resource nativeResource, int ID)
         {
             resources = startResources; 
             this.nativeResource = nativeResource; 
-            baseScale = startBaseScale; 
+            //baseScale = startBaseScale;  //TODO: randomize it between 1-3
             this.ID = ID;
+
+        }
+        /// <summary>
+        /// TODO: make the thingemagin
+        /// </summary>
+        /// <param name="e"></param>
+        internal void addEdge(Edge e)
+        {
         }
 
         /// <summary>

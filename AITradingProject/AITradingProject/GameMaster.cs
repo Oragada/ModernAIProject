@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AITradingProject.Model;
+using AITradingProject.Agent;
 
-namespace AgentInterface
+namespace AITradingProject
 {
     public class GameMaster
     {
-        private Dictionary<int, Agent> agents;
-        private TradeGame game;
+        private Dictionary<int, Agent.Agent> agents;
+        private GameState game;
 
         public GameMaster(int cityNum)
         {
-            game = new TradeGame(cityNum);
+            game = new GameState(cityNum);
 
-            agents = new Dictionary<int, Agent>();
+            agents = new Dictionary<int, Agent.Agent>();
 
             for (int i = 0; i < cityNum; i++)
             {
@@ -32,42 +33,14 @@ namespace AgentInterface
 
             //Consumption
         }
-    }
 
-    public class RandomAgent : Agent
-    {
-        private Random rand;
-
-        public RandomAgent()
-        {
-            rand = new Random();
-        }
-
-        public override List<Offer> GetTrades(City city)
+        public void startGame()
         {
             //TODO
-            throw new NotImplementedException();
-        }
-
-        public override bool EvaluateTrade(Offer offer)
-        {
-            return rand.Next(2) != 0;
-        }
-
-        public override void TradeCompleted(Offer offer, CompletionCriteria cc)
-        {
-        }
-
-        public override void PointGained()
-        {
-        }
-
-        public override void HealthLost()
-        {
-        }
-
-        public override void HealthGained()
-        {
+            //go through turns until something is achieved.
+            //function is called from program.
         }
     }
+
+    
 }
