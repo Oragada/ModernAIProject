@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using AITradingProject;
+using AITradingProject.Model;
 
 namespace AgentInterface
 {

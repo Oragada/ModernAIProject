@@ -7,14 +7,14 @@ namespace AITradingProject.Model
 {
 
     public enum Resource {Food, Water, Dolls};
-    class City
+    public class City
     {
 
         internal int ID;
         private Dictionary<Resource, int> resources;
         private Resource nativeResource;
         private int baseScale;
-        private int health = 10; //@TODO: Decide on a start healt
+        private int health = 10; //TODO: Decide on a start healt
         private int points = 0;
         
 
@@ -28,7 +28,7 @@ namespace AITradingProject.Model
 
         /// <summary>
         /// consumes the amount of resources designated in the Game state
-        /// @TODO: create the consume method
+        /// TODO: create the consume method
         /// </summary>
         internal void consume()
         {
@@ -36,7 +36,7 @@ namespace AITradingProject.Model
 
         /// <summary>
         /// Produces its native resource based on its baseScale
-        /// @TODO: create the produce method
+        /// TODO: create the produce method
         /// </summary>
         internal void produce()
         {

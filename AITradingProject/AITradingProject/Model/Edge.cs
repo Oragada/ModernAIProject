@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AITradingProject.Model
 {
-    class Edge
+    public class Edge
     {
 
         private City city1;
