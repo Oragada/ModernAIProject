@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agent.cs" />
+    <Compile Include="GameMaster.cs" />
+    <Compile Include="Model\City.cs" />
+    <Compile Include="Model\Edge.cs" />
+    <Compile Include="Model\Offer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
