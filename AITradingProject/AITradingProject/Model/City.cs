@@ -5,8 +5,6 @@ using System.Text;
 
 namespace AITradingProject.Model
 {
-
-    public enum Resource {Food, Water, Dolls};//TODO: move to own file - Troy
     public class City
     {
 

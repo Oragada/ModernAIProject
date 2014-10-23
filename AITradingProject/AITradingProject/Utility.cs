@@ -8,9 +8,9 @@ namespace AITradingProject
     /// <summary>
     /// Implement any utility function here
     /// </summary>
-    class Utility
+    public class Utility
     {
-        //TODO create a static random object for use by model layer.
+        public static Random RAND = new Random();
 
     }
 }

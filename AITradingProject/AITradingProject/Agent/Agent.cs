@@ -21,9 +21,4 @@ namespace AITradingProject.Agent
         public virtual void HealthLost(){ }
         public virtual void HealthGained(){ }
     }
-
-    public enum TradeStatus //TODO move to enum file - Troy
-    {
-        Rejected, Successful, Unable
-    }
 }

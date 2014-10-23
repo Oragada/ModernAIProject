@@ -7,17 +7,19 @@ namespace AITradingProject.Model
 {
     public class Edge
     {
+        public const int MIN_WEIGHT = 1;
+        public const int MAX_WEIGHT = 10;
 
         private City city1;
         private City city2;
         private int weight;
 
 
-        public Edge(City first, City second, int weight)
+        public Edge(City first, City second)
         {
             city1 = first;
             city2 = second;
-            this.weight = weight;//TODO: Randomize it from static reference - remove weight from contructor - Troy
+            weight = Utility.RAND.Next(MIN_WEIGHT, MAX_WEIGHT+1);
         }
 
 
