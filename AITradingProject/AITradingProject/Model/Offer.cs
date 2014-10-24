@@ -21,5 +21,24 @@ namespace AITradingProject.Model
             resourcesRequired = required;
         }
 
+        public City From
+        {
+            get { return @from; }
+        }
+
+        public Edge E
+        {
+            get { return e; }
+        }
+
+        public Dictionary<Resource, int> ResourcesOffered
+        {
+            get { return resourcesOffered; }
+        }
+
+        public Dictionary<Resource, int> ResourcesRequired
+        {
+            get { return resourcesRequired; }
+        }
     }
 }

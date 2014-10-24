@@ -29,10 +29,12 @@ namespace AITradingProject
         {
             //TODO Daniel
             //Production
+            game.AllCitiesProduce();
 
             //Trade
 
             //Consumption
+            game.AllCitiesConsume();
         }
 
         public void startGame()

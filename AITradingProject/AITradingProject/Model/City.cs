@@ -12,9 +12,10 @@ namespace AITradingProject.Model
         private Dictionary<Resource, int> resources;
         private Resource nativeResource;
         private int baseScale;
-        private int health = 10; //TODO: Decide on a start healt - Later
+        private int health = 10; //TODO: Decide on a start health - Later
         private int points = 0;
         private Edge[] edges;
+        private bool alive; //New parameter
         
 
         internal City(Dictionary<Resource, int> startResources, Resource nativeResource, int ID)
@@ -29,26 +30,40 @@ namespace AITradingProject.Model
         /// TODO: make the thingemagin - Daniel
         /// </summary>
         /// <param name="e"></param>
-        internal void addEdge(Edge e)
+        internal void AddEdge(Edge e)
         {
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// consumes the amount of resources designated in the Game state
         /// TODO: create the consume method - Daniel
         /// </summary>
-        internal void consume()
+        internal void Consume()
         {
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Produces its native resource based on its baseScale
         /// TODO: create the produce method - Daniel
         /// </summary>
-        internal void produce()
+        internal void Produce()
         {
+            throw new NotImplementedException();
         }
 
         //TODO change resources method - Daniel
+        internal void ChangeResource(Resource r, int change)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void HaveResource(Resource r, int amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Alive { get { return alive; }}
     }
 }
