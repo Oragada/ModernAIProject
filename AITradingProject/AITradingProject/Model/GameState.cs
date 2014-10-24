@@ -7,9 +7,9 @@ namespace AITradingProject.Model
 {
     public class GameState
     {
-        private const int FoodCount = 5;
-        private const int WaterCount = 5;
-        private const int DollCount = 5;
+        private const int FoodStart = 5;
+        private const int WaterStart = 5;
+        private const int DollStart = 5;
 
         private List<City> cities;
         private List<Edge> traderoutes;
@@ -21,11 +21,12 @@ namespace AITradingProject.Model
             for (int i = 0; i < cityNum; i++)
             {
                 cities.Add(new City(
-                    new Dictionary<Resource, int>() { { Resource.Food, FoodCount }, { Resource.Water, WaterCount }, { Resource.Dolls, DollCount } }, 
+                    new Dictionary<Resource, int>() { { Resource.Food, FoodStart }, { Resource.Water, WaterStart }, { Resource.Dolls, DollStart } }, 
                     GetStartingResource(), 
                     i)
                 );
             }
+            traderoutes = new List<Edge>();
             for (int i = 0; i < cities.Count; i++)
             {
                 for (int j = 0; j < cities.Count; j++)
@@ -39,13 +40,16 @@ namespace AITradingProject.Model
             }
 
         }
-
+        /// <summary>
+        /// Causes all cities to consume resources, lose health, gain points and advance the turn count by 1
+        /// </summary>
         public void AllCitiesConsume()
         {
             foreach (City c in cities.Where(c => c.Alive))
             {
                 c.Consume();
             }
+            turnCount++;
         }
 
         public void AllCitiesProduce()
@@ -69,7 +73,7 @@ namespace AITradingProject.Model
         }
 
         /// <summary>
-        /// This method checks an offer for whether both cities currently have the resources needed for the trade.
+        /// This method checks an offer for whether both cities are currently alive and have the resources needed for the trade.
         /// </summary>
         /// <param name="o">An Offer to be checked</param>
         /// <returns>Whether the cities have the necessary resources</returns>
@@ -77,6 +81,7 @@ namespace AITradingProject.Model
         {
             City sender = o.From;
             City reciever = o.E.other(sender);
+            if(sender.Alive & reciever.Alive == false) return false;
             //change resources
             
             return o.ResourcesOffered.All(r => sender.HaveResource(r.Key, r.Value)) & 

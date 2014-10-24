@@ -59,7 +59,7 @@ namespace AITradingProject.Model
             throw new NotImplementedException();
         }
 
-        internal void HaveResource(Resource r, int amount)
+        internal bool HaveResource(Resource r, int amount)
         {
             throw new NotImplementedException();
         }
