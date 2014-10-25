@@ -14,6 +14,8 @@ namespace AITradingProject.Model
         private List<City> cities;
         private List<Edge> traderoutes;
         private int turnCount;
+        public static Dictionary<Resource, int> consumptions = new Dictionary<Resource, int>();//TODO add consumption in constructor - Troi
+
 
         public GameState(int cityNum)
         {
@@ -25,6 +27,7 @@ namespace AITradingProject.Model
                     GetStartingResource(), 
                     i)
                 );
+
             }
             traderoutes = new List<Edge>();
             for (int i = 0; i < cities.Count; i++)
@@ -40,6 +43,12 @@ namespace AITradingProject.Model
             }
 
         }
+
+        public City getCity(int cityIndex)//newly added for gameMaster
+        {
+            return cities[cityIndex];
+        }
+
         /// <summary>
         /// Causes all cities to consume resources, lose health, gain points and advance the turn count by 1
         /// </summary>

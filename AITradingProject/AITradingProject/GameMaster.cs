@@ -27,20 +27,66 @@ namespace AITradingProject
 
         private void RunTurn()
         {
-            //TODO Daniel
+            //TODO
             //Production
             game.AllCitiesProduce();
 
-            //Trade
+           //trades
+            Dictionary<int, List<Offer>> offers = new Dictionary<int, List<Offer>();
+            ///GetTrades
+            foreach(int agentI in agents.Keys)
+            {
+                City a  = game.getCity(agentI);
+                offers.Add(agentI, agents[agentI].GetTrades(a));
+                //todo check offers for not exceeding DP points
+            }
+            ///do trades (what order!?)
+            ///doing trades in any order:
+            foreach(int agentI in offers.Keys)
+            {
+                foreach(Offer o in offers[agentI])
+                {
+                    City to = o.E.other(o.From);
+                    if(game.IsOfferPossible(o))
+                    {
+                        //how to get the other agent??
+                        Agent.Agent toAgent = agents[to.ID];//TODO do we really want this? -troi
+                        if(toAgent.EvaluateTrade(o))
+                        {
+                            game.ExecuteOffer(o);
+                            agents[agentI].TradeCompleted(o, TradeStatus.Successful);
+                        }
+                        else
+                        {
+                            agents[agentI].TradeCompleted(o, TradeStatus.Rejected);
+                        }
+                    }
+                    else
+                    {
+                        agents[agentI].TradeCompleted(o, TradeStatus.Unable);
+                    }
 
+                }
+
+            }
             //Consumption
             game.AllCitiesConsume();
         }
 
         public void startGame()
         {
-            //TODO Daniel
+            //TODO Daniel--- what more? - Troi
+            int i =0;
+            int turns=100;
+
+            while (i < turns)
+            {
+                i++;
+                this.RunTurn();
+
+            }
             //go through turns until something is achieved.
+
             //function is called from program.
         }
     }
