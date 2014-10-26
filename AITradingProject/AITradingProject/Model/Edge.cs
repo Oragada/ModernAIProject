@@ -23,7 +23,10 @@ namespace AITradingProject.Model
         }
 
 
-       
+       public int getWeight()
+       {
+           return weight;
+       }
 
 
         /// <summary>

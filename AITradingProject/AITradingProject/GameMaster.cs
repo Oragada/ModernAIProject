@@ -21,7 +21,7 @@ namespace AITradingProject
 
             for (int i = 0; i < cityNum; i++)
             {
-                agents.Add(i, new RandomAgent());
+                agents.Add(i, new RandomAgent(10));
             }
         }
 
@@ -32,7 +32,7 @@ namespace AITradingProject
             game.AllCitiesProduce();
 
            //trades
-            Dictionary<int, List<Offer>> offers = new Dictionary<int, List<Offer>();
+            Dictionary<int, List<Offer>> offers = new Dictionary<int, List<Offer>>();
             ///GetTrades
             foreach(int agentI in agents.Keys)
             {

@@ -26,6 +26,17 @@ namespace AITradingProject.Model
             this.ID = ID;
 
         }
+
+
+        public List<Edge> getEdges()
+        {
+            Edge[] edgesReturned = new Edge[edges.Count];
+            edges.CopyTo(edgesReturned);
+            return edgesReturned.ToList();
+                
+        }
+
+
         /// <summary>
         /// Adds an edge to the city.
         /// </summary>

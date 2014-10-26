@@ -10,12 +10,12 @@ namespace AITradingProject.Model
         private const int FoodStart = 5;
         private const int WaterStart = 5;
         private const int DollStart = 5;
-
+        public const int diplomaticPoints = 20;
         private List<City> cities;
         private List<Edge> traderoutes;
         private int turnCount;
         public static Dictionary<Resource, int> consumptions = new Dictionary<Resource, int>();//TODO add consumption in constructor - Troi
-
+        public static List<Resource> availableresources;
 
         public GameState(int cityNum)
         {
@@ -42,9 +42,12 @@ namespace AITradingProject.Model
                 }
             }
 
-        }
+            availableresources = new List<Resource>{Resource.Food, Resource.Dolls, Resource.Water}; //added. needs to be more dynamic.
 
-        public City getCity(int cityIndex)//newly added for gameMaster
+        }
+   
+
+        public  City getCity(int cityIndex)//newly added for gameMaster
         {
             return cities[cityIndex];
         }
