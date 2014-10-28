@@ -40,44 +40,59 @@ namespace AITradingProject.Agent
                     has.Add(r, city.ResourceAmount(r)-consumption[r]);
                 }
             }
+            foreach(Resource r in GameState.LuxuryConsume.Keys)
+            {
+                int amount = city.ResourceAmount(r);
+                if(amount>0)
+                    has.Add(r, amount);
+            }
             List<Offer> offer = new List<Offer>();
-            if (need.Count > 1)
+            if (need.Count > 0)
                 foreach (Edge c in city.getEdges())
                 {
-                    if (c.Other(city).HaveResource(need))
+                    Dictionary<Resource, int> newNeeds = new Dictionary<Resource, int>();
+                    if(c.Other(city).HaveResource(need))
                     {
                         //create offer   
                         Dictionary<Resource, int> offers = new Dictionary<Resource, int>();
                         foreach (Resource r in need.Keys)
                         {
+                            
                             int amount = need[r];
                             int totalOffering = 0;
                             while (amount != totalOffering)
                             {
                                 int hasR = has.First().Value;
-                                if (totalOffering + amount > amount)
+                                Resource hasResource = has.First().Key;
+                                if (hasR+totalOffering > amount)
                                 {
-                                    offers.Add(r, amount - totalOffering);
-                                    has[r] -= amount - totalOffering;
+                                    if (offers.ContainsKey(hasResource))
+                                    {
+                                        offers[hasResource]+=amount-totalOffering;
+                                    }
+                                    else
+                                        offers.Add(hasResource, amount - totalOffering);
+                                    has[hasResource] -= amount - totalOffering;
                                     break;
                                 }
                                 else
                                 {
                                     totalOffering += hasR;
-                                    offers.Add(r, hasR);
-                                    has.Remove(r);
-                                    if (!need.ContainsKey(r))
+                                    offers.Add(hasResource, hasR);
+                                    has.Remove(hasResource);
+                                    if (!need.ContainsKey(hasResource))
                                     {
-                                        need.Add(r, 1);
+                                        newNeeds.Add(hasResource, 1);
                                     }
                                     else
-                                        need[r]++;
+                                        newNeeds[hasResource]++;
                                 }
                             }
                         }
                         Offer anOfferYouCannotRefuse = new Offer(city, c, offers, need);
                         offer.Add(anOfferYouCannotRefuse);
                     }
+                    need = need.Concat(newNeeds).ToDictionary(k =>k.Key,v=> v.Value );
                 }
             else
             {
