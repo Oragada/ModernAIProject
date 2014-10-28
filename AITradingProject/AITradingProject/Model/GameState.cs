@@ -130,6 +130,22 @@ namespace AITradingProject.Model
 
         // Save Game State - Troy
 
+        public string GetGameStateData()
+        {
+            StringBuilder strB = new StringBuilder();
+            foreach (City c in cities)
+            {
+                strB.Append(c.ID+":");
+                foreach (Resource r in (Resource[])Enum.GetValues(typeof(Resource)))
+                {
+                    strB.Append(r + "_" + c.ResourceAmount(r) + "|");
+                }
+                strB.Append("/n");
+            }
+
+            return strB.ToString();
+        }
+
         private Resource GetStartingResource()
         {
             int randVal = Utility.RAND.Next(20); //HACK: hardcoded for initial build
