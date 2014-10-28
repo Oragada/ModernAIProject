@@ -44,7 +44,7 @@ namespace AITradingProject.Agent
             if (need.Count > 1)
                 foreach (Edge c in city.getEdges())
                 {
-                    if (c.other(city).HaveResource(need))
+                    if (c.Other(city).HaveResource(need))
                     {
                         //create offer   
                         Dictionary<Resource, int> offers = new Dictionary<Resource, int>();

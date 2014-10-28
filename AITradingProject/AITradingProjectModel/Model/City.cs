@@ -7,8 +7,6 @@ namespace AITradingProjectModel.Model
 {
     public class City
     {
-
-        private int ID;
         private Dictionary<Resource, int> resources;
         private Resource nativeResource;
         private int baseScale;
@@ -27,10 +25,8 @@ namespace AITradingProjectModel.Model
 
         }
 
-        public int getID()
-        {
-            return ID;
-        }
+        public int ID { get; private set; }
+
         public List<Edge> getEdges()
         {
             Edge[] edgesReturned = new Edge[edges.Count];
@@ -77,7 +73,7 @@ namespace AITradingProjectModel.Model
                 bool luxuryNeeds = true;
                 try
                 {
-                    ChangeResource(r, GameState.LuxuryConsume[r]);
+                    ChangeResource(r, -GameState.LuxuryConsume[r]);
                 }
                 catch (NegativeResourcesException)
                 {
@@ -129,6 +125,7 @@ namespace AITradingProjectModel.Model
 
         public bool HaveResource(Dictionary<Resource, int> resources)
         {
+            if (resources.Count == 0) return true;
             return resources.Keys.All(r => this.resources[r] >= resources[r]);
         }
 

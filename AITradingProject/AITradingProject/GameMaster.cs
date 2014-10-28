@@ -27,30 +27,29 @@ namespace AITradingProject
 
         private void RunTurn()
         {
-            //TODO
             //Production
             game.AllCitiesProduce();
 
-           //trades
+            //trades
             Dictionary<int, List<Offer>> offers = new Dictionary<int, List<Offer>>();
-            ///GetTrades
+            //GetTrades
             foreach(int agentI in agents.Keys)
             {
                 City a  = game.getCity(agentI);
                 offers.Add(agentI, agents[agentI].GetTrades(a));
                 //todo check offers for not exceeding DP points
             }
-            ///do trades (what order!?)
-            ///doing trades in any order:
+            //do trades (what order!?)
+            //doing trades in any order:
             foreach(int agentI in offers.Keys)
             {
                 foreach(Offer o in offers[agentI])
                 {
-                    City to = o.E.other(o.From);
+                    City to = o.E.Other(o.From);
                     if(game.IsOfferPossible(o))
                     {
                         //how to get the other agent??
-                        Agent.Agent toAgent = agents[to.getID()];//TODO do we really want this? -troy
+                        Agent.Agent toAgent = agents[to.ID];
                         if(toAgent.EvaluateTrade(o))
                         {
                             game.ExecuteOffer(o);
@@ -71,6 +70,31 @@ namespace AITradingProject
             }
             //Consumption
             game.AllCitiesConsume();
+        }
+
+        private string CreateTradesText(Dictionary<Offer, TradeStatus> offers)
+        {
+            StringBuilder strB = new StringBuilder();
+            foreach (KeyValuePair<Offer, TradeStatus> ts in offers)
+            {
+                strB.Append(ts.Key.From.ID + "->" + ts.Key.E.Other(ts.Key.From).ID + ":");
+
+                foreach (KeyValuePair<Resource, int> rs in ts.Key.ResourcesOffered)
+                {
+                    strB.Append(rs.Key + "(" + rs.Value + ");");
+                }
+                strB.Append("->");
+                foreach (KeyValuePair<Resource, int> rs in ts.Key.ResourcesRequired)
+                {
+                    strB.Append(rs.Key + "(" + rs.Value + ");");
+                }
+                strB.Append(" - ");
+                strB.Append(ts.Value);
+                strB.Append("\n");
+
+            }
+
+            return strB.ToString();
         }
 
         public void startGame()
