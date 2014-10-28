@@ -10,35 +10,29 @@ namespace AITradingProjectModel.Model
         public const int MIN_WEIGHT = 1;
         public const int MAX_WEIGHT = 10;
 
-        private City city1;
-        private City city2;
-        private int weight;
+        private readonly City city1;
+        private readonly City city2;
 
+        public int Weight { get; private set; }
 
-        public Edge(City first, City second)
+        internal Edge(City first, City second)
         {
             city1 = first;
             city2 = second;
-            weight = Utility.RAND.Next(MIN_WEIGHT, MAX_WEIGHT+1);
+            Weight = Utility.RAND.Next(MIN_WEIGHT, MAX_WEIGHT+1);
         }
 
-
-       public int getWeight()
-       {
-           return weight;
-       }
-
-
         /// <summary>
-        /// Returns the city that is not the city given.
+        /// Returns the city at other end of this edge from the given city.
         /// </summary>
-        /// <param name="city"></param>
-        /// <returns></returns>
-        public City other(City city)
+        /// <param name="c">´The city to start from</param>
+        /// <returns>The other city of this edge, or null if the city is not part of this edge</returns>
+        public City Other(City c)
         {
-            //@TODO: should implement an other function with structs - Later
+            if (c.ID == city1.ID) return city2;
+            if (c.ID == city2.ID) return city1;
             return null;
-            
+
         }
 
 

@@ -41,7 +41,7 @@ namespace AITradingProject.Agent
                         break;
                     }
                     int rand=Utility.RAND.Next(2);
-                    if (rand == 1 && e.getWeight()<=pointToGo) 
+                    if (rand == 1 && e.GetWeight()<=pointToGo) 
                     {
                         Dictionary<Resource, int> offer = new Dictionary<Resource, int>();
                         Dictionary<Resource, int> required = new Dictionary<Resource, int>();
@@ -57,7 +57,7 @@ namespace AITradingProject.Agent
                         required.Add(t, Utility.RAND.Next(maxTradableResource));
                         Offer o = new Offer(city, e, offer, required);
                         offers.Add(o);
-                        pointToGo -= e.getWeight();
+                        pointToGo -= e.GetWeight();
 
                     }
                 }

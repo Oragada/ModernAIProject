@@ -57,7 +57,7 @@ namespace AITradingProjectModel.Model
             {
                 try
                 {
-                    ChangeResource(r, GameState.BasicConsume[r]);
+                    ChangeResource(r, -GameState.BasicConsume[r]);
                 }
                 catch (NegativeResourcesException)
                 {
@@ -73,7 +73,7 @@ namespace AITradingProjectModel.Model
                 bool luxuryNeeds = true;
                 try
                 {
-                    ChangeResource(r, GameState.LuxuryConsume[r]);
+                    ChangeResource(r, -GameState.LuxuryConsume[r]);
                 }
                 catch (NegativeResourcesException)
                 {
@@ -125,6 +125,7 @@ namespace AITradingProjectModel.Model
 
         internal bool HaveResource(Dictionary<Resource, int> resources)
         {
+            if (resources.Count == 0) return true;
             return resources.Keys.All(r => this.resources[r] >= resources[r]);
         }
 

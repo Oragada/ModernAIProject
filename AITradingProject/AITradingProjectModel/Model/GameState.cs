@@ -87,7 +87,7 @@ namespace AITradingProjectModel.Model
         /// <returns>The Edge connecting those two cities</returns>
         public Edge GetEdge(City from, City to)
         {
-            return traderoutes.First(e => e.other(from) == to);
+            return traderoutes.First(e => e.Other(from) == to);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace AITradingProjectModel.Model
         public bool IsOfferPossible(Offer o)
         {
             City sender = o.From;
-            City reciever = o.E.other(sender);
+            City reciever = o.E.Other(sender);
             if(sender.Alive & reciever.Alive == false) return false;
             //change resources
             
@@ -114,7 +114,7 @@ namespace AITradingProjectModel.Model
         public void ExecuteOffer(Offer o)
         {
             City sender = o.From;
-            City reciever = o.E.other(sender);
+            City reciever = o.E.Other(sender);
             //change resources
             foreach (KeyValuePair<Resource, int> r in o.ResourcesOffered)
             {
@@ -138,7 +138,7 @@ namespace AITradingProjectModel.Model
                 {
                     strB.Append(r + "_" + c.ResourceAmount(r) + "|");
                 }
-                strB.Append("/n");
+                strB.Append("\n");
             }
 
             return strB.ToString();
