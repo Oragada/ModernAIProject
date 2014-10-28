@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AITradingProject.Model;
+using AITradingProjectModel.Model;
 using AITradingProject.Agent;
 
 
@@ -50,7 +50,7 @@ namespace AITradingProject
                     if(game.IsOfferPossible(o))
                     {
                         //how to get the other agent??
-                        Agent.Agent toAgent = agents[to.ID];//TODO do we really want this? -troy
+                        Agent.Agent toAgent = agents[to.getID()];//TODO do we really want this? -troy
                         if(toAgent.EvaluateTrade(o))
                         {
                             game.ExecuteOffer(o);

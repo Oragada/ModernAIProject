@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AITradingProject.Model
+namespace AITradingProjectModel.Model
 {
     public class Edge
     {
