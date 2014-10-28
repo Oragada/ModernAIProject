@@ -14,7 +14,13 @@ namespace AITradingProject.Model
         private List<City> cities;
         private List<Edge> traderoutes;
         private int turnCount;
-        public static Dictionary<Resource, int> consumptions = new Dictionary<Resource, int>();//TODO add consumption in constructor - Troi
+
+        internal static readonly Dictionary<Resource, int> BasicConsume = new Dictionary<Resource, int>()
+        {
+            {Resource.Food, 1},
+            {Resource.Water, 1}
+        };
+        internal static readonly Dictionary<Resource, int> LuxuryConsume = new Dictionary<Resource, int>() { { Resource.Dolls, 1 } };
         public static List<Resource> availableresources;
 
         public GameState(int cityNum)

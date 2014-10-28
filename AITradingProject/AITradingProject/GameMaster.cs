@@ -50,7 +50,7 @@ namespace AITradingProject
                     if(game.IsOfferPossible(o))
                     {
                         //how to get the other agent??
-                        Agent.Agent toAgent = agents[to.ID];//TODO do we really want this? -troi
+                        Agent.Agent toAgent = agents[to.ID];//TODO do we really want this? -troy
                         if(toAgent.EvaluateTrade(o))
                         {
                             game.ExecuteOffer(o);

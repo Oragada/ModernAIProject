@@ -15,7 +15,7 @@ namespace AITradingProject.Model
         private int health = 10; //TODO: Decide on a start health - Later
         private int points = 0;
         private List<Edge> edges = new List<Edge>();        
-        private bool alive =true; //New parameter - 
+        private bool alive = true;
         
 
         internal City(Dictionary<Resource, int> startResources, Resource nativeResource, int ID)
@@ -53,21 +53,36 @@ namespace AITradingProject.Model
         /// </summary>
         internal void Consume()
         {
-            foreach (Resource r in GameState.consumptions.Keys)
+            bool basicNeeds = true;
+            foreach (Resource r in GameState.BasicConsume.Keys)
             {
-                if (resources.ContainsKey(r))
-                    resources[r] -= GameState.consumptions[r];
-                else
+                try
                 {
-                    health--; //lost healt. should be probagated to top level
-                    if (health < 1)
-                    {
-                        alive = false; //no more health =dead
-                        return;
-                    }
+                    ChangeResource(r, GameState.BasicConsume[r]);
                 }
-            }
+                catch (NegativeResourcesException)
+                {
+                    basicNeeds = false;
 
+                }
+                
+            }
+            if (!basicNeeds) health -= 1;
+
+            foreach (Resource r in GameState.LuxuryConsume.Keys)
+            {
+                bool luxuryNeeds = true;
+                try
+                {
+                    ChangeResource(r, GameState.LuxuryConsume[r]);
+                }
+                catch (NegativeResourcesException)
+                {
+                    luxuryNeeds = false;
+
+                }
+                if (luxuryNeeds) points += 1;
+            }
         }
 
         /// <summary>
@@ -89,28 +104,33 @@ namespace AITradingProject.Model
         /// </summary>
         /// <param name="r"></param>
         /// <param name="change"></param>
-        internal void ChangeResource(Resource r, int change)
+        internal void ChangeResource(Resource r, int change) 
         {
             resources[r] += change;
+            if (resources[r] >= 0) return;
+            resources[r] = 0;
+            throw new NegativeResourcesException();
         }
 
-        internal bool HaveResource(Resource r, int amount)
+        public bool HaveResource(Resource r, int amount)
         {
             if (resources[r] >= amount)
                 return true;
             return false;
         }
 
+        public int ResourceAmount(Resource r)
+        {
+            return resources[r];
+        }
+
         internal bool HaveResource(Dictionary<Resource, int> resources)
         {
-            foreach (Resource r in resources.Keys)
-            {
-                if (resources[r] <resources[r])
-                    return false;
-            }
-            return true;
+            return resources.Keys.All(r => this.resources[r] >= resources[r]);
         }
 
         public bool Alive { get { return alive; }}
     }
+
+    public class NegativeResourcesException : Exception{}
 }
