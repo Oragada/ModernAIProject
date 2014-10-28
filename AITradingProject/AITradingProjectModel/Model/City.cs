@@ -7,8 +7,6 @@ namespace AITradingProjectModel.Model
 {
     public class City
     {
-
-        private int ID;
         private Dictionary<Resource, int> resources;
         private Resource nativeResource;
         private int baseScale;
@@ -27,10 +25,8 @@ namespace AITradingProjectModel.Model
 
         }
 
-        public int getID()
-        {
-            return ID;
-        }
+        public int ID { get; private set; }
+
         public List<Edge> getEdges()
         {
             Edge[] edgesReturned = new Edge[edges.Count];

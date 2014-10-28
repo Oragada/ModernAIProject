@@ -128,8 +128,6 @@ namespace AITradingProjectModel.Model
             }
         }
 
-        // Save Game State - Troy
-
         public string GetGameStateData()
         {
             StringBuilder strB = new StringBuilder();

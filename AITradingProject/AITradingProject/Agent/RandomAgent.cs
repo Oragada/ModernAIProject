@@ -18,7 +18,7 @@ namespace AITradingProject.Agent
         {
 
             rand = new Random();
-            this.maxTradableResource = maxTradableResource;
+            this.maxTradableResource = MaxTradableResource;
         }
 
         /// <summary>
