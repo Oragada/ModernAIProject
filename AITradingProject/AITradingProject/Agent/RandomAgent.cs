@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AITradingProject.Model;
+using AITradingProjectModel;
+using AITradingProjectModel.Model;
+
 
 namespace AITradingProject.Agent
 {

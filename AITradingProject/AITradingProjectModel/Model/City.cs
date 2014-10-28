@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AITradingProject.Model
+namespace AITradingProjectModel.Model
 {
     public class City
     {
 
-        internal int ID;
+        private int ID;
         private Dictionary<Resource, int> resources;
         private Resource nativeResource;
         private int baseScale;
@@ -27,7 +27,10 @@ namespace AITradingProject.Model
 
         }
 
-
+        public int getID()
+        {
+            return ID;
+        }
         public List<Edge> getEdges()
         {
             Edge[] edgesReturned = new Edge[edges.Count];

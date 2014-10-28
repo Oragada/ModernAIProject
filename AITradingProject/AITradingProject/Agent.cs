@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using AITradingProject;
-using AITradingProjectModel.Model;
+using AITradingProject.Model;
 
-namespace AITradingProject.Agent
+namespace AITradingProject
 {
     public abstract class Agent
     {
