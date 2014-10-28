@@ -17,7 +17,9 @@ namespace AITradingProject.Agent
         /// </summary>
         /// <param name="city"></param>
         /// <returns></returns>
-        public abstract List<Offer> GetTrades(City city); 
+        //public abstract List<Offer> GetTrades(City city);
+
+        public abstract List<KeyValuePair<int, Dictionary<Resource, int>>> GetOfferProposals(City city); 
         /// <summary>
         /// This function is called at the end of each turn where all offers are being evaluated one at a time in order.
         /// </summary>

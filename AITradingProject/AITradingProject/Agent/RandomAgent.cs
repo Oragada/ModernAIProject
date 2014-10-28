@@ -20,7 +20,7 @@ namespace AITradingProject.Agent
             rand = new Random();
             this.maxTradableResource = MaxTradableResource;
         }
-
+        /*
         /// <summary>
         /// random stuff spewed out.
         /// </summary>
@@ -28,7 +28,6 @@ namespace AITradingProject.Agent
         /// <returns></returns>
         public override List<Offer> GetTrades(City city)
         {
-            //TODO - Daniel
             int pointToGo=GameState.diplomaticPoints;
             List<Offer> offers = new List<Offer>();
             bool throug = false;
@@ -41,10 +40,10 @@ namespace AITradingProject.Agent
                         break;
                     }
                     int rand=Utility.RAND.Next(2);
-                    if (rand == 1 && e.GetWeight()<=pointToGo) 
+                    if (rand == 1 && e.Weight<=pointToGo) 
                     {
                         Dictionary<Resource, int> offer = new Dictionary<Resource, int>();
-                        Dictionary<Resource, int> required = new Dictionary<Resource, int>();
+                        //Dictionary<Resource, int> required = new Dictionary<Resource, int>();
 
                         //we do trade!                        
                         //int amount = Utility.RAND.Next(GameState.availableresources.Count - 1);
@@ -54,16 +53,56 @@ namespace AITradingProject.Agent
                         offer.Add(w, Utility.RAND.Next(maxTradableResource));
 
                         Resource t = GameState.availableresources[Utility.RAND.Next(GameState.availableresources.Count)];
-                        required.Add(t, Utility.RAND.Next(maxTradableResource));
-                        Offer o = new Offer(city, e, offer, required);
+                        offer.Add(t, -Utility.RAND.Next(maxTradableResource));
+                        Offer o = new Offer(city, e, offer);
                         offers.Add(o);
-                        pointToGo -= e.GetWeight();
+                        pointToGo -= e.Weight;
 
                     }
                 }
 
             }
             return offers;            
+        }*/
+
+        public override List<KeyValuePair<int, Dictionary<Resource, int>>> GetOfferProposals(City city)
+        {
+            int pointToGo = GameState.diplomaticPoints;
+            List<KeyValuePair<int, Dictionary<Resource, int>>> offers = new List<KeyValuePair<int, Dictionary<Resource, int>>>();
+            bool throug = false;
+
+            {
+                foreach (Edge e in city.getEdges())
+                {
+                    if (pointToGo >= 0)
+                    {
+                        break;
+                    }
+                    int rand = Utility.RAND.Next(2);
+                    if (rand == 1 && e.Weight <= pointToGo)
+                    {
+                        Dictionary<Resource, int> offer = new Dictionary<Resource, int>();
+
+                        //we do trade!                        
+                        //int amount = Utility.RAND.Next(GameState.availableresources.Count - 1);
+                        //what to trade!?
+                        //for which resource!!?
+                        offer.Add(GetRandomResource(), Utility.RAND.Next(maxTradableResource));
+                        offer.Add(GetRandomResource(), -Utility.RAND.Next(maxTradableResource));
+                        //Offer o = new Offer(city, e, offer);
+                        offers.Add(new KeyValuePair<int, Dictionary<Resource, int>>(e.Other(city).ID,offer));
+                        pointToGo -= e.Weight;
+
+                    }
+                }
+
+            }
+            return offers;
+        }
+
+        private Resource GetRandomResource()
+        {
+            return GameState.availableresources[Utility.RAND.Next(GameState.availableresources.Count)];
         }
 
         public override bool EvaluateTrade(Offer offer)

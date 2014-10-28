@@ -36,7 +36,10 @@ namespace AITradingProject
             foreach(int agentI in agents.Keys)
             {
                 City a  = game.getCity(agentI);
-                offers.Add(agentI, agents[agentI].GetTrades(a));
+                ////List<Offer> agentOffers = agents[agentI].GetTrades(a);
+                List<Offer> agentOffers = ConvertAgentProposals(agentI, agents[agentI].GetOfferProposals(a));
+                ////agentOffers = agentOffers.Where(o => o.From)
+                offers.Add(agentI, agentOffers);
                 //todo check offers for not exceeding DP points
             }
             //do trades (what order!?)
@@ -72,6 +75,24 @@ namespace AITradingProject
             game.AllCitiesConsume();
         }
 
+        private List<Offer> ConvertAgentProposals(int agentI, List<KeyValuePair<int, Dictionary<Resource, int>>> getOfferProposals)
+        {
+            if(getOfferProposals == null) return new List<Offer>();
+            City thisAgentCity = game.getCity(agentI);
+
+            List<Offer> list = new List<Offer>();
+            foreach (KeyValuePair<int, Dictionary<Resource, int>> offerProposal in getOfferProposals)
+            {
+                if(offerProposal.Value == null) continue; //KeyValuePair is not nullable, since it is a struct
+                if (agents.ContainsKey(offerProposal.Key) || agentI == offerProposal.Key) continue;
+                Edge tradeEdge = game.GetEdge(thisAgentCity, game.getCity(offerProposal.Key));
+                //Dictionary<Resource, int> offeredResources = offerProposal.Value.Where(ra => ra.Value > 0).ToDictionary(v => v.Key, v => v.Value);
+                //Dictionary<Resource, int> requestedResources = offerProposal.Value.Where(ra => ra.Value < 0).ToDictionary(v => v.Key, v => v.Value);
+                list.Add(new Offer(thisAgentCity, tradeEdge, offerProposal.Value));
+            }
+            return list;
+        }
+
         private string CreateTradesText(Dictionary<Offer, TradeStatus> offers)
         {
             StringBuilder strB = new StringBuilder();
@@ -79,14 +100,14 @@ namespace AITradingProject
             {
                 strB.Append(ts.Key.From.ID + "->" + ts.Key.E.Other(ts.Key.From).ID + ":");
 
-                foreach (KeyValuePair<Resource, int> rs in ts.Key.ResourcesOffered)
+                foreach (KeyValuePair<Resource, int> rs in ts.Key.ResourcesOffered.Where(ro => ro.Value > 0))
                 {
                     strB.Append(rs.Key + "(" + rs.Value + ");");
                 }
                 strB.Append("->");
-                foreach (KeyValuePair<Resource, int> rs in ts.Key.ResourcesRequired)
+                foreach (KeyValuePair<Resource, int> rs in ts.Key.ResourcesOffered.Where(ro => ro.Value < 0))
                 {
-                    strB.Append(rs.Key + "(" + rs.Value + ");");
+                    strB.Append(rs.Key + "(" + -rs.Value + ");");
                 }
                 strB.Append(" - ");
                 strB.Append(ts.Value);
@@ -99,7 +120,7 @@ namespace AITradingProject
 
         public void startGame()
         {
-            //TODO Daniel--- what more? - Troi
+            //TODO Daniel--- what more? - Troy
             int i =0;
             int turns=100;
 

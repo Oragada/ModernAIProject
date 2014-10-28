@@ -21,7 +21,7 @@ namespace AITradingProjectModel.Model
             {Resource.Water, 1}
         };
         internal static readonly Dictionary<Resource, int> LuxuryConsume = new Dictionary<Resource, int>() { { Resource.Dolls, 1 } };
-        public static List<Resource> availableresources;
+        public static readonly List<Resource> availableresources = ((Resource[])Enum.GetValues(typeof(Resource))).ToList();
 
         public GameState(int cityNum)
         {
@@ -47,9 +47,6 @@ namespace AITradingProjectModel.Model
                     cities[j].AddEdge(e);
                 }
             }
-
-            availableresources = new List<Resource>{Resource.Food, Resource.Dolls, Resource.Water}; //added. needs to be more dynamic.
-
         }
    
 
@@ -102,9 +99,8 @@ namespace AITradingProjectModel.Model
             if(sender.Alive & reciever.Alive == false) return false;
             //change resources
             
-            return o.ResourcesOffered.All(r => sender.HaveResource(r.Key, r.Value)) & 
-                   o.ResourcesRequired.All(r => reciever.HaveResource(r.Key, r.Value));
-            //Such LINQ, much awesome ;)
+            return o.ResourcesOffered.Where(ro => ro.Value > 0).All(r => sender.HaveResource(r.Key, r.Value)) &
+                   o.ResourcesOffered.Where(ro => ro.Value < 0).All(r => reciever.HaveResource(r.Key, -r.Value));
         }
 
         /// <summary>
@@ -121,11 +117,11 @@ namespace AITradingProjectModel.Model
                 sender.ChangeResource(r.Key, -r.Value);
                 reciever.ChangeResource(r.Key, r.Value);
             }
-            foreach (KeyValuePair<Resource, int> r in o.ResourcesRequired)
+            /*foreach (KeyValuePair<Resource, int> r in o.ResourcesRequired)
             {
                 reciever.ChangeResource(r.Key, -r.Value);
                 sender.ChangeResource(r.Key, r.Value);
-            }
+            }*/
         }
 
         public string GetGameStateData()

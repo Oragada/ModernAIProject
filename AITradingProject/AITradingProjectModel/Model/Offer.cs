@@ -9,16 +9,24 @@ namespace AITradingProjectModel.Model
     {
         private City from;        
         private Edge e;
-        private Dictionary<Resource, int> resourcesOffered;
-        private Dictionary<Resource, int> resourcesRequired;
+        private Dictionary<Resource, int> offered; 
+        //private Dictionary<Resource, int> resourcesOffered;
+        //private Dictionary<Resource, int> resourcesRequired;
 
 
-        public Offer(City offeringCity, Edge edge, Dictionary<Resource, int> offer, Dictionary<Resource, int> required)
+        /*public Offer(City offeringCity, Edge edge, Dictionary<Resource, int> offer, Dictionary<Resource, int> required)
         {
             this.from = offeringCity;
             e = edge;
             resourcesOffered = offer;
             resourcesRequired = required;
+        }*/
+
+        public Offer(City offeringCity, Edge edge, Dictionary<Resource, int> o)
+        {
+            from = offeringCity;
+            e = edge;
+            offered = o;
         }
 
         public City From
@@ -33,12 +41,17 @@ namespace AITradingProjectModel.Model
 
         public Dictionary<Resource, int> ResourcesOffered
         {
+            get { return offered; }
+        }
+
+        /*public Dictionary<Resource, int> ResourcesOffered
+        {
             get { return resourcesOffered; }
         }
 
         public Dictionary<Resource, int> ResourcesRequired
         {
             get { return resourcesRequired; }
-        }
+        }*/
     }
 }
