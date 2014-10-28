@@ -22,7 +22,7 @@ namespace AITradingProject.Agent
         /// </summary>
         /// <param name="city"></param>
         /// <returns></returns>
-        public override List<Offer> GetTrades(City city)
+        public override List<KeyValuePair<int, Dictionary<Resource, int>>> GetOfferProposals(City city)
         {
             //TODO - Daniel
             int pointToGo=GameState.diplomaticPoints;
@@ -46,12 +46,12 @@ namespace AITradingProject.Agent
                 if(amount>0)
                     has.Add(r, amount);
             }
-            List<Offer> offer = new List<Offer>();
+            List<KeyValuePair<int, Dictionary<Resource, int>>> offerProposals = new List<KeyValuePair<int, Dictionary<Resource, int>>>();
             if (need.Count > 0)
-                foreach (Edge c in city.getEdges())
+                foreach (Edge e in city.getEdges())
                 {
                     Dictionary<Resource, int> newNeeds = new Dictionary<Resource, int>();
-                    if(c.Other(city).HaveResource(need))
+                    if(e.Other(city).HaveResource(need))
                     {
                         //create offer   
                         Dictionary<Resource, int> offers = new Dictionary<Resource, int>();
@@ -89,8 +89,19 @@ namespace AITradingProject.Agent
                                 }
                             }
                         }
-                        Offer anOfferYouCannotRefuse = new Offer(city, c, offers, need);
-                        offer.Add(anOfferYouCannotRefuse);
+                        foreach (KeyValuePair<Resource, int> pair in need)
+                        {
+                            if (offers.ContainsKey(pair.Key))
+                            {
+                                offers[pair.Key] -= pair.Value;
+                                continue;
+                            }
+                            offers.Add(pair.Key,pair.Value);
+                            
+                        }
+                        KeyValuePair<int, Dictionary<Resource, int>> offerYouCannotRefuse = new KeyValuePair<int, Dictionary<Resource, int>>(e.Other(city).ID,offers);
+                        //Offer anOfferYouCannotRefuse = new Offer(city, e, offers, need);
+                        offerProposals.Add(offerYouCannotRefuse);
                     }
                     need = need.Concat(newNeeds).ToDictionary(k =>k.Key,v=> v.Value );
                 }
@@ -103,7 +114,7 @@ namespace AITradingProject.Agent
                //if no offer was made for resource
                 //make smaller offers to all of them.
             
-            return offer;
+            return offerProposals;
 
 
         }
