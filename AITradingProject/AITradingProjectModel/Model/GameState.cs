@@ -15,16 +15,17 @@ namespace AITradingProjectModel.Model
         private List<Edge> traderoutes;
         private int turnCount;
 
-        internal static readonly Dictionary<Resource, int> BasicConsume = new Dictionary<Resource, int>()
+        public static readonly Dictionary<Resource, int> BasicConsume = new Dictionary<Resource, int>()
         {
             {Resource.Food, 1},
             {Resource.Water, 1}
         };
-        internal static readonly Dictionary<Resource, int> LuxuryConsume = new Dictionary<Resource, int>() { { Resource.Dolls, 1 } };
+        public static readonly Dictionary<Resource, int> LuxuryConsume = new Dictionary<Resource, int>() { { Resource.Dolls, 1 } };
         public static readonly List<Resource> availableresources = ((Resource[])Enum.GetValues(typeof(Resource))).ToList();
 
         public GameState(int cityNum)
         {
+            CreateStackOfResources();
             cities = new List<City>();
             for (int i = 0; i < cityNum; i++)
             {
@@ -48,6 +49,7 @@ namespace AITradingProjectModel.Model
                 }
             }
         }
+
    
 
         public  City getCity(int cityIndex)//newly added for gameMaster
@@ -123,6 +125,9 @@ namespace AITradingProjectModel.Model
                 sender.ChangeResource(r.Key, r.Value);
             }*/
         }
+        // Save Game State - Troy
+        
+
 
         public string GetGameStateData()
         {
@@ -140,13 +145,23 @@ namespace AITradingProjectModel.Model
             return strB.ToString();
         }
 
+    Stack<Resource> resourcesToDivide = new Stack<Resource>();
         private Resource GetStartingResource()
         {
-            int randVal = Utility.RAND.Next(20); //HACK: hardcoded for initial build
+            if (resourcesToDivide.Count == 0)
+                CreateStackOfResources();
 
-            if(randVal < 8) return Resource.Water;
-            if(randVal < 16) return Resource.Food;
-            return Resource.Dolls;
+
+            return resourcesToDivide.Pop();
+        }
+
+
+        private void CreateStackOfResources()
+        {
+            
+            resourcesToDivide.Push(Resource.Dolls);
+            resourcesToDivide.Push(Resource.Food);
+            resourcesToDivide.Push(Resource.Water);
         }
     }
 }

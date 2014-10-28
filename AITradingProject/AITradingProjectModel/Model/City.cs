@@ -123,7 +123,7 @@ namespace AITradingProjectModel.Model
             return resources[r];
         }
 
-        internal bool HaveResource(Dictionary<Resource, int> resources)
+        public bool HaveResource(Dictionary<Resource, int> resources)
         {
             if (resources.Count == 0) return true;
             return resources.Keys.All(r => this.resources[r] >= resources[r]);

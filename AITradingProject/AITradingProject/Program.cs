@@ -10,7 +10,7 @@ namespace AITradingProject
         static void Main(string[] args)
         {
 
-            GameMaster master = new GameMaster(4);
+            GameMaster master = new GameMaster(3);
             master.startGame();
         }
     }
