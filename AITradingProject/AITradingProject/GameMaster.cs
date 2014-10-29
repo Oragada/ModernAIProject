@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Services;
 using System.Text;
 using AITradingProjectModel.Model;
 using AITradingProject.Agent;
+using System.IO;
 
 
 namespace AITradingProject
@@ -44,6 +46,7 @@ namespace AITradingProject
             }
             //do trades (what order!?)
             //doing trades in any order:
+            Dictionary<Offer, TradeStatus> tradeTrackingList = new Dictionary<Offer, TradeStatus>();
             foreach(int agentI in offers.Keys)
             {
                 foreach(Offer o in offers[agentI])
@@ -57,22 +60,37 @@ namespace AITradingProject
                         {
                             game.ExecuteOffer(o);
                             agents[agentI].TradeCompleted(o, TradeStatus.Successful);
+                            tradeTrackingList.Add(o, TradeStatus.Successful);
                         }
                         else
                         {
                             agents[agentI].TradeCompleted(o, TradeStatus.Rejected);
+                            tradeTrackingList.Add(o, TradeStatus.Rejected);
                         }
                     }
                     else
                     {
                         agents[agentI].TradeCompleted(o, TradeStatus.Unable);
+                        tradeTrackingList.Add(o, TradeStatus.Unable);
                     }
 
                 }
 
             }
+            Console.WriteLine(tradeTrackingList.Count);
+
+            //Print City Status to file
+            string gameState = game.GetGameStateData();
+            string trades = CreateTradesText(tradeTrackingList);
+            WriteToFile(gameState + trades + "\n\n", "filedump.txt");
+
             //Consumption
             game.AllCitiesConsume();
+        }
+
+        private void WriteToFile(string s, string filedumpPath)
+        {
+            File.AppendAllText(filedumpPath,s);
         }
 
         private List<Offer> ConvertAgentProposals(int agentI, List<KeyValuePair<int, Dictionary<Resource, int>>> getOfferProposals)
@@ -84,7 +102,7 @@ namespace AITradingProject
             foreach (KeyValuePair<int, Dictionary<Resource, int>> offerProposal in getOfferProposals)
             {
                 if(offerProposal.Value == null) continue; //KeyValuePair is not nullable, since it is a struct
-                if (agents.ContainsKey(offerProposal.Key) || agentI == offerProposal.Key) continue;
+                if (!agents.ContainsKey(offerProposal.Key) || agentI == offerProposal.Key) continue;
                 Edge tradeEdge = game.GetEdge(thisAgentCity, game.getCity(offerProposal.Key));
                 //Dictionary<Resource, int> offeredResources = offerProposal.Value.Where(ra => ra.Value > 0).ToDictionary(v => v.Key, v => v.Value);
                 //Dictionary<Resource, int> requestedResources = offerProposal.Value.Where(ra => ra.Value < 0).ToDictionary(v => v.Key, v => v.Value);

@@ -39,7 +39,7 @@ namespace AITradingProjectModel.Model
             traderoutes = new List<Edge>();
             for (int i = 0; i < cities.Count; i++)
             {
-                for (int j = 0; j < cities.Count; j++)
+                for (int j = i; j < cities.Count; j++)
                 {
                     if(j == i) continue;
                     Edge e = new Edge(cities[i], cities[j]);
@@ -134,10 +134,10 @@ namespace AITradingProjectModel.Model
             StringBuilder strB = new StringBuilder();
             foreach (City c in cities)
             {
-                strB.Append(c.ID+":");
+                strB.Append(c.ID+" - ");
                 foreach (Resource r in (Resource[])Enum.GetValues(typeof(Resource)))
                 {
-                    strB.Append(r + "_" + c.ResourceAmount(r) + "|");
+                    strB.Append(r + ":" + c.ResourceAmount(r) + "|");
                 }
                 strB.Append("\n");
             }

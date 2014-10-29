@@ -96,7 +96,7 @@ namespace AITradingProject.Agent
                                 offers[pair.Key] -= pair.Value;
                                 continue;
                             }
-                            offers.Add(pair.Key,pair.Value);
+                            offers.Add(pair.Key,-pair.Value);
                             
                         }
                         KeyValuePair<int, Dictionary<Resource, int>> offerYouCannotRefuse = new KeyValuePair<int, Dictionary<Resource, int>>(e.Other(city).ID,offers);
