@@ -49,5 +49,24 @@ namespace AITradingProject.Agent
         /// Whenever a health point is gained this function is called.
         /// </summary>
         public virtual void HealthGained(){ }
+
+
+        public Dictionary<Resource, int> CreateMfDictionary(Dictionary<Resource, int> offering,
+            Dictionary<Resource, int> requiring)
+        {
+            Dictionary<Resource, int> mfDict = new Dictionary<Resource, int>(offering);
+            foreach (KeyValuePair<Resource, int> pair in requiring)
+            {
+                if (mfDict.ContainsKey(pair.Key))
+                {
+                    mfDict[pair.Key] -= pair.Value;
+                    continue;
+                }
+                mfDict.Add(pair.Key, -pair.Value);
+
+            }
+
+            return mfDict;
+        }
     }
 }

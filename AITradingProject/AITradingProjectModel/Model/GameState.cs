@@ -134,11 +134,12 @@ namespace AITradingProjectModel.Model
             StringBuilder strB = new StringBuilder();
             foreach (City c in cities)
             {
-                strB.Append(c.ID+" - ");
+                strB.Append(c.ID+" - " + "|");
                 foreach (Resource r in (Resource[])Enum.GetValues(typeof(Resource)))
                 {
                     strB.Append(r + ":" + c.ResourceAmount(r) + "|");
                 }
+                strB.Append(string.Format(" - H:{0},P:{1}", c.Health, c.Points));
                 strB.Append("\n");
             }
 

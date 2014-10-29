@@ -66,7 +66,7 @@ namespace AITradingProjectModel.Model
                 }
                 
             }
-            if (!basicNeeds) health -= 1;
+            if (!basicNeeds) health = Health - 1;
 
             foreach (Resource r in GameState.LuxuryConsume.Keys)
             {
@@ -80,7 +80,7 @@ namespace AITradingProjectModel.Model
                     luxuryNeeds = false;
 
                 }
-                if (luxuryNeeds) points += 1;
+                if (luxuryNeeds) points = Points + 1;
             }
         }
 
@@ -130,6 +130,16 @@ namespace AITradingProjectModel.Model
         }
 
         public bool Alive { get { return alive; }}
+
+        internal int Health
+        {
+            get { return health; }
+        }
+
+        internal int Points
+        {
+            get { return points; }
+        }
     }
 
     public class NegativeResourcesException : Exception{}

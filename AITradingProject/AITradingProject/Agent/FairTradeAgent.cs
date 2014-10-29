@@ -78,7 +78,13 @@ namespace AITradingProject.Agent
                                 else
                                 {
                                     totalOffering += hasR;
-                                    offers.Add(hasResource, hasR);
+                                    if (offers.ContainsKey(hasResource))
+                                    {
+                                        offers[hasResource] += hasR;
+                                    }
+                                    else
+                                        offers.Add(hasResource, hasR);
+                                    //offers.Add(hasResource, hasR);
                                     has.Remove(hasResource);
                                     if (!need.ContainsKey(hasResource))
                                     {
@@ -89,7 +95,8 @@ namespace AITradingProject.Agent
                                 }
                             }
                         }
-                        foreach (KeyValuePair<Resource, int> pair in need)
+                        Dictionary<Resource, int> mfDict = CreateMfDictionary(offers, need);
+                        /*foreach (KeyValuePair<Resource, int> pair in need)
                         {
                             if (offers.ContainsKey(pair.Key))
                             {
@@ -98,8 +105,8 @@ namespace AITradingProject.Agent
                             }
                             offers.Add(pair.Key,-pair.Value);
                             
-                        }
-                        KeyValuePair<int, Dictionary<Resource, int>> offerYouCannotRefuse = new KeyValuePair<int, Dictionary<Resource, int>>(e.Other(city).ID,offers);
+                        }*/
+                        KeyValuePair<int, Dictionary<Resource, int>> offerYouCannotRefuse = new KeyValuePair<int, Dictionary<Resource, int>>(e.Other(city).ID,mfDict);
                         //Offer anOfferYouCannotRefuse = new Offer(city, e, offers, need);
                         offerProposals.Add(offerYouCannotRefuse);
                     }
