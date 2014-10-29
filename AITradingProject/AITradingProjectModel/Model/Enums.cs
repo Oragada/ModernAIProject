@@ -11,4 +11,8 @@ namespace AITradingProjectModel.Model
     }
 
     public enum Resource { Food, Water, Dolls }
+
+    public delegate void StatusUpdate(int cityId, StatusUpdateType type);
+
+    public enum StatusUpdateType { HealthGained, HealthLost, PointGained }
 }

@@ -50,7 +50,13 @@ namespace AITradingProject.Agent
         /// </summary>
         public virtual void HealthGained(){ }
 
-
+        /// <summary>
+        /// This helper method takes two lists of resources, one being offered and the other requested in trade 
+        /// and converts them into the combined Dictionarys that GetOfferProposals rewuire
+        /// </summary>
+        /// <param name="offering">The list of offered resources, that the agent wants to give away in trade</param>
+        /// <param name="requiring">The list of requested resources, that the agent wants to get out of the trade</param>
+        /// <returns>The combined MF dictionary of resources</returns>
         public Dictionary<Resource, int> CreateMfDictionary(Dictionary<Resource, int> offering,
             Dictionary<Resource, int> requiring)
         {

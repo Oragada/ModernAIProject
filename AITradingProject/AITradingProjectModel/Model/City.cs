@@ -14,14 +14,16 @@ namespace AITradingProjectModel.Model
         private int points = 0;
         private List<Edge> edges = new List<Edge>();        
         private bool alive = true;
+        private StatusUpdate status;
         
 
-        internal City(Dictionary<Resource, int> startResources, Resource nativeResource, int ID)
+        internal City(Dictionary<Resource, int> startResources, Resource nativeResource, int ID, StatusUpdate statusUpdate)
         {
             resources = startResources; 
             this.nativeResource = nativeResource;
             baseScale = Utility.RAND.Next(3,7);
             this.ID = ID;
+            status = statusUpdate;
 
         }
 
@@ -67,6 +69,7 @@ namespace AITradingProjectModel.Model
                 
             }
             if (!basicNeeds) health = Health - 1;
+            status(ID,StatusUpdateType.HealthLost);
 
             foreach (Resource r in GameState.LuxuryConsume.Keys)
             {
@@ -80,7 +83,11 @@ namespace AITradingProjectModel.Model
                     luxuryNeeds = false;
 
                 }
-                if (luxuryNeeds) points = Points + 1;
+                if (luxuryNeeds)
+                {
+                    points = Points + 1;
+                    status(ID, StatusUpdateType.PointGained);
+                }
             }
         }
 

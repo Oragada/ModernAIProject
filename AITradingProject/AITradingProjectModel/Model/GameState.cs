@@ -10,9 +10,9 @@ namespace AITradingProjectModel.Model
         private const int FoodStart = 5;
         private const int WaterStart = 5;
         private const int DollStart = 5;
-        public const int diplomaticPoints = 20;
-        private List<City> cities;
-        private List<Edge> traderoutes;
+        public const int DiplomaticPoints = 20;
+        private readonly List<City> cities;
+        private readonly List<Edge> traderoutes;
         private int turnCount;
 
         public static readonly Dictionary<Resource, int> BasicConsume = new Dictionary<Resource, int>()
@@ -23,7 +23,7 @@ namespace AITradingProjectModel.Model
         public static readonly Dictionary<Resource, int> LuxuryConsume = new Dictionary<Resource, int>() { { Resource.Dolls, 1 } };
         public static readonly List<Resource> availableresources = ((Resource[])Enum.GetValues(typeof(Resource))).ToList();
 
-        public GameState(int cityNum)
+        public GameState(int cityNum, StatusUpdate statusUpdate)
         {
             CreateStackOfResources();
             cities = new List<City>();
@@ -32,7 +32,8 @@ namespace AITradingProjectModel.Model
                 cities.Add(new City(
                     new Dictionary<Resource, int>() { { Resource.Food, FoodStart }, { Resource.Water, WaterStart }, { Resource.Dolls, DollStart } }, 
                     GetStartingResource(), 
-                    i)
+                    i,
+                    statusUpdate)
                 );
 
             }

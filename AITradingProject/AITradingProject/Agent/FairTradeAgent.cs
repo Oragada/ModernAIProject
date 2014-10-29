@@ -25,7 +25,7 @@ namespace AITradingProject.Agent
         public override List<KeyValuePair<int, Dictionary<Resource, int>>> GetOfferProposals(City city)
         {
             //TODO - Daniel
-            int pointToGo=GameState.diplomaticPoints;
+            int pointToGo=GameState.DiplomaticPoints;
             Dictionary<Resource, int> consumption = GameState.BasicConsume;
             Dictionary<Resource, int> need = new Dictionary<Resource,int>();
             Dictionary<Resource, int> has = new Dictionary<Resource,int>();
@@ -137,14 +137,17 @@ namespace AITradingProject.Agent
 
         public override void PointGained()
         {
+            Console.WriteLine("Agent {0} gained a point!");
         }
 
         public override void HealthLost()
         {
+            Console.WriteLine("Agent {0} lost a point of health!");
         }
 
         public override void HealthGained()
         {
+            Console.WriteLine("Agent {0} gained a point of health!");
         }
     }
 }

@@ -17,7 +17,7 @@ namespace AITradingProject
 
         public GameMaster(int cityNum)
         {
-            game = new GameState(cityNum);
+            game = new GameState(cityNum, CityStatusUpdate);
 
             agents = new Dictionary<int, Agent.Agent>();
 
@@ -145,14 +145,32 @@ namespace AITradingProject
             while (i < turns)
             {
                 i++;
-                this.RunTurn();
+                RunTurn();
 
             }
             //go through turns until something is achieved.
 
             //function is called from program.
         }
+
+        private void CityStatusUpdate(int id, StatusUpdateType type)
+        {
+            switch (type)
+            {
+                case StatusUpdateType.HealthGained:
+                    agents[id].HealthGained();
+                    break;
+                case StatusUpdateType.HealthLost:
+                    agents[id].HealthLost();
+                    break;
+                case StatusUpdateType.PointGained:
+                    agents[id].PointGained();
+                    break;
+                default:
+                    throw new Exception("Unknown StatusUpdateType in GameMaster.CityStatusUpdate");
+            }
+        }
     }
 
-    
+
 }
