@@ -109,10 +109,11 @@ namespace AITradingProjectModel.Model
         }
 
         /// <summary>
-        /// Changes the city resource by the amount.
+        /// Changes the city resource by the amount, negative or positive. If this would reduce the resource amount to a negative value, 
+        /// it is instead reduced to 0, and a NegativeResourcesException is thrown
         /// </summary>
-        /// <param name="r"></param>
-        /// <param name="change"></param>
+        /// <param name="r">The Resource to be changed</param>
+        /// <param name="change">How much, negative or positive, the resource stockpile should be changed by</param>
         internal void ChangeResource(Resource r, int change) 
         {
             resources[r] += change;
