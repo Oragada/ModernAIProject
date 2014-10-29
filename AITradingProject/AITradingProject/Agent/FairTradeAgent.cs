@@ -96,16 +96,6 @@ namespace AITradingProject.Agent
                             }
                         }
                         Dictionary<Resource, int> mfDict = CreateMfDictionary(offers, need);
-                        /*foreach (KeyValuePair<Resource, int> pair in need)
-                        {
-                            if (offers.ContainsKey(pair.Key))
-                            {
-                                offers[pair.Key] -= pair.Value;
-                                continue;
-                            }
-                            offers.Add(pair.Key,-pair.Value);
-                            
-                        }*/
                         KeyValuePair<int, Dictionary<Resource, int>> offerYouCannotRefuse = new KeyValuePair<int, Dictionary<Resource, int>>(e.Other(city).ID,mfDict);
                         //Offer anOfferYouCannotRefuse = new Offer(city, e, offers, need);
                         offerProposals.Add(offerYouCannotRefuse);

@@ -68,8 +68,11 @@ namespace AITradingProjectModel.Model
                 }
                 
             }
-            if (!basicNeeds) health = Health - 1;
-            status(ID,StatusUpdateType.HealthLost);
+            if (!basicNeeds)
+            {
+                health = Health - 1;
+                status(ID, StatusUpdateType.HealthLost);
+            }
 
             foreach (Resource r in GameState.LuxuryConsume.Keys)
             {
