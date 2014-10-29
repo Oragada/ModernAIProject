@@ -67,7 +67,7 @@ namespace AITradingProject.Agent
 
         public override List<KeyValuePair<int, Dictionary<Resource, int>>> GetOfferProposals(City city)
         {
-            int pointToGo = GameState.diplomaticPoints;
+            int pointToGo = GameState.DiplomaticPoints;
             List<KeyValuePair<int, Dictionary<Resource, int>>> offers = new List<KeyValuePair<int, Dictionary<Resource, int>>>();
             bool throug = false;
 
