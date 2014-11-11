@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="Agent\Agent.cs" />
     <Compile Include="Agent\FairTradeAgent.cs" />
+    <Compile Include="Agent\LeMasterMindAgent.cs" />
+    <Compile Include="Agent\MM-Subsystems\MasterMind.cs" />
     <Compile Include="Agent\RandomAgent.cs" />
     <Compile Include="GameMaster.cs" />
     <Compile Include="Program.cs" />
