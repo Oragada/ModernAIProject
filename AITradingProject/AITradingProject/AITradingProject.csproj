@@ -11,7 +11,8 @@
     <RootNamespace>AITradingProject</RootNamespace>
     <AssemblyName>AITradingProject</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -34,6 +35,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Box2DX">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\Box2DX.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpNeatDomains">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatDomains.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpNeatDomainsExtra">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatDomainsExtra.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpNeatLib">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpNeatViewLib">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatViewLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,6 +60,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tao.OpenGl">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\Tao.OpenGl.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Platform.Windows">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\Tao.Platform.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph">
+      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent\Agent.cs" />
@@ -57,6 +85,12 @@
       <Project>{83A6A88F-DA85-414E-BD5A-A239E3DED53D}</Project>
       <Name>AITradingProjectModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
