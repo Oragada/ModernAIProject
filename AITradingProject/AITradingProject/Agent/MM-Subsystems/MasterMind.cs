@@ -14,7 +14,9 @@ using SharpNeat.Domains;
 using SharpNeat.EvolutionAlgorithms;
 using SharpNeat.EvolutionAlgorithms.ComplexityRegulation;
 using SharpNeat.Genomes.Neat;
+using SharpNeat.Network;
 using SharpNeat.Phenomes;
+using SharpNeat.Phenomes.NeuralNets;
 using SharpNeat.SpeciationStrategies;
 using System.Threading.Tasks;
 
@@ -27,7 +29,7 @@ namespace AITradingProject.Agent.MM_Subsystems
 
     public class EvalTrade
     {
-        private ANN neural;
+        private ANNHandler neural;
 
         public bool Evaluate(Offer offer)
         {
@@ -42,139 +44,66 @@ namespace AITradingProject.Agent.MM_Subsystems
 
     public class TradeGenerator
     {
-        private ANN neural;
+        private FastAcyclicNetwork neural;
 
-        public KeyValuePair<int, Dictionary<Resource, int>> CreateTrade(int tradePartner)
+        TradeGenerator()
         {
-            throw new NotImplementedException();
+            neural = new CyclicNetwork();
+            List<Neuron> neus = new List<Neuron>(){new Neuron()};
+            List<Connection> conns;
+            int inputNeu = 6;
+            int outputNeu = 3;
+            int tsPerActiv;
+        }
+
+        public KeyValuePair<int, Dictionary<Resource, int>> CreateTrade(City us, City tradePartner)
+        {
+            var resources = new List<double>()
+            {
+                us.ResourceAmount(Resource.Water),
+                us.ResourceAmount(Resource.Food),
+                us.ResourceAmount(Resource.Dolls),
+                tradePartner.ResourceAmount(Resource.Water),
+                tradePartner.ResourceAmount(Resource.Food),
+                tradePartner.ResourceAmount(Resource.Dolls)
+            };
+
+            double maxVal = resources.Max();
+
+            double[] sigIn = new double[resources.Count];
+
+            for (int i = 0; i < sigIn.Length; i++)
+            {
+                sigIn[i] = resources[i]/maxVal;
+            }
+
+            SignalArray isig = new SignalArray(sigIn,0,6);
+            neural.InputSignalArray = isig;
+            neural.Activate();
         }
     }
 
-    public class NEATManager : INeatExperiment 
+    public class NEATManager : NEATStructure
     {
-
-        NeatEvolutionAlgorithmParameters _eaParams;
-        NeatGenomeParameters _neatGenomeParams;
-        public int SpiciesCount { get; private set; }
-        public NetworkActivationScheme activationScheme;
-        string _complexityRegulationStr;
-        int? _complexityThreshold;
-        ParallelOptions _parallelOptions;
-
-        public IPhenomeEvaluator<IBlackBox> PhenomeEvaluator {
-            get {return new TradeGameEvaluator();}
-        }
-        public int InputCount { get { return 9; } }
-        public int OutputCount { get { return 9; } }
-        public bool EvaluateParents { get { return true; } }
-
-        public void Initialize(string name, XmlElement xmlConfig)
+        public override IPhenomeEvaluator<IBlackBox> PhenomeEvaluator
         {
-            this.Name = name;
-            this.DefaultPopulationSize = XmlUtils.GetValueAsInt(xmlConfig, "PopulationSize");
-            this.SpiciesCount = XmlUtils.GetValueAsInt(xmlConfig, "SpecieCount");
-            this.activationScheme = ExperimentUtils.CreateActivationScheme(xmlConfig, "Activation");
-            _complexityRegulationStr = XmlUtils.TryGetValueAsString(xmlConfig, "ComplexityRegulationStrategy");
-            _complexityThreshold = XmlUtils.TryGetValueAsInt(xmlConfig, "ComplexityThreshold");
-            this.Description = XmlUtils.TryGetValueAsString(xmlConfig, "Description");
-            _parallelOptions = ExperimentUtils.ReadParallelOptions(xmlConfig);
-
-            _eaParams = new NeatEvolutionAlgorithmParameters();
-            _eaParams.SpecieCount = this.SpiciesCount;
-            _neatGenomeParams = new NeatGenomeParameters();
+            get { return new TradeGameEvaluator(); }
         }
 
-        public List<NeatGenome> LoadPopulation(XmlReader xr)
+        public override int InputCount
         {
-            NeatGenomeFactory genomeFactory = (NeatGenomeFactory)CreateGenomeFactory();
-            return NeatGenomeXmlIO.ReadCompleteGenomeList(xr, false, genomeFactory);
+            get { return 6; }
         }
 
-        public void SavePopulation(XmlWriter xw, IList<NeatGenome> genomeList)
+        public override int OutputCount
         {
-            // Writing node IDs is not necessary for NEAT.
-            NeatGenomeXmlIO.WriteComplete(xw, genomeList, false);
+            get { return 3; }
         }
 
-        public IGenomeDecoder<NeatGenome, SharpNeat.Phenomes.IBlackBox> CreateGenomeDecoder()
+        public override bool EvaluateParents
         {
-            return new NeatGenomeDecoder(activationScheme);
+            get { return true; }
         }
-
-        public IGenomeFactory<NeatGenome> CreateGenomeFactory()
-        {
-            return new NeatGenomeFactory(InputCount, OutputCount, _neatGenomeParams);
-        }
-
-        public NeatEvolutionAlgorithm<NeatGenome> CreateEvolutionAlgorithm()
-        {
-            return CreateEvolutionAlgorithm(DefaultPopulationSize);
-        }
-
-        public NeatEvolutionAlgorithm<NeatGenome> CreateEvolutionAlgorithm(int populationSize)
-        {
-            // Create a genome2 factory with our neat genome2 parameters object and the appropriate number of input and output neuron genes.
-            IGenomeFactory<NeatGenome> genomeFactory = CreateGenomeFactory();
-
-            // Create an initial population of randomly generated genomes.
-            List<NeatGenome> genomeList = genomeFactory.CreateGenomeList(populationSize, 0);
-
-            // Create evolution algorithm.
-            return CreateEvolutionAlgorithm(genomeFactory, genomeList);
-        }
-
-        public NeatEvolutionAlgorithm<NeatGenome> CreateEvolutionAlgorithm(IGenomeFactory<NeatGenome> genomeFactory, List<NeatGenome> genomeList)
-        {
-            // Create distance metric. Mismatched genes have a fixed distance of 10; for matched genes the distance is their weigth difference.
-            IDistanceMetric distanceMetric = new ManhattanDistanceMetric(1.0, 0.0, 10.0);
-            ISpeciationStrategy<NeatGenome> speciationStrategy = new ParallelKMeansClusteringStrategy<NeatGenome>(distanceMetric, _parallelOptions);
-
-            // Create complexity regulation strategy.
-            IComplexityRegulationStrategy complexityRegulationStrategy = ExperimentUtils.CreateComplexityRegulationStrategy(_complexityRegulationStr, _complexityThreshold);
-
-            // Create the evolution algorithm.
-            NeatEvolutionAlgorithm<NeatGenome> ea = new NeatEvolutionAlgorithm<NeatGenome>(_eaParams, speciationStrategy, complexityRegulationStrategy);
-
-            // Create genome2 decoder.
-            IGenomeDecoder<NeatGenome, SharpNeat.Phenomes.IBlackBox> genomeDecoder = CreateGenomeDecoder();
-
-            // Create a genome2 list evaluator. This packages up the genome2 decoder with the genome2 evaluator.
-            IGenomeListEvaluator<NeatGenome> genomeListEvaluator = new ParallelGenomeListEvaluator<NeatGenome, SharpNeat.Phenomes.IBlackBox>(genomeDecoder, PhenomeEvaluator, _parallelOptions);
-
-            // Wrap the list evaluator in a 'selective' evaulator that will only evaluate new genomes. That is, we skip re-evaluating any genomes
-            // that were in the population in previous generations (elite genomes). This is determiend by examining each genome2's evaluation info object.
-            if (!EvaluateParents)
-                genomeListEvaluator = new SelectiveGenomeListEvaluator<NeatGenome>(genomeListEvaluator,
-                                         SelectiveGenomeListEvaluator<NeatGenome>.CreatePredicate_OnceOnly());
-
-            // Initialize the evolution algorithm.
-            ea.Initialize(genomeListEvaluator, genomeFactory, genomeList);
-
-            // Finished. Return the evolution algorithm
-            return ea;
-        }
-
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public int DefaultPopulationSize { get; private set; }
-        public NeatEvolutionAlgorithmParameters NeatEvolutionAlgorithmParameters { get; private set; }
-        public NeatGenomeParameters NeatGenomeParameters { get; private set; }
-    }
-
-    public class TradeGameEvaluator : IPhenomeEvaluator<SharpNeat.Phenomes.IBlackBox>
-    {
-        public FitnessInfo Evaluate(SharpNeat.Phenomes.IBlackBox phenome)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ulong EvaluationCount { get; private set; }
-        public bool StopConditionSatisfied { get; private set; }
     }
 
     public class TurnLog
@@ -183,13 +112,41 @@ namespace AITradingProject.Agent.MM_Subsystems
 
     }
 
-    internal class DecisionTree
+    public class ANNHandler : IBlackBox, IEvalTrack
+    {
+        private ANN neural;
+
+        public void Activate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetTurnEval()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InputCount { get; private set; }
+        public int OutputCount { get; private set; }
+        public ISignalArray InputSignalArray { get; private set; }
+        public ISignalArray OutputSignalArray { get; private set; }
+        public bool IsStateValid { get; private set; }
+        public List<int> TurnEval { get; private set; }
+        
+    }
+
+    internal class ANN
     {
     }
 
-    public class ANN
+    public interface IEvalTrack
     {
+        List<int> TurnEval { get; }
+        void ResetTurnEval();
     }
-    
-
 }

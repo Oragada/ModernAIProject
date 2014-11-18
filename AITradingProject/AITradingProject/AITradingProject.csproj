@@ -36,22 +36,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Box2DX">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\Box2DX.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\Box2DX.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\log4net.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\log4net.dll</HintPath>
     </Reference>
     <Reference Include="SharpNeatDomains">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatDomains.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatDomains.dll</HintPath>
     </Reference>
     <Reference Include="SharpNeatDomainsExtra">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatDomainsExtra.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatDomainsExtra.dll</HintPath>
     </Reference>
     <Reference Include="SharpNeatLib">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatLib.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatLib.dll</HintPath>
     </Reference>
     <Reference Include="SharpNeatViewLib">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatViewLib.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatViewLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,20 +61,23 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Tao.OpenGl">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\Tao.OpenGl.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\Tao.OpenGl.dll</HintPath>
     </Reference>
     <Reference Include="Tao.Platform.Windows">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\Tao.Platform.Windows.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\Tao.Platform.Windows.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph">
-      <HintPath>..\..\..\..\..\Downloads\SharpNeat_2_2\SharpNeatV2\bin\ZedGraph.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent\Agent.cs" />
     <Compile Include="Agent\FairTradeAgent.cs" />
     <Compile Include="Agent\LeMasterMindAgent.cs" />
+    <Compile Include="Agent\MM-Subsystems\DecisionTree.cs" />
     <Compile Include="Agent\MM-Subsystems\MasterMind.cs" />
+    <Compile Include="Agent\MM-Subsystems\NEATStructure.cs" />
+    <Compile Include="Agent\MM-Subsystems\TradeGameEvaluator.cs" />
     <Compile Include="Agent\RandomAgent.cs" />
     <Compile Include="GameMaster.cs" />
     <Compile Include="Program.cs" />
