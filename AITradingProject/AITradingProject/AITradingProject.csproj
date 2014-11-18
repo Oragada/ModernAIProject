@@ -36,22 +36,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Box2DX">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\Box2DX.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\Box2DX.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\log4net.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\log4net.dll</HintPath>
     </Reference>
     <Reference Include="SharpNeatDomains">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatDomains.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatDomains.dll</HintPath>
     </Reference>
     <Reference Include="SharpNeatDomainsExtra">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatDomainsExtra.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatDomainsExtra.dll</HintPath>
     </Reference>
     <Reference Include="SharpNeatLib">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatLib.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatLib.dll</HintPath>
     </Reference>
     <Reference Include="SharpNeatViewLib">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\SharpNeatViewLib.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\SharpNeatViewLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,13 +61,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Tao.OpenGl">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\Tao.OpenGl.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\Tao.OpenGl.dll</HintPath>
     </Reference>
     <Reference Include="Tao.Platform.Windows">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\Tao.Platform.Windows.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\Tao.Platform.Windows.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph">
-      <HintPath>..\SharpNeat_2_2\SharpNeatV2\bin\ZedGraph.dll</HintPath>
+      <HintPath>..\SharpNeat_2_2\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
