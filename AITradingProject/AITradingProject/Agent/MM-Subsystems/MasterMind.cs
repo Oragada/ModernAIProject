@@ -78,7 +78,7 @@ namespace AITradingProject.Agent.MM_Subsystems
             }
 
             SignalArray isig = new SignalArray(sigIn,0,6);
-            neural.InputSignalArray = isig;
+            //neural.InputSignalArray = isig;
             neural.Activate();
         }
     }
