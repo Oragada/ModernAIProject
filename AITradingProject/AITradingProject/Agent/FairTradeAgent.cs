@@ -62,6 +62,8 @@ namespace AITradingProject.Agent
                             int totalOffering = 0;
                             while (amount != totalOffering)
                             {
+                                if (has.Count < 1)
+                                    break;
                                 int hasR = has.First().Value;
                                 Resource hasResource = has.First().Key;
                                 if (hasR+totalOffering > amount)
