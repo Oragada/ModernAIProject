@@ -27,7 +27,12 @@ namespace AITradingProject
             }
         }
 
-        private void RunTurn()
+        public List<City> getCities()
+        {
+            return game.getCities();
+        }
+
+        public Dictionary<Offer,TradeStatus> RunTurn()
         {
             //Production
             game.AllCitiesProduce();
@@ -86,6 +91,7 @@ namespace AITradingProject
 
             //Consumption
             game.AllCitiesConsume();
+            return tradeTrackingList;
         }
 
         private void WriteToFile(string s, string filedumpPath)

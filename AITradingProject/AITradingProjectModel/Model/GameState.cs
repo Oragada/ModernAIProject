@@ -182,5 +182,10 @@ namespace AITradingProjectModel.Model
             resourcesToDivide.Push(Resource.Food);
             resourcesToDivide.Push(Resource.Water);
         }
+
+        public List<City> getCities()
+        {
+            return cities;
+        }
     }
 }

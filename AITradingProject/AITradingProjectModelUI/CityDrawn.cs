@@ -11,7 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-namespace UI
+
+namespace AITradingProjectUI
 {
     class CityDrawn
     {
@@ -48,7 +49,20 @@ namespace UI
             
             myPolygon.Stroke = Brushes.Black;
             myPolygon.StrokeThickness = 1;
+            myPolygon.Name = "ny";
             grid.Children.Add(myPolygon);
+
+            TextBlock l = new TextBlock();
+
+            l.Text += "ID: " + ID;            
+            
+            l.RenderTransform = new TranslateTransform
+            {
+                X=x,
+                Y=y-10*size
+                
+            };
+            grid.Children.Add(l);
 
 
             /*
