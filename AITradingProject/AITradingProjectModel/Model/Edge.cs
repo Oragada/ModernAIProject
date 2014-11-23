@@ -15,7 +15,7 @@ namespace AITradingProjectModel.Model
 
         public int Weight { get; private set; }
 
-        internal Edge(City first, City second)
+        public Edge(City first, City second)
         {
             city1 = first;
             city2 = second;

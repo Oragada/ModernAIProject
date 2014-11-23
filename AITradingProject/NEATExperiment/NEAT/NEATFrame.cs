@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using SharpNeat.Core;
@@ -14,9 +12,9 @@ using SharpNeat.Genomes.Neat;
 using SharpNeat.Phenomes;
 using SharpNeat.SpeciationStrategies;
 
-namespace AITradingProject.Agent.MM_Subsystems
+namespace NEATExperiment.NEAT
 {
-    public abstract class NEATStructure : INeatExperiment 
+    public abstract class NEATFrame : INeatExperiment 
     {
         #region Abstract properties that subclasses must implement
         public abstract IPhenomeEvaluator<IBlackBox> PhenomeEvaluator { get; }

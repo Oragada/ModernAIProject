@@ -12,7 +12,7 @@ namespace AITradingProjectModel.Model
         private const int DollStart = 5;
         public const int DiplomaticPoints = 20;
         private readonly List<City> cities;
-        private readonly List<Edge> traderoutes;
+        private List<Edge> traderoutes;
         private int turnCount;
 
         public static readonly Dictionary<Resource, int> BasicConsume = new Dictionary<Resource, int>()
@@ -31,18 +31,36 @@ namespace AITradingProjectModel.Model
             {
                 cities.Add(new City(
                     new Dictionary<Resource, int>() { { Resource.Food, FoodStart }, { Resource.Water, WaterStart }, { Resource.Dolls, DollStart } }, 
-                    GetStartingResource(), 
-                    i,
-                    statusUpdate)
+                    GetStartingResource(), i, statusUpdate)
                 );
 
             }
+            CreateEdges();
+        }
+        /// <summary>
+        /// This GameState is hardcoded for the TradeGameEvaluator. DO NOT USE IN GAME
+        /// </summary>
+        /// <param name="statusUpdate"></param>
+        public GameState(StatusUpdate statusUpdate)
+        {
+            cities = new List<City>();
+            Dictionary<Resource, int> c0resour = new Dictionary<Resource, int> { { Resource.Food, 10 } };
+            cities.Add(new City(c0resour,Resource.Food, 0, statusUpdate));
+            Dictionary<Resource, int> c1resour = new Dictionary<Resource, int> { { Resource.Water, 10 } };
+            cities.Add(new City(c1resour, Resource.Food, 1, statusUpdate));
+
+
+            CreateEdges();
+        }
+
+        private void CreateEdges()
+        {
             traderoutes = new List<Edge>();
             for (int i = 0; i < cities.Count; i++)
             {
                 for (int j = i; j < cities.Count; j++)
                 {
-                    if(j == i) continue;
+                    if (j == i) continue;
                     Edge e = new Edge(cities[i], cities[j]);
                     traderoutes.Add(e);
                     cities[i].AddEdge(e);
@@ -50,7 +68,6 @@ namespace AITradingProjectModel.Model
                 }
             }
         }
-
    
 
         public  City getCity(int cityIndex)//newly added for gameMaster
