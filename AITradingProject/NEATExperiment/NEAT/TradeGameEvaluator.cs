@@ -22,15 +22,30 @@ namespace NEATExperiment.NEAT
             //Dictionary<Resource, int> t2c1resour = new Dictionary<Resource, int> {{Resource.Water, 10}};
             //For each game state:
             int testFitness = 0;
-            //test 1 - each city have 10 of one basic resource
+            //test 1 - two cities have 10 of one basic resource
             Dictionary<Resource, int> trade = tg.CreateTrade(testState.getCity(0), testState.getCity(1));
-                //Test legality of suggested trade
-            if(testState.IsOfferPossible(new Offer(testState.getCity(0),
-                testState.getCity(0).getEdges().First(e => e.Other(testState.getCity(0)) == testState.getCity(1)), trade)))
+            //Test legality of suggested trade 
+            Offer o = new Offer(testState.getCity(0), testState.GetEdge(testState.getCity(0), testState.getCity(1)), trade);
+            if(trade.Values.All(i => i == 0))
             {
-                testFitness += -100;
+                testFitness += 1;
+                
             }
-            //Test survivability for 5 rounds
+            else if(testState.IsOfferPossible(o))
+            {
+                testFitness += 100;
+                testState.ExecuteOffer(o);
+                //Test how many rounds the city would survive on these resources
+                Dictionary<Resource, int> surviveTurns = new Dictionary<Resource, int>();
+
+                foreach (KeyValuePair<Resource, int> pair in GameState.BasicConsume)
+                {
+                    surviveTurns.Add(pair.Key,testState.getCity(0).ResourceAmount(pair.Key)/pair.Value);
+                }
+
+                testFitness += (surviveTurns.Values.Min()*10);
+
+            }
             
             //Test points for 5 rounds
 

@@ -131,6 +131,10 @@ namespace AITradingProjectModel.Model
 
         public int ResourceAmount(Resource r)
         {
+            if (!resources.ContainsKey(r))
+            {
+                resources.Add(r,0);
+            }
             return resources[r];
         }
 

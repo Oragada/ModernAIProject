@@ -19,8 +19,6 @@ using System.Runtime.CompilerServices;
 
 namespace AITradingProjectUI
 {
-
-
     public class Worker
     {
         // This method will be called when the thread is started.

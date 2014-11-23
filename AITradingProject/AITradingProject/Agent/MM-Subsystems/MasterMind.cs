@@ -1,6 +1,8 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using AITradingProjectModel.Model;
 using SharpNeat;
 using SharpNeat.Decoders;
 using SharpNeat.Decoders.Neat;
@@ -29,18 +31,17 @@ namespace AITradingProject.Agent.MM_Subsystems
         private DecisionTree<int> dt;
     }
 
-    /*public class EvalTrade
+    public class EvalTrade
     {
-        private ANNHandler neural;
 
         public bool Evaluate(Offer offer)
         {
             throw new NotImplementedException();
         }
-    }*/
+    }
 
     public abstract class WtoT
     {
-        public abstract int GetTradingPartner();
+        public abstract City GetTradingPartner(City city);
     }
 }

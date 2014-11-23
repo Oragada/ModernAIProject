@@ -13,7 +13,6 @@ namespace AITradingProject.Agent
         public EvalTrade tradeEval;
         public WtoT whoToTrade;
         public TradeGenerator tradeBuild;
-        public NEATManager neat;
 
         public LeMasterMindAgent()
         {
@@ -25,16 +24,14 @@ namespace AITradingProject.Agent
             List<KeyValuePair<int, Dictionary<Resource, int>>> ops = new List<KeyValuePair<int, Dictionary<Resource, int>>>();
             while (PointsRemaining())
             {
-                int tradePartner = whoToTrade.GetTradingPartner();
+                City tradePartner = whoToTrade.GetTradingPartner(city);
 
-                KeyValuePair<int, Dictionary<Resource, int>> t = tradeBuild.CreateTrade(tradePartner);
+                Dictionary<Resource, int> t = tradeBuild.CreateTrade(city,tradePartner);
                 
-                ops.Add(t);
+                ops.Add(new KeyValuePair<int, Dictionary<Resource, int>>(tradePartner.ID,t));
             }
 
             return ops;
-
-
         }
 
         private bool PointsRemaining()

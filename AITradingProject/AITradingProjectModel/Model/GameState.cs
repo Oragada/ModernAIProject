@@ -44,9 +44,9 @@ namespace AITradingProjectModel.Model
         public GameState(StatusUpdate statusUpdate)
         {
             cities = new List<City>();
-            Dictionary<Resource, int> c0resour = new Dictionary<Resource, int> { { Resource.Food, 10 } };
+            Dictionary<Resource, int> c0resour = new Dictionary<Resource, int> { { Resource.Water, 0 }, { Resource.Food, 10 }, { Resource.Dolls, 0 } };
             cities.Add(new City(c0resour,Resource.Food, 0, statusUpdate));
-            Dictionary<Resource, int> c1resour = new Dictionary<Resource, int> { { Resource.Water, 10 } };
+            Dictionary<Resource, int> c1resour = new Dictionary<Resource, int> { { Resource.Water, 10 }, { Resource.Food, 0 }, { Resource.Dolls, 0 } };
             cities.Add(new City(c1resour, Resource.Food, 1, statusUpdate));
 
 

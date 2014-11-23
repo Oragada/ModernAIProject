@@ -11,7 +11,6 @@ namespace AITradingProject.Agent
 {
     public abstract class Agent
     {
-        
         /// <summary>
         /// This function is called at each turn, and expects the trades the agent wishes to perform on it's provided city        
         /// </summary>
