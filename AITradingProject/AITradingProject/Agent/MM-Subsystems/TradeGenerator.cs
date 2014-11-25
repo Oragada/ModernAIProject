@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using AITradingProjectModel.Model;
+using AITradingProject.NEATExperiment;
+using SharpNeat.Core;
+using SharpNeat.Genomes.Neat;
 using SharpNeat.Phenomes;
 
 namespace AITradingProject.Agent.MM_Subsystems
@@ -10,9 +14,49 @@ namespace AITradingProject.Agent.MM_Subsystems
     {
         private IBlackBox brain;
 
-        public TradeGenerator(IBlackBox b)
+        public TradeGenerator(string fileName)
         {
-            brain = b;
+            LoadBrain(fileName);
+        }
+
+        public TradeGenerator(IBlackBox brain)
+        {
+            this.brain = brain;
+        }
+
+        private void LoadBrain(string fileName)
+        {
+            // Experiment classes encapsulate much of the nuts and bolts of setting up a NEAT search.
+            NEATTradeGameExperiment _experiment = new NEATTradeGameExperiment();
+
+            // Load config XML.
+            XmlDocument xmlConfig = new XmlDocument();
+            xmlConfig.Load("tictactoe.config.xml");
+            _experiment.Initialize("TicTacToe", xmlConfig.DocumentElement);
+
+            NeatGenome genome = null;
+
+            // Try to load the genome from the XML document.
+            try
+            {
+                using (XmlReader xr = XmlReader.Create(fileName))
+                    genome = NeatGenomeXmlIO.ReadCompleteGenomeList(xr, false, (NeatGenomeFactory)_experiment.CreateGenomeFactory())[0];
+            }
+            catch (Exception e1)
+            {
+                Console.WriteLine("Error loading genome from file!\nLoading aborted.\n"
+                                  + e1.Message);
+                return;
+            }
+
+            // Get a genome decoder that can convert genomes to phenomes.
+            IGenomeDecoder<NeatGenome, IBlackBox> genomeDecoder = _experiment.CreateGenomeDecoder();
+
+            // Decode the genome into a phenome (neural network).
+            IBlackBox phenome = genomeDecoder.Decode(genome);
+
+            // Set the NEAT player's brain to the newly loaded neural network.
+            brain = phenome;
         }
 
         public Dictionary<Resource, int> CreateTrade(City us, City tradePartner)

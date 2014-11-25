@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+  <PopulationSize>50</PopulationSize>
+  <SpecieCount>5</SpecieCount>
+  <Activation>
+    <Scheme>CyclicFixedIters</Scheme>
+    <Iters>2</Iters>
+  </Activation>
+  <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+  <ComplexityThreshold>30</ComplexityThreshold>
+  <Description>
+    TradeGame trade creator.
+  </Description>
+ 
+</Config>
