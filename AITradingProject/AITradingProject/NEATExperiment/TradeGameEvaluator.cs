@@ -17,7 +17,7 @@ namespace AITradingProject.NEATExperiment
             //Create Sample game states
             GameMaster gm = new GameMaster(4, tg);
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 10; i++)
             {
                 gm.RunTurn();
             }
@@ -28,7 +28,7 @@ namespace AITradingProject.NEATExperiment
 
             if (!city.Alive)
             {
-                Console.WriteLine("City not alive");
+                //Console.WriteLine("City not alive");
                 return new FitnessInfo(0.0, aliveCities);
             }
 
@@ -37,7 +37,7 @@ namespace AITradingProject.NEATExperiment
             totalFitness += city.Health*5;
             
             totalFitness += city.Points;
-            Console.WriteLine("City Health {0}, City Points {1}", city.Health, city.Points);
+            //Console.WriteLine("City Health {0}, City Points {1}", city.Health, city.Points);
 
             return new FitnessInfo(totalFitness,aliveCities);
             /*GameState testState = new GameState(StatusUpdateTest);

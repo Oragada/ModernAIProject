@@ -53,7 +53,7 @@ namespace AITradingProject
             //trades
             Dictionary<int, List<Offer>> offers = new Dictionary<int, List<Offer>>();
             //GetTrades
-            foreach(int agentI in agents.Keys)
+            foreach(int agentI in agents.Where(a => game.getCities()[a.Key].Alive).Select(a => a.Key))
             {
                 City a  = game.getCity(agentI);
                 ////List<Offer> agentOffers = agents[agentI].GetTrades(a);
