@@ -9,14 +9,16 @@ namespace AITradingProject.Agent
 {
     public class LeMasterMindAgent : Agent
     {
-        public MasterMind mind;
+        //public MasterMind mind;
         public EvalTrade tradeEval;
         public WtoT whoToTrade;
         public TradeGenerator tradeBuild;
 
         public LeMasterMindAgent()
         {
-            tradeEval = new EvalTrade();
+            tradeBuild = new TradeGenerator("tradegame.champion.xml");
+            tradeEval = new EvalTrade(10);
+            whoToTrade = new SimpleWtoT();
         }
 
         public override List<KeyValuePair<int, Dictionary<Resource, int>>> GetOfferProposals(City city)

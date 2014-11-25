@@ -35,7 +35,7 @@ namespace AITradingProject.Agent.MM_Subsystems
 
     public class EvalTrade
     {
-        private int greedLevel = 3; //the larger the greed level, the less greedy it is.
+        private readonly int greedLevel = 3; //the larger the greed level, the less greedy it is.
         private Offer theOffer;
         private DecisionTree<bool> dt;
               
@@ -62,14 +62,14 @@ namespace AITradingProject.Agent.MM_Subsystems
             Node<bool> falseNode = new LeafNode<bool>(false);
             Node<bool> trueNode = new LeafNode<bool>(true);
             
-            SplitNode<bool> part43= new SplitNode<bool>(trueNode, falseNode, new Condition(weGetItemsToTrade));
-            SplitNode<bool> part42 = new SplitNode<bool>(trueNode, part43, new Condition(weGetLuxuries));
-            SplitNode<bool> part41 = new SplitNode<bool>(trueNode, part42, new Condition(weGetNessesities));
-            SplitNode<bool> part411 = new SplitNode<bool>(part42, falseNode, new Condition(weGetNessesities));
-            SplitNode<bool> part3 = new SplitNode<bool>(part41, part411, new Condition(fairOffer));
-            SplitNode<bool> part2 = new SplitNode<bool>(part3, falseNode, new Condition(willWeLoseLife));
+            SplitNode<bool> part43= new SplitNode<bool>(trueNode, falseNode, weGetItemsToTrade);
+            SplitNode<bool> part42 = new SplitNode<bool>(trueNode, part43, weGetLuxuries);
+            SplitNode<bool> part41 = new SplitNode<bool>(trueNode, part42, weGetNessesities);
+            SplitNode<bool> part411 = new SplitNode<bool>(part42, falseNode, weGetNessesities);
+            SplitNode<bool> part3 = new SplitNode<bool>(part41, part411, fairOffer);
+            SplitNode<bool> part2 = new SplitNode<bool>(part3, falseNode, willWeLoseLife);
 
-            SplitNode<bool> part1 = new SplitNode<bool>(part2, falseNode, new Condition(canWeDoTheOffer));
+            SplitNode<bool> part1 = new SplitNode<bool>(part2, falseNode, canWeDoTheOffer);
 
             DecisionTree<bool> dt = new DecisionTree<bool>(part1);
             //root - selector
@@ -79,9 +79,6 @@ namespace AITradingProject.Agent.MM_Subsystems
             //or evaluate what we need and see if the offer does this for us?- first is better, second is easier.
 
             this.dt = dt;
-            
-
-
         }
 
 
@@ -164,5 +161,13 @@ namespace AITradingProject.Agent.MM_Subsystems
     public abstract class WtoT
     {
         public abstract City GetTradingPartner(City city);
+    }
+
+    public class SimpleWtoT : WtoT
+    {
+        public override City GetTradingPartner(City city)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
