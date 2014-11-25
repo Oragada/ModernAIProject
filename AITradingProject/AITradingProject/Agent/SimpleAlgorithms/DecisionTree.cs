@@ -1,11 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System;
 
 namespace AITradingProject.Agent.MM_Subsystems
 {
     public class DecisionTree<T>
     {
         private Node<T> tree;
+
+        public DecisionTree(Node<T> t)
+        {
+
+        }   
+
+
+
 
         public T GetValue()
         {
@@ -19,7 +28,7 @@ namespace AITradingProject.Agent.MM_Subsystems
         public abstract bool validate();
     }
 
-    public class LeafNode<T> : Node<T>
+    public class LeafNode<T> : Node<T> //state
     {
         private readonly T value;
 
@@ -58,14 +67,21 @@ namespace AITradingProject.Agent.MM_Subsystems
         }
     }*/
 
+    
+
+
+
     public class SplitNode<T> : Node<T>
     {
         private readonly Node<T> trueNode;
         private readonly Node<T> falseNode;
         private readonly Condition condition;
 
-        public SplitNode(Node<T> trueN, Node<T> falseN, Condition cond)
+        public SplitNode(Node<T> trueN, Node<T> falseN, Condition cond) //branch
         {
+            if (trueN == null || falseN == null || cond == null)
+                throw new NullReferenceException();
+
             trueNode = trueN;
             falseNode = falseN;
             condition = cond;
@@ -80,6 +96,10 @@ namespace AITradingProject.Agent.MM_Subsystems
             return falseNode.getValue();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override bool validate()
         {
             var vali = true;
