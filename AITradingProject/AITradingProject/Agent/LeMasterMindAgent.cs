@@ -13,31 +13,37 @@ namespace AITradingProject.Agent
         public EvalTrade tradeEval;
         public WtoT whoToTrade;
         public TradeGenerator tradeBuild;
+        public int pointsRemaining;
 
         public LeMasterMindAgent()
         {
-            tradeEval = new EvalTrade();
+            tradeEval = new EvalTrade(10);
         }
 
         public override List<KeyValuePair<int, Dictionary<Resource, int>>> GetOfferProposals(City city)
         {
+            pointsRemaining = GameState.DiplomaticPoints;
+            whoToTrade = new SimpleWtoT(city.getEdges());
             List<KeyValuePair<int, Dictionary<Resource, int>>> ops = new List<KeyValuePair<int, Dictionary<Resource, int>>>();
-            while (PointsRemaining())
+            while (pointsRemaining>0)
             {
-                City tradePartner = whoToTrade.GetTradingPartner(city);
 
-                Dictionary<Resource, int> t = tradeBuild.CreateTrade(city,tradePartner);
+                Edge edg= whoToTrade.GetTradingPartner(city);
+                pointsRemaining -= edg.Weight;
+                if(pointsRemaining<0)
+                {
+                    break;
+                }
                 
-                ops.Add(new KeyValuePair<int, Dictionary<Resource, int>>(tradePartner.ID,t));
+
+                Dictionary<Resource, int> t = tradeBuild.CreateTrade(city,edg.Other(city));
+                
+                ops.Add(new KeyValuePair<int, Dictionary<Resource, int>>(edg.Other(city).ID,t));
             }
 
             return ops;
         }
 
-        private bool PointsRemaining()
-        {
-            throw new NotImplementedException();
-        }
 
         public override bool EvaluateTrade(Offer offer)
         {

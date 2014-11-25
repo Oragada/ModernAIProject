@@ -96,6 +96,8 @@ namespace AITradingProject.Agent.MM_Subsystems
 
         public bool canWeDoTheOffer()
         {
+
+
             foreach (Resource wanted in theOffer.ResourcesOffered.Keys)
             {
                 int amount = theOffer.ResourcesOffered[wanted];
@@ -163,6 +165,29 @@ namespace AITradingProject.Agent.MM_Subsystems
 
     public abstract class WtoT
     {
-        public abstract City GetTradingPartner(City city);
+        public abstract Edge GetTradingPartner(City city);
     }
+
+
+    public class SimpleWtoT : WtoT
+    {
+        List<Edge> edgesNotUsed;
+
+        public SimpleWtoT(List<Edge> edges)
+        {
+            edgesNotUsed = edges;
+        }
+
+        public override Edge GetTradingPartner(City city)
+        {
+            Edge edge = edgesNotUsed.First(e => e.Weight == (edgesNotUsed.Min(x => x.Weight)));
+            edgesNotUsed.Remove(edge);
+            return edge;
+        }
+    }
+
+
+
+
+    
 }
