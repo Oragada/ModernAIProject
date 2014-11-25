@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AITradingProject.Agent.MM_Subsystems;
@@ -14,9 +15,34 @@ namespace AITradingProject.NEATExperiment
             //Load parameters for evaluation
             TradeGenerator tg = new TradeGenerator(phenome);
             //Create Sample game states
-            GameState testState = new GameState(StatusUpdateTest);
+            GameMaster gm = new GameMaster(4, tg);
 
-            double totalFitness = 0.0;
+            for (int i = 0; i < 15; i++)
+            {
+                gm.RunTurn();
+            }
+
+            City city = gm.getCities()[0];
+
+            double aliveCities = ((double) gm.getCities().Count(c => c.Alive)/gm.getCities().Count);
+
+            if (!city.Alive)
+            {
+                Console.WriteLine("City not alive");
+                return new FitnessInfo(0.0, aliveCities);
+            }
+
+            double totalFitness = 50.0;
+
+            totalFitness += city.Health*5;
+            
+            totalFitness += city.Points;
+            Console.WriteLine("City Health {0}, City Points {1}", city.Health, city.Points);
+
+            return new FitnessInfo(totalFitness,aliveCities);
+            /*GameState testState = new GameState(StatusUpdateTest);
+
+            
             
             //Dictionary<Resource, int> t2c2resour = new Dictionary<Resource, int> {{Resource.Food, 10}};
             //Dictionary<Resource, int> t2c1resour = new Dictionary<Resource, int> {{Resource.Water, 10}};
@@ -51,7 +77,7 @@ namespace AITradingProject.NEATExperiment
 
             totalFitness += testFitness;
 
-            return new FitnessInfo(totalFitness,0.0);
+            return new FitnessInfo(totalFitness,0.0);*/
         }
 
         private void StatusUpdateTest(int cityid, StatusUpdateType type)

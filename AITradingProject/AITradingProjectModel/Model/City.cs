@@ -37,7 +37,6 @@ namespace AITradingProjectModel.Model
                 
         }
 
-
         /// <summary>
         /// Adds an edge to the city.
         /// </summary>
@@ -72,6 +71,7 @@ namespace AITradingProjectModel.Model
             {
                 health = Health - 1;
                 status(ID, StatusUpdateType.HealthLost);
+                if (health <= 0) alive = false;
             }
 
             foreach (Resource r in GameState.LuxuryConsume.Keys)
@@ -146,12 +146,12 @@ namespace AITradingProjectModel.Model
 
         public bool Alive { get { return alive; }}
 
-        internal int Health
+        public int Health
         {
             get { return health; }
         }
 
-        internal int Points
+        public int Points
         {
             get { return points; }
         }

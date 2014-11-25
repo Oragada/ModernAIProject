@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Services;
 using System.Text;
+using AITradingProject.Agent.MM_Subsystems;
 using AITradingProjectModel.Model;
 using AITradingProject.Agent;
 using System.IO;
@@ -24,6 +25,18 @@ namespace AITradingProject
             for (int i = 0; i < cityNum; i++)
             {
                 agents.Add(i, new FairTradeAgent());                
+            }
+        }
+
+        public GameMaster(int cityNum, TradeGenerator tg)
+        {
+            game = new GameState(cityNum, CityStatusUpdate);
+
+            agents = new Dictionary<int, Agent.Agent>();
+
+            for (int i = 0; i < cityNum; i++)
+            {
+                agents.Add(i, new LeMasterMindAgent(tg));
             }
         }
 
@@ -82,7 +95,7 @@ namespace AITradingProject
                 }
 
             }
-            Console.WriteLine(tradeTrackingList.Count);
+            //Console.WriteLine(tradeTrackingList.Count);
 
             //Print City Status to file
             string gameState = game.GetGameStateData();
@@ -96,7 +109,7 @@ namespace AITradingProject
 
         private void WriteToFile(string s, string filedumpPath)
         {
-            File.AppendAllText(filedumpPath,s);
+            //File.AppendAllText(filedumpPath,s);
         }
 
         private List<Offer> ConvertAgentProposals(int agentI, List<KeyValuePair<int, Dictionary<Resource, int>>> getOfferProposals)

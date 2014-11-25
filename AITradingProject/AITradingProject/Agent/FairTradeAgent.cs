@@ -129,17 +129,17 @@ namespace AITradingProject.Agent
 
         public override void PointGained()
         {
-            Console.WriteLine("Agent {0} gained a point!");
+            //Console.WriteLine("Agent {0} gained a point!");
         }
 
         public override void HealthLost()
         {
-            Console.WriteLine("Agent {0} lost a point of health!");
+            //Console.WriteLine("Agent {0} lost a point of health!");
         }
 
         public override void HealthGained()
         {
-            Console.WriteLine("Agent {0} gained a point of health!");
+            //Console.WriteLine("Agent {0} gained a point of health!");
         }
     }
 }

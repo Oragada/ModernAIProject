@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -21,28 +22,14 @@ using System.Linq;
 
 namespace AITradingProject.Agent.MM_Subsystems
 {
-    public class MasterMind
-    {
-        public TradeGenerator tg;
-
-        public MasterMind(IBlackBox tgBrain)
-        {
-            tg = new TradeGenerator(tgBrain);
-        }
-
-        private DecisionTree<int> dt;
-    }
-
     public class EvalTrade
     {
         private int greedLevel = 3; //the larger the greed level, the less greedy it is.
         private Offer theOffer;
         private DecisionTree<bool> dt;
-              
-
+        
         public EvalTrade(int greedLevel)
         {
-
             if (greedLevel > 0)
             {
                 this.greedLevel = greedLevel;
@@ -57,33 +44,26 @@ namespace AITradingProject.Agent.MM_Subsystems
                 //4.2 we get luxury goods. 
                 //4.3 we get more items to trade with.
             
-
-
             Node<bool> falseNode = new LeafNode<bool>(false);
             Node<bool> trueNode = new LeafNode<bool>(true);
             
-            SplitNode<bool> part43= new SplitNode<bool>(trueNode, falseNode, new Condition(weGetItemsToTrade));
-            SplitNode<bool> part42 = new SplitNode<bool>(trueNode, part43, new Condition(weGetLuxuries));
-            SplitNode<bool> part41 = new SplitNode<bool>(trueNode, part42, new Condition(weGetNessesities));
-            SplitNode<bool> part411 = new SplitNode<bool>(part42, falseNode, new Condition(weGetNessesities));
-            SplitNode<bool> part3 = new SplitNode<bool>(part41, part411, new Condition(fairOffer));
-            SplitNode<bool> part2 = new SplitNode<bool>(part3, falseNode, new Condition(willWeLoseLife));
+            SplitNode<bool> part43= new SplitNode<bool>(trueNode, falseNode, weGetItemsToTrade);
+            SplitNode<bool> part42 = new SplitNode<bool>(trueNode, part43, weGetLuxuries);
+            SplitNode<bool> part41 = new SplitNode<bool>(trueNode, part42, weGetNessesities);
+            SplitNode<bool> part411 = new SplitNode<bool>(part42, falseNode, weGetNessesities);
+            SplitNode<bool> part3 = new SplitNode<bool>(part41, part411, fairOffer);
+            SplitNode<bool> part2 = new SplitNode<bool>(part3, falseNode, willWeLoseLife);
 
-            SplitNode<bool> part1 = new SplitNode<bool>(part2, falseNode, new Condition(canWeDoTheOffer));
+            SplitNode<bool> part1 = new SplitNode<bool>(part2, falseNode, canWeDoTheOffer);
 
-            DecisionTree<bool> dt = new DecisionTree<bool>(part1);
+            dt = new DecisionTree<bool>(part1);
+
             //root - selector
             //typeof offer? -
             //or what do we need.
             //two types. evaluate the type of offer and see if we want such a type of offer.
             //or evaluate what we need and see if the offer does this for us?- first is better, second is easier.
-
-            this.dt = dt;
-            
-
-
         }
-
 
         public bool Evaluate(Offer offer)
         {
@@ -91,13 +71,8 @@ namespace AITradingProject.Agent.MM_Subsystems
             return dt.GetValue();
         }
 
-
-
-
         public bool canWeDoTheOffer()
         {
-
-
             foreach (Resource wanted in theOffer.ResourcesOffered.Keys)
             {
                 int amount = theOffer.ResourcesOffered[wanted];
@@ -112,6 +87,7 @@ namespace AITradingProject.Agent.MM_Subsystems
             }
             return true;
         }
+
         public bool willWeLoseLife()
         {//linq ftw.
             return (theOffer.ResourcesOffered.Where(
@@ -120,8 +96,8 @@ namespace AITradingProject.Agent.MM_Subsystems
                             x => x.Key) //which resources is that?
                                 .All(
                                     wanted => theOffer.E.Other(theOffer.From).ResourceAmount(wanted) - theOffer.ResourcesOffered[wanted] < GameState.BasicConsume[wanted]));    //will we go below the basic comsume if we accept?
+        
         }
-
 
         public bool fairOffer()
         {
@@ -149,7 +125,6 @@ namespace AITradingProject.Agent.MM_Subsystems
                         .Any(   //are any of these resources needed for luxury consumption and do we actually need it to score points?
                             x => GameState.LuxuryConsume.ContainsKey(x.Key) && GameState.LuxuryConsume[x.Key] > theOffer.E.Other(theOffer.From).ResourceAmount(x.Key));
 
-
         }
 
         public bool weGetNessesities()
@@ -159,15 +134,15 @@ namespace AITradingProject.Agent.MM_Subsystems
                         .Any(   //are any of these resources needed for consumption and do we actually need those resources to survive next round?
                             x => GameState.BasicConsume.ContainsKey(x.Key) && GameState.BasicConsume[x.Key] > theOffer.E.Other(theOffer.From).ResourceAmount(x.Key));
 
-
         }
     }
 
     public abstract class WtoT
     {
         public abstract Edge GetTradingPartner(City city);
-    }
 
+        public abstract bool MoreEdges();
+    }
 
     public class SimpleWtoT : WtoT
     {
@@ -176,6 +151,11 @@ namespace AITradingProject.Agent.MM_Subsystems
         public SimpleWtoT(List<Edge> edges)
         {
             edgesNotUsed = edges;
+        }
+
+        public override bool MoreEdges()
+        {
+            return edgesNotUsed.Count == 0;
         }
 
         public override Edge GetTradingPartner(City city)
