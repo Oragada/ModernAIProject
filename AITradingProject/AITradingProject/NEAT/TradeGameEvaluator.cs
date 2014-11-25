@@ -67,4 +67,15 @@ namespace NEATExperiment.NEAT
         public ulong EvaluationCount { get; private set; }
         public bool StopConditionSatisfied { get; private set; }
     }
+
+    public class TestGameState
+    {
+        public City Us { get; set; }
+        public City Other { get; set; }
+
+        public TestGameState()
+        {
+            
+        }
+    }
 }

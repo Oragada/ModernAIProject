@@ -5,7 +5,7 @@ using AITradingProjectModel.Model;
 using SharpNeat.Core;
 using SharpNeat.Phenomes;
 
-namespace NEATExperiment.NEAT
+namespace AITradingProject.NEATExperiment
 {
     public class TradeGameEvaluator : IPhenomeEvaluator<IBlackBox>
     {
@@ -66,5 +66,16 @@ namespace NEATExperiment.NEAT
 
         public ulong EvaluationCount { get; private set; }
         public bool StopConditionSatisfied { get; private set; }
+    }
+
+    public class TestGameState
+    {
+        public City Us { get; set; }
+        public City Other { get; set; }
+
+        public TestGameState()
+        {
+            
+        }
     }
 }

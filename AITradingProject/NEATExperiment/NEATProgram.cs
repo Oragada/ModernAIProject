@@ -11,7 +11,7 @@ using SharpNeat.Genomes.Neat;
 
 namespace NEATExperiment
 {
-    internal class Program
+    internal class NEATProgram
     {
         private static NeatEvolutionAlgorithm<NeatGenome> _ea;
         private const string CHAMPION_FILE = "tradegame_champion.xml";
