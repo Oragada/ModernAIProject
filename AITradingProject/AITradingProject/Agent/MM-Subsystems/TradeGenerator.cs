@@ -31,8 +31,8 @@ namespace AITradingProject.Agent.MM_Subsystems
 
             // Load config XML.
             XmlDocument xmlConfig = new XmlDocument();
-            xmlConfig.Load("tictactoe.config.xml");
-            _experiment.Initialize("TicTacToe", xmlConfig.DocumentElement);
+            xmlConfig.Load("tradegame.config.xml");
+            _experiment.Initialize("TradeGenerator", xmlConfig.DocumentElement);
 
             NeatGenome genome = null;
 
