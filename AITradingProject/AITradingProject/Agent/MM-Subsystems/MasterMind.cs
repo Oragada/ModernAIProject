@@ -155,7 +155,7 @@ namespace AITradingProject.Agent.MM_Subsystems
 
         public override bool MoreEdges()
         {
-            return edgesNotUsed.Count == 0;
+            return edgesNotUsed.Count != 0;
         }
 
         public override Edge GetTradingPartner(City city)
