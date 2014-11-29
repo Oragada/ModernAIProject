@@ -15,7 +15,9 @@ using AITradingProjectModel.Model;
 using AITradingProject;
 using System.Threading;
 using System.Runtime.CompilerServices;
-
+using AITradingProject.NEATExperiment;
+using AITradingProject.Agent;
+using AITradingProject.Agent.MM_Subsystems;
 
 namespace AITradingProjectUI
 {
@@ -26,9 +28,11 @@ namespace AITradingProjectUI
         {
             int i = 0;
             int turns = 100;
-            
-            GameMaster master = new GameMaster(3);
-            master.startGame();
+            //NEATProgram.Run();
+
+            GameMaster master = new GameMaster(3, new TradeGenerator("tradegame_champion.xml"));
+           // master.startGame();
+            //GameMaster master = new GameMaster(3);
 
             lock (MainWindow.cities)
             {
@@ -39,18 +43,18 @@ namespace AITradingProjectUI
                 lock (MainWindow.offers)
                 {
                     i++;
-                    Dictionary<Offer, TradeStatus> offers= master.RunTurn();
-                    
+                    Dictionary<Offer, TradeStatus> offers = master.RunTurn();
+
                     MainWindow.offers = offers;
 
                     //MainWindow.reDraw();
-                    i++;
-                    
-                    Thread.Sleep(100);
-                }
+                    //i++;
+                }    
+                Thread.Sleep(100);
+                
                 lock (MainWindow.syncLock)
                 {
-                    MainWindow.next = 0; ;
+                    MainWindow.next = 0;
                 }
                 bool next = false;
                 while (!next)
@@ -63,9 +67,17 @@ namespace AITradingProjectUI
                         }
 
                     }
-                    Thread.Sleep(20);
+                    Thread.Sleep(100);
                 }
 
+            }
+
+            while (true)
+            {
+                lock (MainWindow.syncLock)
+                {
+                    MainWindow.next = -3;
+                }
             }
 
         }
@@ -96,13 +108,13 @@ namespace AITradingProjectUI
             Worker workerObject = new Worker();
             Thread workerThread = new Thread(workerObject.DoWork);
             workerThread.Start();            
-            MakeButton();
+            MakeButton("Begin");
         }
 
-        void MakeButton()
+        void MakeButton(String text)
         {
             Button b2 = new Button();
-            b2.Content = "Next Turn";
+            b2.Content = text;
             // Associate event handler to the button. You can remove the event  
             // handler using "-=" syntax rather than "+=".
             b2.Click += new RoutedEventHandler(Onb2Click);
@@ -114,14 +126,22 @@ namespace AITradingProjectUI
 
 
         }
+
         void Onb2Click(object sender, RoutedEventArgs e)
         {
             reDraw();
+
             lock (MainWindow.syncLock)
             {
+                if (MainWindow.next < 0)
+                {
+                    MakeButton("Game Over");
+                    return;
+                }
+                
                 MainWindow.next = 1;
             }
-            MakeButton();
+            MakeButton("Next turn");
         }
 
         public void reDraw()
@@ -134,7 +154,7 @@ namespace AITradingProjectUI
 
                 foreach (City c in cities)
                 {
-                    CityDrawn b = new CityDrawn(c.ID, 3); //add base scale as size?
+                    CityDrawn b = new CityDrawn(c.ID, 3,c); //add base scale as size?
                     list.Add(b);
                 }
                 traderoutes = new List<EdgeDrawn>();
@@ -185,6 +205,7 @@ namespace AITradingProjectUI
                 for (int i = 0; i < list.Count; i++)
                 {
                     list[i].draw(grid);
+                    drawResources(list[i]);
                     for (int j = i; j < list.Count; j++)
                     {
                         if (j == i) continue;
@@ -225,7 +246,31 @@ namespace AITradingProjectUI
                         
                     }
                 }
+                
             }            
+        }
+
+        private void drawResources(CityDrawn cityDrawn)
+        {
+            TextBlock l = new TextBlock();
+
+            l.Text += cityDrawn.ID +":\n"; 
+            foreach (Resource res in GameState.availableresources)
+            {
+                l.Text += res.ToString() + ": " + cityDrawn.city.ResourceAmount(res) + " \n ";
+            }
+
+            double theX = cityDrawn.x;
+            double theY = cityDrawn.y;
+            theY -= GameState.availableresources.Count * 40;
+
+            l.RenderTransform = new TranslateTransform
+            {
+                X = theX,
+                Y = theY
+            };
+            grid.Children.Add(l);
+            //drawn.Add(theX + "," + theY, true);  
         }
         private Dictionary<String, bool> drawn = new Dictionary<string, bool>();
 
