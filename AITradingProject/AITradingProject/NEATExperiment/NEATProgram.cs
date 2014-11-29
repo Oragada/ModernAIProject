@@ -8,12 +8,12 @@ using SharpNeat.Genomes.Neat;
 
 namespace AITradingProject.NEATExperiment
 {
-    internal class NEATProgram
+    public class NEATProgram
     {
         private static NeatEvolutionAlgorithm<NeatGenome> _ea;
         private const string CHAMPION_FILE = "tradegame_champion.xml";
 
-        internal static void Run()
+        public static void Run()
         {
             // Initialise log4net (log to console).
             XmlConfigurator.Configure(new FileInfo("log4net.properties"));
@@ -35,6 +35,7 @@ namespace AITradingProject.NEATExperiment
             _ea.StartContinue();
 
             // Hit return to quit.
+            Console.WriteLine("Press any key to continue");
             Console.ReadLine();
         }
 
