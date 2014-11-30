@@ -34,9 +34,11 @@ namespace AITradingProject
 
             agents = new Dictionary<int, Agent.Agent>();
 
-            for (int i = 0; i < cityNum; i++)
+            agents.Add(0,new LeMasterMindAgent(tg));
+
+            for (int i = 1; i < cityNum; i++)
             {
-                agents.Add(i, new LeMasterMindAgent(tg));
+                agents.Add(i, new FairTradeAgent());
             }
         }
 

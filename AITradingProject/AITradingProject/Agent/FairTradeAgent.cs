@@ -44,7 +44,7 @@ namespace AITradingProject.Agent
             {
                 int amount = city.ResourceAmount(r);
                 if(amount>0)
-                    has.Add(r, amount);
+                    has[r] += amount;
             }
             List<KeyValuePair<int, Dictionary<Resource, int>>> offerProposals = new List<KeyValuePair<int, Dictionary<Resource, int>>>();
             if (need.Count > 0)

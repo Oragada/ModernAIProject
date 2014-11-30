@@ -16,26 +16,37 @@ namespace AITradingProject.NEATExperiment
             TradeGenerator tg = new TradeGenerator(phenome);
             //Create Sample game states
             GameMaster gm = new GameMaster(3, tg);
-            double totalFitness = 1000;
+            double totalFitness = 0;
+            double goodTrades = 0;
+            double unreasonableTrades = 0;
+            double badTrades = 0;
             for (int i = 0; i < 20; i++)
             {
                 Dictionary<Offer,TradeStatus> offers = gm.RunTurn();
-                foreach(TradeStatus t in offers.Values){
-                    if (t==TradeStatus.Unable)
-                    {
-                        totalFitness--;
-                    }
-                    else if(t==TradeStatus.Successful)
+                foreach(KeyValuePair<Offer, TradeStatus> kv in offers.Where(e => e.Key.From.ID == 0))
+                {
+                    //Console.WriteLine("Evaluating {0}: {1}", kv.Key, kv.Value);
+                    if (TradeStatus.Unable == kv.Value) badTrades++;
+                    else if (TradeStatus.Rejected == kv.Value) unreasonableTrades++;
+                    else goodTrades++;
+                    /*
+                    TradeStatus t = kv.Value;
+                    
+                    if (t == TradeStatus.Successful)
                     {
                         totalFitness += 5;
                     }
                     else if (t == TradeStatus.Rejected)
                     {
                         totalFitness+=2;
-                    }
+                    }*/
                 }
-                
+
             }
+            double workingTrades = goodTrades + unreasonableTrades;
+            double totalTrades = workingTrades + badTrades;
+
+            totalFitness += ((goodTrades * 2 + unreasonableTrades) / (totalTrades * 2))*5.0;
 
             City city = gm.getCities()[0];
 
@@ -49,9 +60,9 @@ namespace AITradingProject.NEATExperiment
             
             
 
-            totalFitness += city.Health;
+            totalFitness += city.Health/10.0;
             
-            totalFitness += city.Points;
+            totalFitness += city.Points/20.0;
             //Console.WriteLine("City Health {0}, City Points {1}", city.Health, city.Points);
 
             return new FitnessInfo(totalFitness,aliveCities);

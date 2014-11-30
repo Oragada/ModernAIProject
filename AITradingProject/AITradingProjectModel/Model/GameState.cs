@@ -18,7 +18,8 @@ namespace AITradingProjectModel.Model
         public static readonly Dictionary<Resource, int> BasicConsume = new Dictionary<Resource, int>()
         {
             {Resource.Food, 1},
-            {Resource.Water, 1}
+            {Resource.Water, 1},
+            {Resource.Dolls, 0}
         };
         public static readonly Dictionary<Resource, int> LuxuryConsume = new Dictionary<Resource, int>() { { Resource.Dolls, 1 } };
         public static readonly List<Resource> availableresources = ((Resource[])Enum.GetValues(typeof(Resource))).ToList();
@@ -117,6 +118,8 @@ namespace AITradingProjectModel.Model
             City sender = o.From;
             City reciever = o.E.Other(sender);
             if(sender.Alive & reciever.Alive == false) return false;
+            //To help with NEAT
+            if (o.ResourcesOffered.All(e => e.Value == 0)) return false;
             //change resources
             
             return o.ResourcesOffered.Where(ro => ro.Value > 0).All(r => sender.HaveResource(r.Key, r.Value)) &

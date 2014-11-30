@@ -17,7 +17,7 @@ namespace AITradingProject.NEATExperiment
 
         public override int OutputCount
         {
-            get { return 3; }
+            get { return 6; }
         }
 
         public override bool EvaluateParents

@@ -91,9 +91,9 @@ namespace AITradingProject.Agent.MM_Subsystems
 
             Dictionary<Resource, int> trade = new Dictionary<Resource, int>()
             {
-                {Resource.Water, output[0]},
-                {Resource.Food, output[1]},
-                {Resource.Dolls, output[2]}
+                {Resource.Water, output[3]-output[0]},
+                {Resource.Food, output[4]-output[1]},
+                {Resource.Dolls, output[5]-output[2]}
             };
 
             return trade;
