@@ -12,6 +12,8 @@ namespace AITradingProject.NEATExperiment
     {
         private static NeatEvolutionAlgorithm<NeatGenome> _ea;
         private const string CHAMPION_FILE = "tradegame_champion.xml";
+        private const string CHAMPIONBEST_FILE = "tradegame_champion_best.xml";
+        private static double fitness = 0;
 
         public static void Run()
         {
@@ -45,10 +47,21 @@ namespace AITradingProject.NEATExperiment
                 _ea.CurrentGeneration, _ea.Statistics._maxFitness));
 
             // Save the best genome to file
-            var doc = NeatGenomeXmlIO.SaveComplete(
-                new List<NeatGenome>() {_ea.CurrentChampGenome},
-                false);
-            doc.Save(CHAMPION_FILE);
+            if (fitness < _ea.Statistics._maxFitness)
+            {
+                var doc = NeatGenomeXmlIO.SaveComplete(
+                    new List<NeatGenome>() { _ea.CurrentChampGenome },
+                    false);
+                doc.Save(CHAMPIONBEST_FILE);
+                fitness = _ea.Statistics._maxFitness;
+            }
+            else
+            {
+                var doc = NeatGenomeXmlIO.SaveComplete(
+                    new List<NeatGenome>() { _ea.CurrentChampGenome },
+                    false);
+                doc.Save(CHAMPION_FILE);
+            }
         }
     }
 }
