@@ -38,7 +38,7 @@ namespace AITradingProject
 
             for (int i = 1; i < cityNum; i++)
             {
-                agents.Add(i, new FairTradeAgent());
+                agents.Add(i, new LeMasterMindAgent(tg));
             }
         }
 

@@ -15,7 +15,7 @@ namespace AITradingProject.NEATExperiment
             //Load parameters for evaluation
             TradeGenerator tg = new TradeGenerator(phenome);
             //Create Sample game states
-            GameMaster gm = new GameMaster(3, tg);
+            GameMaster gm = new GameMaster(10, tg);
             double totalFitness = 0;
             double goodTrades = 0;
             double unreasonableTrades = 0;
@@ -23,7 +23,7 @@ namespace AITradingProject.NEATExperiment
             for (int i = 0; i < 20; i++)
             {
                 Dictionary<Offer,TradeStatus> offers = gm.RunTurn();
-                foreach(KeyValuePair<Offer, TradeStatus> kv in offers.Where(e => e.Key.From.ID == 0))
+                foreach(KeyValuePair<Offer, TradeStatus> kv in offers)
                 {
                     //Console.WriteLine("Evaluating {0}: {1}", kv.Key, kv.Value);
                     if (TradeStatus.Unable == kv.Value) badTrades++;
@@ -46,7 +46,7 @@ namespace AITradingProject.NEATExperiment
             double workingTrades = goodTrades + unreasonableTrades;
             double totalTrades = workingTrades + badTrades;
 
-            totalFitness += ((goodTrades * 2 + unreasonableTrades) / (totalTrades * 2))*5.0;
+            totalFitness += ((goodTrades * 2 + unreasonableTrades) / (totalTrades * 2));
 
             City city = gm.getCities()[0];
 
@@ -60,9 +60,9 @@ namespace AITradingProject.NEATExperiment
             
             
 
-            totalFitness += city.Health/10.0;
+            //totalFitness += city.Health/10.0;
             
-            totalFitness += city.Points/20.0;
+            //totalFitness += city.Points/20.0;
             //Console.WriteLine("City Health {0}, City Points {1}", city.Health, city.Points);
 
             return new FitnessInfo(totalFitness,aliveCities);

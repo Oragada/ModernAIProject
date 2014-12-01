@@ -180,10 +180,12 @@ namespace AITradingProjectModel.Model
 
         private void CreateStackOfResources()
         {
-            
-            resourcesToDivide.Push(Resource.Dolls);
-            resourcesToDivide.Push(Resource.Food);
-            resourcesToDivide.Push(Resource.Water);
+            List<Resource> rs = ((Resource[]) Enum.GetValues(typeof (Resource))).ToList();
+            Random rand = new Random();
+            foreach (Resource r in rs.OrderBy(e => rand.Next()))
+            {
+                resourcesToDivide.Push(r);
+            }
         }
 
         public List<City> getCities()
