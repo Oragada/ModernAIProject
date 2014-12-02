@@ -5,7 +5,7 @@ using System.Xml;
 using log4net.Config;
 using SharpNeat.EvolutionAlgorithms;
 using SharpNeat.Genomes.Neat;
-
+using System.Diagnostics;
 namespace AITradingProject.NEATExperiment
 {
     public class NEATProgram
@@ -14,9 +14,12 @@ namespace AITradingProject.NEATExperiment
         private const string CHAMPION_FILE = "tradegame_champion.xml";
         private const string CHAMPIONBEST_FILE = "tradegame_champion_best.xml";
         private static double fitness = 0;
-
+        
         public static void Run()
         {
+            Trace.Listeners.Add(new TextWriterTraceListener("log.txt"));
+
+            Trace.Write("New Experiment:");
             // Initialise log4net (log to console).
             XmlConfigurator.Configure(new FileInfo("log4net.properties"));
 
@@ -36,7 +39,9 @@ namespace AITradingProject.NEATExperiment
             // Start algorithm (it will run on a background thread).
             _ea.StartContinue();
 
-            // Hit return to quit.
+            //logs
+            
+           // Hit return to quit.
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();
         }
@@ -44,9 +49,14 @@ namespace AITradingProject.NEATExperiment
         private static void ea_UpdateEvent(object sender, EventArgs e)
         {
             Console.WriteLine("gen={0:N0} bestFitness={1:N3}, avgFitness={2:N3}", _ea.CurrentGeneration, _ea.Statistics._maxFitness, _ea.Statistics._meanFitness);
-            IncrementalEvaluator.avgFitness = (float)_ea.Statistics._meanFitness;
-            IncrementalEvaluator.genCount = (int) _ea.CurrentGeneration;
+            lock (IncrementalEvaluator.lockO)
+            {
+
+                IncrementalEvaluator.avgFitness = (float)_ea.Statistics._meanFitness;
+                IncrementalEvaluator.genCount = (int)_ea.CurrentGeneration;
+            }
             // Save the best genome to file
+            Trace.Write("gen=" + _ea.CurrentGeneration + " bestFitness=" + _ea.Statistics._maxFitness + ", avgFitness=" +_ea.Statistics._meanFitness);
             if (fitness < _ea.Statistics._maxFitness)
             {
                 var doc = NeatGenomeXmlIO.SaveComplete(
@@ -62,6 +72,9 @@ namespace AITradingProject.NEATExperiment
                     false);
                 doc.Save(CHAMPION_FILE);
             }
+
+
+           
         }
     }
 }
