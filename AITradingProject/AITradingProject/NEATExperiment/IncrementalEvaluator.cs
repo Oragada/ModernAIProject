@@ -9,28 +9,41 @@ namespace AITradingProject.NEATExperiment
 {
     class IncrementalEvaluator : IPhenomeEvaluator<IBlackBox>
     {
-        private FixedSituationEvaluator fsEval;
-        private SimulationEvaluator simEval;
+
+        Stack<IPhenomeEvaluator<IBlackBox>> evaluators = new Stack<IPhenomeEvaluator<IBlackBox>>();
         private readonly int crossoverGeneration = 10;
         private readonly double crossoverFitness = 0.9;
-            
-        public static volatile int genCount;
-        public static volatile float avgFitness;
+        IPhenomeEvaluator<IBlackBox> current;
+
+        
+        public static volatile int genCount = 0;
+        public static volatile float avgFitness=0;
 
 
-        public IncrementalEvaluator() 
+        public IncrementalEvaluator(bool extended) 
         {
-            fsEval = new FixedSituationEvaluator();
-            simEval = new SimulationEvaluator();
+            current = (new FixedSituationEvaluator());
+            evaluators.Push(new SimulationEvaluator());
+            if(extended)
+                evaluators.Push(new SimulationOnlySuccesFullEvaluator());            
+            
+            if(extended)
+                evaluators.Push(new SimulationStayingAliveEvaluator());
+
         }
 
         public FitnessInfo Evaluate(IBlackBox phenome)
         {
-            if (genCount > crossoverGeneration)
+            if (avgFitness>=crossoverFitness)
             {
-                return simEval.Evaluate(phenome);
+                if (evaluators.Count > 0)
+                    current = evaluators.Pop();
+                else
+                {
+                    this.StopConditionSatisfied = true;
+                }
             }
-            return fsEval.Evaluate(phenome);
+            return current.Evaluate(phenome);
         }
 
         public void Reset()

@@ -7,7 +7,7 @@ namespace AITradingProject.NEATExperiment
     {
         public override IPhenomeEvaluator<IBlackBox> PhenomeEvaluator
         {
-            get { return new FixedSituationEvaluator(); }
+            get { return new IncrementalEvaluator(true); }
         }
 
         public override int InputCount
