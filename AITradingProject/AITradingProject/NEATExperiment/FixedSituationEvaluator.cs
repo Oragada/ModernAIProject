@@ -11,34 +11,35 @@ namespace AITradingProject.NEATExperiment
 {
     public class FixedSituationEvaluator : IPhenomeEvaluator<IBlackBox>
     {
+
+
         public FitnessInfo Evaluate(IBlackBox phenome)
         {
+            Random rand = new Random();
+
             //Load parameters for evaluation
             TradeGenerator tg = new TradeGenerator(phenome);
             //Create Sample game states
             GameState testState = new GameState(StatusUpdateTest);
-            double totalFitness = 0;
-            for (int i = 0; i < 20; i++)
+            int cCount = testState.getCities().Count;
+            double totalFitness = 0.0;
+            for (int i = 0; i < cCount; i++)
             {
-                City us = testState.getCity(Utility.RAND.Next(20));
+                City us = testState.getCity(rand.Next(cCount));
                 int otherID = us.ID;
                 while (otherID == us.ID)
                 {
-                    otherID = Utility.RAND.Next(20);
+                    otherID = rand.Next(cCount);
                 }
                 City them = testState.getCity(otherID);
 
-                var rs = tg.CreateTrade(us, them);
+                Dictionary<Resource, int> rs = tg.CreateTrade(us, them);
                 Offer o = new Offer(us,testState.GetEdge(us, them),rs);
 
-                if (testState.IsOfferPossible(o)) totalFitness++;
-                
-
+                if (testState.IsOfferPossible(o)) totalFitness+=1.0;
             }
             
-            
-
-            return new FitnessInfo(totalFitness,0.0);
+            return new FitnessInfo(totalFitness/cCount,0.0);
         }
 
         private void StatusUpdateTest(int cityid, StatusUpdateType type)

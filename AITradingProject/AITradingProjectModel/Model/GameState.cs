@@ -42,13 +42,13 @@ namespace AITradingProjectModel.Model
         /// This GameState is hardcoded for the TradeGameEvaluator. DO NOT USE IN GAME
         /// </summary>
         /// <param name="statusUpdate"></param>
-        public GameState(StatusUpdate statusUpdate)
+        public GameState(StatusUpdate su)
         {
             cities = new List<City>();
-            for (int i = 0; i < 21; i++)
+            for (int i = 0; i < 3; i++)
             {
                 if(i%3 == 0) CreateStackOfResources();
-                cities.Add(ConstructRandomTestCity(i));
+                cities.Add(ConstructRandomTestCity(i, su));
             }
 
             CreateEdges();
@@ -70,17 +70,17 @@ namespace AITradingProjectModel.Model
             }
         }
 
-        City ConstructRandomTestCity(int i)
+        City ConstructRandomTestCity(int i, StatusUpdate su)
         {
             return
                 new City(
-                    new Dictionary<Resource, int>()
+                    new Dictionary<Resource, int>
                     {
                         {Resource.Water, Utility.RAND.Next(21)},
                         {Resource.Food, Utility.RAND.Next(21)},
                         {Resource.Dolls, Utility.RAND.Next(21)}
                     }, 
-                    resourcesToDivide.Pop(), i, null);
+                    resourcesToDivide.Pop(), i, su);
         }
 
         public  City getCity(int cityIndex)//newly added for gameMaster

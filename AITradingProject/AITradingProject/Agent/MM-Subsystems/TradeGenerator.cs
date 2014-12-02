@@ -61,7 +61,6 @@ namespace AITradingProject.Agent.MM_Subsystems
 
         public Dictionary<Resource, int> CreateTrade(City us, City tradePartner)
         {
-
             double maxVal = 20.0;
 
             var resources = new List<double>()
