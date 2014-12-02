@@ -9,7 +9,7 @@ using SharpNeat.Phenomes;
 
 namespace AITradingProject.NEATExperiment
 {
-    public class TradeGameEvaluator : IPhenomeEvaluator<IBlackBox>
+    public class FixedSituationEvaluator : IPhenomeEvaluator<IBlackBox>
     {
         public FitnessInfo Evaluate(IBlackBox phenome)
         {
@@ -18,9 +18,6 @@ namespace AITradingProject.NEATExperiment
             //Create Sample game states
             GameState testState = new GameState(StatusUpdateTest);
             double totalFitness = 0;
-            double goodTrades = 0;
-            double unreasonableTrades = 0;
-            double badTrades = 0;
             for (int i = 0; i < 20; i++)
             {
                 City us = testState.getCity(Utility.RAND.Next(20));
