@@ -95,7 +95,7 @@ namespace AITradingProject.Agent.MM_Subsystems
                         .Select(
                             x => x.Key) //which resources is that?
                                 .All(
-                                    wanted => theOffer.E.Other(theOffer.From).ResourceAmount(wanted) - theOffer.ResourcesOffered[wanted] < GameState.BasicConsume[wanted]));    //will we go below the basic comsume if we accept?
+                                    wanted => theOffer.E.Other(theOffer.From).ResourceAmount(wanted) - theOffer.ResourcesOffered[wanted] > GameState.BasicConsume[wanted]));    //will we go below the basic comsume if we accept?
         
         }
 
