@@ -72,13 +72,14 @@ namespace AITradingProjectModel.Model
 
         City ConstructRandomTestCity(int i, StatusUpdate su)
         {
+            Random rand = new Random();
             return
                 new City(
                     new Dictionary<Resource, int>
                     {
-                        {Resource.Water, Utility.RAND.Next(21)},
-                        {Resource.Food, Utility.RAND.Next(21)},
-                        {Resource.Dolls, Utility.RAND.Next(21)}
+                        {Resource.Water, rand.Next(21)},
+                        {Resource.Food, rand.Next(21)},
+                        {Resource.Dolls, rand.Next(21)}
                     }, 
                     GetStartingResource(), i, su);
         }
