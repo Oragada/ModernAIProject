@@ -45,11 +45,11 @@ namespace AITradingProjectModel.Model
         public GameState(StatusUpdate statusUpdate)
         {
             cities = new List<City>();
-            Dictionary<Resource, int> c0resour = new Dictionary<Resource, int> { { Resource.Water, 0 }, { Resource.Food, 10 }, { Resource.Dolls, 0 } };
-            cities.Add(new City(c0resour,Resource.Food, 0, statusUpdate));
-            Dictionary<Resource, int> c1resour = new Dictionary<Resource, int> { { Resource.Water, 10 }, { Resource.Food, 0 }, { Resource.Dolls, 0 } };
-            cities.Add(new City(c1resour, Resource.Food, 1, statusUpdate));
-
+            for (int i = 0; i < 21; i++)
+            {
+                if(i%3 == 0) CreateStackOfResources();
+                cities.Add(ConstructRandomTestCity(i));
+            }
 
             CreateEdges();
         }
@@ -69,7 +69,19 @@ namespace AITradingProjectModel.Model
                 }
             }
         }
-   
+
+        City ConstructRandomTestCity(int i)
+        {
+            return
+                new City(
+                    new Dictionary<Resource, int>()
+                    {
+                        {Resource.Water, Utility.RAND.Next(21)},
+                        {Resource.Food, Utility.RAND.Next(21)},
+                        {Resource.Dolls, Utility.RAND.Next(21)}
+                    }, 
+                    resourcesToDivide.Pop(), i, null);
+        }
 
         public  City getCity(int cityIndex)//newly added for gameMaster
         {

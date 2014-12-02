@@ -66,12 +66,12 @@ namespace AITradingProject.Agent.MM_Subsystems
 
             var resources = new List<double>()
             {
-                us.ResourceAmount(Resource.Water)/maxVal,
-                us.ResourceAmount(Resource.Food)/maxVal,
-                us.ResourceAmount(Resource.Dolls)/maxVal,
-                tradePartner.ResourceAmount(Resource.Water)/maxVal,
-                tradePartner.ResourceAmount(Resource.Food)/maxVal,
-                tradePartner.ResourceAmount(Resource.Dolls)/maxVal,
+                us.ResourceAmount(Resource.Water)> maxVal ? 1.0 : us.ResourceAmount(Resource.Water)/maxVal,
+                us.ResourceAmount(Resource.Food)> maxVal ? 1.0 :us.ResourceAmount(Resource.Food)/maxVal,
+                us.ResourceAmount(Resource.Dolls)> maxVal ? 1.0 :us.ResourceAmount(Resource.Dolls)/maxVal,
+                tradePartner.ResourceAmount(Resource.Water)> maxVal ? 1.0 :tradePartner.ResourceAmount(Resource.Water)/maxVal,
+                tradePartner.ResourceAmount(Resource.Water)> maxVal ? 1.0 :tradePartner.ResourceAmount(Resource.Food)/maxVal,
+                tradePartner.ResourceAmount(Resource.Water)> maxVal ? 1.0 :tradePartner.ResourceAmount(Resource.Dolls)/maxVal,
                 us.NativeResource == Resource.Water ? 1.0 : 0.0,
                 us.NativeResource == Resource.Food ? 1.0 : 0.0,
                 us.NativeResource == Resource.Dolls ? 1.0 : 0.0
