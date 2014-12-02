@@ -21,7 +21,12 @@ namespace AITradingProject.NEATExperiment
             for (int i = 0; i < 20; i++)
             {
                 City us = testState.getCity(Utility.RAND.Next(20));
-                City them = testState.getCity(Utility.RAND.Next(20));
+                int otherID = us.ID;
+                while (otherID == us.ID)
+                {
+                    otherID = Utility.RAND.Next(20);
+                }
+                City them = testState.getCity(otherID);
 
                 var rs = tg.CreateTrade(us, them);
                 Offer o = new Offer(us,testState.GetEdge(us, them),rs);
