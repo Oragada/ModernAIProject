@@ -61,23 +61,27 @@ namespace AITradingProject.Agent.MM_Subsystems
 
         public Dictionary<Resource, int> CreateTrade(City us, City tradePartner)
         {
+
+            double maxVal = 20.0;
+
             var resources = new List<double>()
             {
-                us.ResourceAmount(Resource.Water),
-                us.ResourceAmount(Resource.Food),
-                us.ResourceAmount(Resource.Dolls),
-                tradePartner.ResourceAmount(Resource.Water),
-                tradePartner.ResourceAmount(Resource.Food),
-                tradePartner.ResourceAmount(Resource.Dolls)
+                us.ResourceAmount(Resource.Water)/maxVal,
+                us.ResourceAmount(Resource.Food)/maxVal,
+                us.ResourceAmount(Resource.Dolls)/maxVal,
+                tradePartner.ResourceAmount(Resource.Water)/maxVal,
+                tradePartner.ResourceAmount(Resource.Food)/maxVal,
+                tradePartner.ResourceAmount(Resource.Dolls)/maxVal,
+                us.NativeResource == Resource.Water ? 1.0 : 0.0,
+                us.NativeResource == Resource.Food ? 1.0 : 0.0,
+                us.NativeResource == Resource.Dolls ? 1.0 : 0.0
+ 
             };
 
-            double maxVal = resources.Max();
-
-            double[] sigIn = new double[resources.Count];
-
-            for (int i = 0; i < sigIn.Length; i++)
+            for (int i = 0; i < resources.Count; i++)
             {
-                brain.InputSignalArray[i] = resources[i]/maxVal;
+                brain.InputSignalArray[i] = resources[i];
+
             }
 
             brain.Activate();
@@ -86,14 +90,14 @@ namespace AITradingProject.Agent.MM_Subsystems
 
             for (int i = 0; i < brain.OutputCount; i++)
             {
-                output.Add((int)Math.Round(brain.OutputSignalArray[i]*resources.Max()));
+                output.Add((int)Math.Round(brain.OutputSignalArray[i]*maxVal));
             }
 
             Dictionary<Resource, int> trade = new Dictionary<Resource, int>()
             {
-                {Resource.Water, output[3]-output[0]},
-                {Resource.Food, output[4]-output[1]},
-                {Resource.Dolls, output[5]-output[2]}
+                {Resource.Water, output[0]-output[3]},
+                {Resource.Food, output[1]-output[4]},
+                {Resource.Dolls, output[2]-output[5]}
             };
 
             return trade;

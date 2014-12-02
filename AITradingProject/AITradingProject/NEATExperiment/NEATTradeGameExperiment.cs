@@ -12,7 +12,7 @@ namespace AITradingProject.NEATExperiment
 
         public override int InputCount
         {
-            get { return 6; }
+            get { return 9; }
         }
 
         public override int OutputCount

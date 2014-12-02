@@ -155,6 +155,11 @@ namespace AITradingProjectModel.Model
         {
             get { return points; }
         }
+
+        public Resource NativeResource
+        {
+            get { return nativeResource; }
+        }
     }
 
     public class NegativeResourcesException : Exception{}
