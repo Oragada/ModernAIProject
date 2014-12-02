@@ -45,7 +45,7 @@ namespace AITradingProjectModel.Model
         public GameState(StatusUpdate su)
         {
             cities = new List<City>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
             {
                 if(i%3 == 0) CreateStackOfResources();
                 cities.Add(ConstructRandomTestCity(i, su));
@@ -80,7 +80,7 @@ namespace AITradingProjectModel.Model
                         {Resource.Food, Utility.RAND.Next(21)},
                         {Resource.Dolls, Utility.RAND.Next(21)}
                     }, 
-                    resourcesToDivide.Pop(), i, su);
+                    GetStartingResource(), i, su);
         }
 
         public  City getCity(int cityIndex)//newly added for gameMaster

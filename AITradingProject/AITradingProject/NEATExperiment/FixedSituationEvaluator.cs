@@ -11,8 +11,6 @@ namespace AITradingProject.NEATExperiment
 {
     public class FixedSituationEvaluator : IPhenomeEvaluator<IBlackBox>
     {
-
-
         public FitnessInfo Evaluate(IBlackBox phenome)
         {
             Random rand = new Random();
@@ -38,8 +36,8 @@ namespace AITradingProject.NEATExperiment
 
                 if (testState.IsOfferPossible(o)) totalFitness+=1.0;
             }
-            
-            return new FitnessInfo(totalFitness/cCount,0.0);
+            FitnessInfo rFit = new FitnessInfo(totalFitness/cCount,0.0);
+            return rFit;
         }
 
         private void StatusUpdateTest(int cityid, StatusUpdateType type)

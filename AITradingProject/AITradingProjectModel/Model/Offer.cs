@@ -33,6 +33,7 @@ namespace AITradingProjectModel.Model
             StringBuilder strB = new StringBuilder();
             foreach (KeyValuePair<Resource, int> kv in offered)
             {
+                if(kv.Value == 0) continue;
                 strB.Append(kv.Value > 0 ? "(Gives " : "(Wants ");
 
                 strB.Append(string.Format("{0} {1}), ", kv.Value, kv.Key));
