@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Services;
 using System.Text;
+using AITradingProject.Agent.MM_Subsystems;
 using AITradingProjectModel.Model;
 using AITradingProject.Agent;
 using System.IO;
@@ -27,6 +28,20 @@ namespace AITradingProject
             }
         }
 
+        public GameMaster(int cityNum, TradeGenerator tg)
+        {
+            game = new GameState(cityNum, CityStatusUpdate);
+
+            agents = new Dictionary<int, Agent.Agent>();
+
+            agents.Add(0,new LeMasterMindAgent(tg));
+
+            for (int i = 1; i < cityNum; i++)
+            {
+                agents.Add(i, new LeMasterMindAgent(tg));
+            }
+        }
+
         public List<City> getCities()
         {
             return game.getCities();
@@ -40,7 +55,7 @@ namespace AITradingProject
             //trades
             Dictionary<int, List<Offer>> offers = new Dictionary<int, List<Offer>>();
             //GetTrades
-            foreach(int agentI in agents.Keys)
+            foreach(int agentI in agents.Where(a => game.getCities()[a.Key].Alive).Select(a => a.Key))
             {
                 City a  = game.getCity(agentI);
                 ////List<Offer> agentOffers = agents[agentI].GetTrades(a);
@@ -82,7 +97,7 @@ namespace AITradingProject
                 }
 
             }
-            Console.WriteLine(tradeTrackingList.Count);
+            //Console.WriteLine(tradeTrackingList.Count);
 
             //Print City Status to file
             string gameState = game.GetGameStateData();
@@ -96,7 +111,7 @@ namespace AITradingProject
 
         private void WriteToFile(string s, string filedumpPath)
         {
-            File.AppendAllText(filedumpPath,s);
+            //File.AppendAllText(filedumpPath,s);
         }
 
         private List<Offer> ConvertAgentProposals(int agentI, List<KeyValuePair<int, Dictionary<Resource, int>>> getOfferProposals)
@@ -107,8 +122,15 @@ namespace AITradingProject
             List<Offer> list = new List<Offer>();
             foreach (KeyValuePair<int, Dictionary<Resource, int>> offerProposal in getOfferProposals)
             {
+
+                //Console.WriteLine("trying");
+                //if (offerProposal.Value != null)
+                    //Console.WriteLine(offerProposal.Value.First().Key + " - " + offerProposal.Value.First().Value);
+
+                //Console.WriteLine("trying");
                 if(offerProposal.Value == null) continue; //KeyValuePair is not nullable, since it is a struct
-                if (!agents.ContainsKey(offerProposal.Key) || agentI == offerProposal.Key) continue;
+                if (!agents.ContainsKey(offerProposal.Key) || agentI == offerProposal.Key) 
+                    continue;
                 Edge tradeEdge = game.GetEdge(thisAgentCity, game.getCity(offerProposal.Key));
                 //Dictionary<Resource, int> offeredResources = offerProposal.Value.Where(ra => ra.Value > 0).ToDictionary(v => v.Key, v => v.Value);
                 //Dictionary<Resource, int> requestedResources = offerProposal.Value.Where(ra => ra.Value < 0).ToDictionary(v => v.Key, v => v.Value);

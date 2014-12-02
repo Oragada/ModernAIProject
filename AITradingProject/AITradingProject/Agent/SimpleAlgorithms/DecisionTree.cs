@@ -6,15 +6,12 @@ namespace AITradingProject.Agent.MM_Subsystems
 {
     public class DecisionTree<T>
     {
-        private Node<T> tree;
+        private readonly Node<T> tree;
 
         public DecisionTree(Node<T> t)
         {
-
-        }   
-
-
-
+            tree = t;
+        }
 
         public T GetValue()
         {

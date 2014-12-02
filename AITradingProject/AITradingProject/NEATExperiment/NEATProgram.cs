@@ -8,12 +8,14 @@ using SharpNeat.Genomes.Neat;
 
 namespace AITradingProject.NEATExperiment
 {
-    internal class NEATProgram
+    public class NEATProgram
     {
         private static NeatEvolutionAlgorithm<NeatGenome> _ea;
         private const string CHAMPION_FILE = "tradegame_champion.xml";
+        private const string CHAMPIONBEST_FILE = "tradegame_champion_best.xml";
+        private static double fitness = 0;
 
-        internal static void Run()
+        public static void Run()
         {
             // Initialise log4net (log to console).
             XmlConfigurator.Configure(new FileInfo("log4net.properties"));
@@ -35,19 +37,30 @@ namespace AITradingProject.NEATExperiment
             _ea.StartContinue();
 
             // Hit return to quit.
+            Console.WriteLine("Press any key to continue");
             Console.ReadLine();
         }
 
         private static void ea_UpdateEvent(object sender, EventArgs e)
         {
-            Console.WriteLine(string.Format("gen={0:N0} bestFitness={1:N6}",
-                _ea.CurrentGeneration, _ea.Statistics._maxFitness));
+            Console.WriteLine("gen={0:N0} bestFitness={1:N6}, avgFitness={2:N6}", _ea.CurrentGeneration, _ea.Statistics._maxFitness, _ea.Statistics._meanFitness);
 
             // Save the best genome to file
-            var doc = NeatGenomeXmlIO.SaveComplete(
-                new List<NeatGenome>() {_ea.CurrentChampGenome},
-                false);
-            doc.Save(CHAMPION_FILE);
+            if (fitness < _ea.Statistics._maxFitness)
+            {
+                var doc = NeatGenomeXmlIO.SaveComplete(
+                    new List<NeatGenome>() { _ea.CurrentChampGenome },
+                    false);
+                doc.Save(CHAMPIONBEST_FILE);
+                fitness = _ea.Statistics._maxFitness;
+            }
+            else
+            {
+                var doc = NeatGenomeXmlIO.SaveComplete(
+                    new List<NeatGenome>() { _ea.CurrentChampGenome },
+                    false);
+                doc.Save(CHAMPION_FILE);
+            }
         }
     }
 }

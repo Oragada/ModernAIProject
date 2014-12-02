@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AITradingProjectModel.Model;
 
 namespace AITradingProjectUI
 {
@@ -21,12 +22,14 @@ namespace AITradingProjectUI
         public double y {  get;  set; }
         public int size { get; private set; }
         private int baseSize = 8;
+        public City city;
 
 
-        public CityDrawn(int id, int size)
+        public CityDrawn(int id, int size, City theCity)
         {
             ID = id;
             this.size = size;
+            this.city = theCity;
         }
 
         public void draw(Grid grid)
@@ -46,6 +49,11 @@ namespace AITradingProjectUI
             Polygon myPolygon = new Polygon();
             myPolygon.Points = myPointCollection;
             myPolygon.Fill = Brushes.Blue;            
+            if (!city.Alive)
+            {
+                myPolygon.Fill = Brushes.Red;
+            }
+            
             
             myPolygon.Stroke = Brushes.Black;
             myPolygon.StrokeThickness = 1;

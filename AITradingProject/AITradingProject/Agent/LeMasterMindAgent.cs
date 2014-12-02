@@ -13,33 +13,44 @@ namespace AITradingProject.Agent
         public EvalTrade tradeEval;
         public WtoT whoToTrade;
         public TradeGenerator tradeBuild;
+        //public int pointsRemaining;
 
         public LeMasterMindAgent()
         {
-            tradeBuild = new TradeGenerator("tradegame.champion.xml");
             tradeEval = new EvalTrade(10);
-            whoToTrade = new SimpleWtoT();
+            tradeBuild = new TradeGenerator("tradegame_champion.xml");
+        }
+
+        public LeMasterMindAgent(TradeGenerator tg)
+        {
+            tradeEval = new EvalTrade(10);
+            tradeBuild = tg;
         }
 
         public override List<KeyValuePair<int, Dictionary<Resource, int>>> GetOfferProposals(City city)
         {
+            int pointsRemaining = GameState.DiplomaticPoints;
+            whoToTrade = new SimpleWtoT(city.getEdges());
             List<KeyValuePair<int, Dictionary<Resource, int>>> ops = new List<KeyValuePair<int, Dictionary<Resource, int>>>();
-            while (PointsRemaining())
+            while (pointsRemaining>0)
             {
-                City tradePartner = whoToTrade.GetTradingPartner(city);
-
-                Dictionary<Resource, int> t = tradeBuild.CreateTrade(city,tradePartner);
+                if (!whoToTrade.MoreEdges()) break; //if no more trading partners exist
+                Edge edg= whoToTrade.GetTradingPartner(city);
+                pointsRemaining -= edg.Weight;
+                if(pointsRemaining<0)
+                {
+                    break;
+                }
                 
-                ops.Add(new KeyValuePair<int, Dictionary<Resource, int>>(tradePartner.ID,t));
+                Dictionary<Resource, int> t = tradeBuild.CreateTrade(city,edg.Other(city));
+                
+                ops.Add(new KeyValuePair<int, Dictionary<Resource, int>>(edg.Other(city).ID,t));
+                pointsRemaining -= edg.Weight;
             }
 
             return ops;
         }
 
-        private bool PointsRemaining()
-        {
-            throw new NotImplementedException();
-        }
 
         public override bool EvaluateTrade(Offer offer)
         {
@@ -48,7 +59,7 @@ namespace AITradingProject.Agent
 
         public override void TradeCompleted(Offer offer, TradeStatus cc)
         {
-            throw new NotImplementedException();
+            //TODO: Do nothing yet
         }
     }
 }

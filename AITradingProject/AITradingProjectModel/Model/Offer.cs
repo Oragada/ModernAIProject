@@ -22,6 +22,24 @@ namespace AITradingProjectModel.Model
             resourcesRequired = required;
         }*/
 
+        public override string ToString()
+        {
+            return string.Format("City {0} offering City {1}. Resources: {2}", from.ID, e.Other(from).ID,
+                OfferedString());
+        }
+
+        private object OfferedString()
+        {
+            StringBuilder strB = new StringBuilder();
+            foreach (KeyValuePair<Resource, int> kv in offered)
+            {
+                strB.Append(kv.Value > 0 ? "(Gives " : "(Wants ");
+
+                strB.Append(string.Format("{0} {1}), ", kv.Value, kv.Key));
+            }
+            return strB.ToString();
+        }
+
         public Offer(City offeringCity, Edge edge, Dictionary<Resource, int> o)
         {
             from = offeringCity;

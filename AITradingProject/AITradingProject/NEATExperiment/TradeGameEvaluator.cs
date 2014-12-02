@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AITradingProject.Agent.MM_Subsystems;
@@ -14,9 +15,60 @@ namespace AITradingProject.NEATExperiment
             //Load parameters for evaluation
             TradeGenerator tg = new TradeGenerator(phenome);
             //Create Sample game states
-            GameState testState = new GameState(StatusUpdateTest);
+            GameMaster gm = new GameMaster(10, tg);
+            double totalFitness = 0;
+            double goodTrades = 0;
+            double unreasonableTrades = 0;
+            double badTrades = 0;
+            for (int i = 0; i < 20; i++)
+            {
+                Dictionary<Offer,TradeStatus> offers = gm.RunTurn();
+                foreach(KeyValuePair<Offer, TradeStatus> kv in offers)
+                {
+                    //Console.WriteLine("Evaluating {0}: {1}", kv.Key, kv.Value);
+                    if (TradeStatus.Unable == kv.Value) badTrades++;
+                    else if (TradeStatus.Rejected == kv.Value) unreasonableTrades++;
+                    else goodTrades++;
+                    /*
+                    TradeStatus t = kv.Value;
+                    
+                    if (t == TradeStatus.Successful)
+                    {
+                        totalFitness += 5;
+                    }
+                    else if (t == TradeStatus.Rejected)
+                    {
+                        totalFitness+=2;
+                    }*/
+                }
 
-            double totalFitness = 0.0;
+            }
+            double workingTrades = goodTrades + unreasonableTrades;
+            double totalTrades = workingTrades + badTrades;
+
+            totalFitness += ((goodTrades * 2 + unreasonableTrades) / (totalTrades * 2));
+
+            City city = gm.getCities()[0];
+
+            double aliveCities = ((double) gm.getCities().Count(c => c.Alive)/gm.getCities().Count);
+
+            if (!city.Alive)
+            {
+                //Console.WriteLine("City not alive");
+                return new FitnessInfo(0.0, aliveCities);
+            }
+            
+            
+
+            //totalFitness += city.Health/10.0;
+            
+            //totalFitness += city.Points/20.0;
+            //Console.WriteLine("City Health {0}, City Points {1}", city.Health, city.Points);
+
+            return new FitnessInfo(totalFitness,aliveCities);
+            /*GameState testState = new GameState(StatusUpdateTest);
+
+            
             
             //Dictionary<Resource, int> t2c2resour = new Dictionary<Resource, int> {{Resource.Food, 10}};
             //Dictionary<Resource, int> t2c1resour = new Dictionary<Resource, int> {{Resource.Water, 10}};
@@ -51,7 +103,7 @@ namespace AITradingProject.NEATExperiment
 
             totalFitness += testFitness;
 
-            return new FitnessInfo(totalFitness,0.0);
+            return new FitnessInfo(totalFitness,0.0);*/
         }
 
         private void StatusUpdateTest(int cityid, StatusUpdateType type)

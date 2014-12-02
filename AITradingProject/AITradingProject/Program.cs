@@ -11,8 +11,9 @@ namespace AITradingProject
         static void Main(string[] args)
         {
             NEATProgram.Run();
-            GameMaster master = new GameMaster(3);
-            master.startGame();
+
+            //GameMaster master = new GameMaster(3, new Agent.MM_Subsystems.TradeGenerator("tradegame_champion.xml"));
+            //master.startGame();
         }
     }
 }

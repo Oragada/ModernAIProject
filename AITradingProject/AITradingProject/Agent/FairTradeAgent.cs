@@ -44,7 +44,7 @@ namespace AITradingProject.Agent
             {
                 int amount = city.ResourceAmount(r);
                 if(amount>0)
-                    has.Add(r, amount);
+                    has[r] += amount;
             }
             List<KeyValuePair<int, Dictionary<Resource, int>>> offerProposals = new List<KeyValuePair<int, Dictionary<Resource, int>>>();
             if (need.Count > 0)
@@ -129,17 +129,17 @@ namespace AITradingProject.Agent
 
         public override void PointGained()
         {
-            Console.WriteLine("Agent {0} gained a point!");
+            //Console.WriteLine("Agent {0} gained a point!");
         }
 
         public override void HealthLost()
         {
-            Console.WriteLine("Agent {0} lost a point of health!");
+            //Console.WriteLine("Agent {0} lost a point of health!");
         }
 
         public override void HealthGained()
         {
-            Console.WriteLine("Agent {0} gained a point of health!");
+            //Console.WriteLine("Agent {0} gained a point of health!");
         }
     }
 }
