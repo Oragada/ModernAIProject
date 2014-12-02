@@ -79,6 +79,7 @@
     <Compile Include="Agent\MM-Subsystems\MasterMind.cs" />
     <Compile Include="Agent\RandomAgent.cs" />
     <Compile Include="GameMaster.cs" />
+    <Compile Include="NEATExperiment\FixedSituationEvaluator.cs" />
     <Compile Include="NEATExperiment\NEATFrame.cs" />
     <Compile Include="NEATExperiment\NEATTradeGameExperiment.cs" />
     <Compile Include="NEATExperiment\NEATProgram.cs" />
