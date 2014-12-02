@@ -44,7 +44,8 @@ namespace AITradingProject.NEATExperiment
         private static void ea_UpdateEvent(object sender, EventArgs e)
         {
             Console.WriteLine("gen={0:N0} bestFitness={1:N6}, avgFitness={2:N6}", _ea.CurrentGeneration, _ea.Statistics._maxFitness, _ea.Statistics._meanFitness);
-
+            IncrementalEvaluator.avgFitness = (float)_ea.Statistics._meanFitness;
+            IncrementalEvaluator.genCount = (int) _ea.CurrentGeneration;
             // Save the best genome to file
             if (fitness < _ea.Statistics._maxFitness)
             {

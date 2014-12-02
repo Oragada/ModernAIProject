@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AITradingProject.Agent.MM_Subsystems;
@@ -8,7 +7,7 @@ using SharpNeat.Phenomes;
 
 namespace AITradingProject.NEATExperiment
 {
-    public class TradeGameEvaluator : IPhenomeEvaluator<IBlackBox>
+    public class SimulationEvaluator : IPhenomeEvaluator<IBlackBox>
     {
         public FitnessInfo Evaluate(IBlackBox phenome)
         {
@@ -120,16 +119,5 @@ namespace AITradingProject.NEATExperiment
 
         public ulong EvaluationCount { get; private set; }
         public bool StopConditionSatisfied { get; private set; }
-    }
-
-    public class TestGameState
-    {
-        public City Us { get; set; }
-        public City Other { get; set; }
-
-        public TestGameState()
-        {
-            
-        }
     }
 }
