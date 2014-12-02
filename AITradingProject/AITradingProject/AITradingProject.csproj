@@ -79,6 +79,8 @@
     <Compile Include="Agent\MM-Subsystems\MasterMind.cs" />
     <Compile Include="Agent\RandomAgent.cs" />
     <Compile Include="GameMaster.cs" />
+    <Compile Include="NEATExperiment\SimulationOnlySuccesFullEvaluator.cs" />
+    <Compile Include="NEATExperiment\SimulationStayingAliveEvaluator.cs" />
     <Compile Include="NEATExperiment\FixedSituationEvaluator.cs" />
     <Compile Include="NEATExperiment\IncrementalEvaluator.cs" />
     <Compile Include="NEATExperiment\NEATFrame.cs" />
