@@ -45,7 +45,7 @@ namespace AITradingProjectModel.Model
         public GameState(StatusUpdate su)
         {
             cities = new List<City>();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 10; i++)
             {
                 if(i%3 == 0) CreateStackOfResources();
                 cities.Add(ConstructRandomTestCity(i, su));
