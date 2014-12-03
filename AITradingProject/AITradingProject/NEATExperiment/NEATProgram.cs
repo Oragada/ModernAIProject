@@ -25,8 +25,8 @@ namespace AITradingProject.NEATExperiment
         public static void Run()
         {
 
-            
-            sb.AppendLine("New Experiment:");
+
+            sb.AppendLine("New Experiment: FixedSituation, SimulationGoodTrades, SimulationSelfPreservation, Incremental - GEN 250; SPEC:10; ACYC;CROSS - 0.9 - 0.3:");
             // Initialise log4net (log to console).
             XmlConfigurator.Configure(new FileInfo("log4net.properties"));
 
@@ -61,6 +61,7 @@ namespace AITradingProject.NEATExperiment
 
         private static void ea_UpdateEvent(object sender, EventArgs e)
         {
+            
             Console.WriteLine("gen={0:N0} bestFitness={1:N3}, avgFitness={2:N3}", _ea.CurrentGeneration, _ea.Statistics._maxFitness, _ea.Statistics._meanFitness);                       
            IncrementalEvaluator.avgFitness = (float)_ea.Statistics._meanFitness;
            IncrementalEvaluator.genCount = (int)_ea.CurrentGeneration;
@@ -99,6 +100,14 @@ namespace AITradingProject.NEATExperiment
                     i++;
                 }
             }
+
+            if (_ea.Statistics._maxFitness >= 3)
+            {
+                string file = System.IO.Directory.GetCurrentDirectory() + "\\autolog.txt";
+                System.IO.File.AppendAllText(file, sb.ToString());
+                _ea.Stop();
+            }
+
            
         }
     }

@@ -21,33 +21,23 @@ namespace AITradingProject.NEATExperiment
             double goodTrades = 0;
             double unreasonableTrades = 0;
             double badTrades = 0;
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 30; i++)
             {
                 Dictionary<Offer,TradeStatus> offers = gm.RunTurn();
                 foreach(KeyValuePair<Offer, TradeStatus> kv in offers)
                 {
-                    //Console.WriteLine("Evaluating {0}: {1}", kv.Key, kv.Value);
+                    
                     if (TradeStatus.Unable == kv.Value) badTrades++;
                     else if (TradeStatus.Rejected == kv.Value) unreasonableTrades++;
                     else goodTrades++;
-                    /*
-                    TradeStatus t = kv.Value;
-                    
-                    if (t == TradeStatus.Successful)
-                    {
-                        totalFitness += 5;
-                    }
-                    else if (t == TradeStatus.Rejected)
-                    {
-                        totalFitness+=2;
-                    }*/
+                 
                 }
 
             }
             double workingTrades = goodTrades + unreasonableTrades;
             double totalTrades = workingTrades + badTrades;
 
-            totalFitness += ((goodTrades * 2 + unreasonableTrades) / (totalTrades * 2));
+            totalFitness += ((goodTrades * 2) / (totalTrades * 2));
 
             City city = gm.getCities()[0];
 

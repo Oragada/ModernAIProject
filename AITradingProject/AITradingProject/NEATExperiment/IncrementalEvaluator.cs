@@ -11,9 +11,8 @@ namespace AITradingProject.NEATExperiment
     {
         IPhenomeEvaluator<IBlackBox> fsEv = new FixedSituationEvaluator();
         IPhenomeEvaluator<IBlackBox> simEv = new SimulationEvaluator();
-        IPhenomeEvaluator<IBlackBox> simSucEv = new SimulationOnlySuccesFullEvaluator();
-        IPhenomeEvaluator<IBlackBox> simSaEv = new SimulationStayingAliveEvaluator();
-        Stack<IPhenomeEvaluator<IBlackBox>> evaluators = new Stack<IPhenomeEvaluator<IBlackBox>>();
+        IPhenomeEvaluator<IBlackBox> presEv = new SimulationSelfPresevationEvaluator();       
+
         private readonly int crossoverGeneration = 10;
         private readonly double crossoverFitness = 0.9;
         IPhenomeEvaluator<IBlackBox> current;
@@ -36,27 +35,21 @@ namespace AITradingProject.NEATExperiment
             //double fitness = 0.0;
             FitnessInfo fsEv = this.fsEv.Evaluate(phenome);
             double secfitness = fsEv._auxFitnessArr.First()._value;
-           double fitness=fsEv._fitness;
-            if (fitness >= crossoverFitness)
+            double fitness = fsEv._fitness;
+            if (avgFitness >= 0.9)
             {
                 FitnessInfo simEvFit = simEv.Evaluate(phenome);
                 fitness += simEvFit._fitness;
-                secfitness+=simEvFit._auxFitnessArr.First()._value;
-                if (extended && simEvFit._fitness >= crossoverFitness)
+                secfitness += simEvFit._auxFitnessArr.First()._value;
+                if (avgFitness >= (1.2))
                 {
-                    
-                    
-                        FitnessInfo simSucFit = simSucEv.Evaluate(phenome);
-                        fitness += simSucFit._fitness;
-                        secfitness+=simSucFit._auxFitnessArr.First()._value;
-                        if (simSucFit._fitness >= crossoverFitness)
-                        {
-                            FitnessInfo simSaFit = simSaEv.Evaluate(phenome);
-                            secfitness =simSaFit._auxFitnessArr.First()._value;
-                            fitness += simSaFit._fitness;
-                        }                    
+                    FitnessInfo presFit = presEv.Evaluate(phenome);
+                    fitness += presFit._fitness;
+
+                    secfitness += presFit._auxFitnessArr.First()._value;
                 }
             }
+
             return new FitnessInfo(fitness, secfitness);
         }
 

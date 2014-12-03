@@ -18,10 +18,10 @@ namespace AITradingProject.NEATExperiment
             //Load parameters for evaluation
             TradeGenerator tg = new TradeGenerator(phenome);
             //Create Sample game states
-            GameState testState = new GameState(StatusUpdateTest);
+            GameState testState = new GameState(StatusUpdateTest, 20);//why 100? -what is the difference of using different cities.
             int cCount = testState.getCities().Count;
             double totalFitness = 0.0;
-            for (int i = 0; i < cCount; i++)
+            for (int i = 0; i < cCount*5; i++)
             {
                 City us = testState.getCity(rand.Next(cCount));
                 int otherID = us.ID;
@@ -36,7 +36,7 @@ namespace AITradingProject.NEATExperiment
 
                 if (testState.IsOfferPossible(o)) totalFitness+=1.0;
             }
-            FitnessInfo rFit = new FitnessInfo(totalFitness/cCount,0.0);
+            FitnessInfo rFit = new FitnessInfo(totalFitness/(cCount*5),0.0);
             return rFit;
         }
 
