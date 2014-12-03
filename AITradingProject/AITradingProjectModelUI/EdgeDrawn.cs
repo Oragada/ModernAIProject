@@ -43,6 +43,10 @@ namespace AITradingProjectUI
             
             myLine.StrokeThickness = 1;
             grid.Children.Add(myLine);
+
+            TextBlock weightText = new TextBlock{RenderTransform = new TranslateTransform((city1.x+city2.x)/2,(city1.y+city2.y)/2)};
+            weightText.Text += weight;
+            grid.Children.Add(weightText);
         }
 
 

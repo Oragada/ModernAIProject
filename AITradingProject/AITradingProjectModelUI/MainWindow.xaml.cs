@@ -31,7 +31,7 @@ namespace AITradingProjectUI
             //NEATProgram.Run();
 
 
-            GameMaster master = new GameMaster(3, new TradeGenerator("tradegame_champion.xml"));
+            GameMaster master = new GameMaster(6, new TradeGenerator("tradegame_champion.xml"));
             //GameMaster master = new GameMaster(3);
 
             lock (MainWindow.cities)
@@ -179,13 +179,21 @@ namespace AITradingProjectUI
                 {
                     list[i].draw(grid);
                     drawResources(list[i]);
-                    for (int j = i; j < list.Count; j++)
+                    //draw edges
+                    foreach (Offer o in offers.Keys.Where(e => e.E.Other(e.From).Alive))
+                    {
+                        EdgeDrawn edge = new EdgeDrawn(list.First(e => e.ID == o.From.ID),
+                            list.First(e => e.ID == o.E.Other(o.From).ID), o.E.Weight);
+                        traderoutes.Add(edge);
+                        edge.Draw(grid);
+                    }
+                    /*for (int j = i; j < list.Count; j++)
                     {
                         if (j == i) continue;
-                        EdgeDrawn e = new EdgeDrawn(list[i], list[j], 4);
+                        EdgeDrawn e = new EdgeDrawn(list[i], list[j], offers);
                         traderoutes.Add(e);
                         e.Draw(grid);
-                    }
+                    }*/
                 }
                 
                 TextBlock turnCount = new TextBlock {RenderTransform = new TranslateTransform(20, 20)};
@@ -199,7 +207,7 @@ namespace AITradingProjectUI
                 if (offers != null)
                 {
 
-                    foreach(Offer offer in offers.Keys)
+                    foreach (Offer offer in offers.Keys.Where(e => e.E.Other(e.From).Alive))
                     {
                         TextBlock l = new TextBlock();
 
