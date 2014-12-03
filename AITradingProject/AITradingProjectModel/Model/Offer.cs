@@ -28,6 +28,40 @@ namespace AITradingProjectModel.Model
                 OfferedString());
         }
 
+        public string ShortString()
+        {
+            return string.Format("C{0} -> C{1}: {2}", from.ID, e.Other(from).ID,
+                ShortOfferedString());
+        }
+
+        private object ShortOfferedString()
+        {
+            StringBuilder strB = new StringBuilder();
+            foreach (KeyValuePair<Resource, int> kv in offered)
+            {
+                if (kv.Value == 0) continue;
+                strB.Append(kv.Value > 0 ? "(+" : "(-");
+
+                strB.Append(string.Format("{0}{1}), ", kv.Value, ShortResource(kv.Key)));
+            }
+            return strB.ToString();
+        }
+
+        private object ShortResource(Resource key)
+        {
+            switch (key)
+            {
+                case Resource.Dolls:
+                    return "D";
+                case Resource.Food:
+                    return "F";
+                case Resource.Water:
+                    return "W";
+                default:
+                    return "?";
+            }
+        }
+
         private object OfferedString()
         {
             StringBuilder strB = new StringBuilder();
