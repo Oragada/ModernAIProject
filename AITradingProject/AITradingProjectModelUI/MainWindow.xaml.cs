@@ -31,7 +31,7 @@ namespace AITradingProjectUI
             //NEATProgram.Run();
 
 
-            GameMaster master = new GameMaster(6, new TradeGenerator("tradegame_champion.xml"));
+            GameMaster master = new GameMaster(3, new TradeGenerator("tradegame_champion.xml"));
             //GameMaster master = new GameMaster(3);
 
             lock (MainWindow.cities)
@@ -55,6 +55,7 @@ namespace AITradingProjectUI
                 lock (MainWindow.syncLock)
                 {
                     MainWindow.next = 0;
+                    MainWindow.turn = i;
                 }
                 bool next = false;
                 while (!next)
@@ -99,6 +100,7 @@ namespace AITradingProjectUI
         public static Dictionary<Offer, TradeStatus> offers = new Dictionary<Offer,TradeStatus>();
         public static readonly object syncLock = new object();
         public static int next = 0;
+        public static int turn = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -129,7 +131,7 @@ namespace AITradingProjectUI
 
         void Onb2Click(object sender, RoutedEventArgs e)
         {
-            reDraw();
+            ReDraw();
 
             lock (MainWindow.syncLock)
             {
@@ -144,23 +146,18 @@ namespace AITradingProjectUI
             MakeButton("Next turn");
         }
 
-        public void reDraw()
+        public void ReDraw()
         {
             lock (MainWindow.offers)
             {
                 grid.Children.Clear();
                 drawn.Clear();
-                List<CityDrawn> list = new List<CityDrawn>();
+                List<CityDrawn> list = cities.Select(c => new CityDrawn(2, c)).ToList();
 
-                foreach (City c in cities)
-                {
-                    CityDrawn b = new CityDrawn(3,c); //add base scale as size?
-                    list.Add(b);
-                }
                 traderoutes = new List<EdgeDrawn>();
                 //basic setup. should be parameterized 
-                grid.Height = ActualHeight;
-                grid.Width = ActualWidth;
+                grid.Height = Height;
+                grid.Width = Width;
                 double cX = grid.Width/2;
                 double cY = grid.Height/2;
                 double radius = (grid.Height + grid.Width)/(2*3);
@@ -190,6 +187,14 @@ namespace AITradingProjectUI
                         e.Draw(grid);
                     }
                 }
+                
+                TextBlock turnCount = new TextBlock {RenderTransform = new TranslateTransform(20, 20)};
+                lock (syncLock)
+                {
+                    turnCount.Text += turn;
+                }
+                grid.Children.Add(turnCount);
+                
 
                 if (offers != null)
                 {
@@ -199,7 +204,7 @@ namespace AITradingProjectUI
                         TextBlock l = new TextBlock();
 
 
-                        l.Text += offer.ToString();
+                        l.Text += offer.ShortString();
                         //"From: "+ offer.From.ID + " - ";
                         //foreach(Resource res in offer.ResourcesOffered.Keys)
                         //{
