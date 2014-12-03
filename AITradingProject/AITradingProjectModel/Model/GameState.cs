@@ -42,10 +42,10 @@ namespace AITradingProjectModel.Model
         /// This GameState is hardcoded for the TradeGameEvaluator. DO NOT USE IN GAME
         /// </summary>
         /// <param name="statusUpdate"></param>
-        public GameState(StatusUpdate su)
+        public GameState(StatusUpdate su, int cityCount)
         {
             cities = new List<City>();
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < cityCount; i++)
             {
                 if(i%3 == 0) CreateStackOfResources();
                 cities.Add(ConstructRandomTestCity(i, su));
