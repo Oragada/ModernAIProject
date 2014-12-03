@@ -30,7 +30,7 @@ namespace AITradingProjectUI
             int turns = 100;
             //NEATProgram.Run();
 
-            GameMaster master = new GameMaster(3, new TradeGenerator("tradegame_champion.xml"));
+            GameMaster master = new GameMaster(6, new TradeGenerator("tradegame_champion.xml"));
            // master.startGame();
             //GameMaster master = new GameMaster(3);
 
@@ -38,7 +38,7 @@ namespace AITradingProjectUI
             {
                 MainWindow.cities = master.getCities();
             }
-            while (i < 100)
+            while (i < turns)
             {
                 lock (MainWindow.offers)
                 {
@@ -154,52 +154,28 @@ namespace AITradingProjectUI
 
                 foreach (City c in cities)
                 {
-                    CityDrawn b = new CityDrawn(c.ID, 3,c); //add base scale as size?
+                    CityDrawn b = new CityDrawn(3,c); //add base scale as size?
                     list.Add(b);
                 }
                 traderoutes = new List<EdgeDrawn>();
                 //basic setup. should be parameterized 
-                grid.Height = 1000;
-                grid.Width = 1000;
-                double xMax = 300;
-                double yMax = 300;
-
-
-                double x = xMax;
-                double y = yMax;
-
-                //list size for stepsize. its halfed as we want to distribute cities in a circle.
-                int size = list.Count / 2;
-                //step sizes
-                double stepX = xMax / size;
-                double stepY = yMax / size;
-                //set x and y           
-                foreach (CityDrawn cd in list)
+                grid.Height = ActualHeight;
+                grid.Width = ActualWidth;
+                double cX = grid.Width/2;
+                double cY = grid.Height/2;
+                double radius = (grid.Height + grid.Width)/(2*3);
+                
+                //double xMax = 300;
+                //double yMax = 300;
+                for (int i = 0; i < list.Count; i++)
                 {
-
-                    cd.x = x;
-                    cd.y = y;
-                    if (x > xMax / 2 && y > yMax / 2)
-                    { //top right
-                        x -= stepX;
-                        y += stepY;
-                    }
-                    else if (x > xMax / 2 && y < yMax / 2)
-                    {//lower right
-                        x += stepX;
-                        y += stepY;
-                    }
-                    else if (x < xMax / 2 && y > yMax / 2)
-                    {//top left
-                        x -= stepX;
-                        y -= stepY;
-                    }
-                    else
-                    {//lower left
-                        x += stepX;
-                        y -= stepY;
-                    }
+                    double degree = (Math.PI*2)/(list.Count)*i;
+                    double xOff = Math.Cos(degree)*radius;
+                    double yOff = Math.Sin(degree)*radius;
+                    list[i].x = cX + xOff;
+                    list[i].y = cY + yOff;
                 }
+                
 
 
                 for (int i = 0; i < list.Count; i++)
@@ -222,11 +198,12 @@ namespace AITradingProjectUI
                     {
                         TextBlock l = new TextBlock();
 
-                        l.Text+="From: "+ offer.From.ID + " - ";
-                        foreach(Resource res in offer.ResourcesOffered.Keys)
-                        {
-                            l.Text += res.ToString() + ": " + offer.ResourcesOffered[res]+ "  -";                            
-                        }
+                        l.Text += offer.ToString();
+                        //"From: "+ offer.From.ID + " - ";
+                        //foreach(Resource res in offer.ResourcesOffered.Keys)
+                        //{
+                        //    l.Text += res.ToString() + ": " + offer.ResourcesOffered[res]+ "  -";                            
+                        //}
                         EdgeDrawn e = search(offer.From.ID, offer.E.Other(offer.From).ID);
                         double theX = e.city1.ID==offer.From.ID ? e.city2.x : e.city1.x;
                         double theY = e.city1.ID == offer.From.ID ? e.city2.y+10 : e.city1.y+10;
@@ -257,12 +234,14 @@ namespace AITradingProjectUI
             l.Text += cityDrawn.ID +":\n"; 
             foreach (Resource res in GameState.availableresources)
             {
-                l.Text += res.ToString() + ": " + cityDrawn.city.ResourceAmount(res) + " \n ";
+                l.Text += res.ToString() + ": " + cityDrawn.city.ResourceAmount(res) + " \n";
             }
+            l.Text += "Health: " + cityDrawn.city.Health + "\n";
+            l.Text += "Points: " + cityDrawn.city.Points + "\n";
 
             double theX = cityDrawn.x;
             double theY = cityDrawn.y;
-            theY -= GameState.availableresources.Count * 40;
+            theY -= (GameState.availableresources.Count+2+2) * 20;
 
             l.RenderTransform = new TranslateTransform
             {

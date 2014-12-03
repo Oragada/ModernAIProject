@@ -17,7 +17,7 @@ namespace AITradingProjectUI
 {
     class CityDrawn
     {
-        public int ID {get; private set;}
+        public int ID {get { return city.ID; }}
         public double x {  get;  set; }
         public double y {  get;  set; }
         public int size { get; private set; }
@@ -25,9 +25,9 @@ namespace AITradingProjectUI
         public City city;
 
 
-        public CityDrawn(int id, int size, City theCity)
+        public CityDrawn(int size, City theCity)
         {
-            ID = id;
+            //ID = id;
             this.size = size;
             this.city = theCity;
         }
