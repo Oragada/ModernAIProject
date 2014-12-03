@@ -14,6 +14,7 @@ namespace AITradingProject.NEATExperiment
         public FitnessInfo Evaluate(IBlackBox phenome)
         {
             Random rand = new Random();
+            const double situationScale = 5.0;
 
             //Load parameters for evaluation
             TradeGenerator tg = new TradeGenerator(phenome);
@@ -21,7 +22,7 @@ namespace AITradingProject.NEATExperiment
             GameState testState = new GameState(StatusUpdateTest);
             int cCount = testState.getCities().Count;
             double totalFitness = 0.0;
-            for (int i = 0; i < cCount; i++)
+            for (int i = 0; i < cCount*situationScale; i++)
             {
                 City us = testState.getCity(rand.Next(cCount));
                 int otherID = us.ID;
@@ -36,7 +37,7 @@ namespace AITradingProject.NEATExperiment
 
                 if (testState.IsOfferPossible(o)) totalFitness+=1.0;
             }
-            FitnessInfo rFit = new FitnessInfo(totalFitness/cCount,0.0);
+            FitnessInfo rFit = new FitnessInfo(totalFitness / (cCount * situationScale), 0.0);
             return rFit;
         }
 
