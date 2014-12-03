@@ -16,7 +16,7 @@ namespace AITradingProject.NEATExperiment
             //Load parameters for evaluation
             TradeGenerator tg = new TradeGenerator(phenome);
             //Create Sample game states
-            GameMaster gm = new GameMaster(10, tg);
+            GameMaster gm = new GameMaster(tg, false);
 
 
             double totalFitness = 0;

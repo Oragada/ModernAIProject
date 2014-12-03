@@ -28,17 +28,19 @@ namespace AITradingProject
             }
         }
 
-        public GameMaster(int cityNum, TradeGenerator tg)
+        public GameMaster(TradeGenerator tg, bool coEvo)
         {
-            game = new GameState(cityNum, CityStatusUpdate);
+            game = new GameState(6, CityStatusUpdate);
 
             agents = new Dictionary<int, Agent.Agent>();
 
-            agents.Add(0,new LeMasterMindAgent(tg));
-
-            for (int i = 1; i < cityNum; i++)
+            agents.Add(0, new LeMasterMindAgent(tg));
+            for (int i = 1; i < 6; i++)
             {
-                agents.Add(i, new LeMasterMindAgent(tg));
+                agents.Add(i,
+                    coEvo
+                        ? new LeMasterMindAgent(new TradeGenerator("tradegame_champion" + i + ".xml"))
+                        : new LeMasterMindAgent(tg));
             }
         }
 

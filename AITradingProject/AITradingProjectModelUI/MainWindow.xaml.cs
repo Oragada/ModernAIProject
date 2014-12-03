@@ -31,7 +31,7 @@ namespace AITradingProjectUI
             //NEATProgram.Run();
 
 
-            GameMaster master = new GameMaster(6, new TradeGenerator("tradegame_champion.xml"));
+            GameMaster master = new GameMaster(new TradeGenerator("tradegame_champion.xml"), false);
             //GameMaster master = new GameMaster(3);
 
             lock (MainWindow.cities)
