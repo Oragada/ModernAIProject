@@ -9,53 +9,55 @@ namespace AITradingProject.NEATExperiment
 {
     class IncrementalEvaluator : IPhenomeEvaluator<IBlackBox>
     {
-
+        IPhenomeEvaluator<IBlackBox> fsEv = new FixedSituationEvaluator();
+        IPhenomeEvaluator<IBlackBox> simEv = new SimulationEvaluator();
+        IPhenomeEvaluator<IBlackBox> simSucEv = new SimulationOnlySuccesFullEvaluator();
+        IPhenomeEvaluator<IBlackBox> simSaEv = new SimulationStayingAliveEvaluator();
         Stack<IPhenomeEvaluator<IBlackBox>> evaluators = new Stack<IPhenomeEvaluator<IBlackBox>>();
         private readonly int crossoverGeneration = 10;
         private readonly double crossoverFitness = 0.9;
         IPhenomeEvaluator<IBlackBox> current;
         private static bool done = false;
-        
+        private bool extended = false;
         public static volatile int genCount = 0;
         public static volatile float avgFitness=0;
         public static object lockO = new object();
 
         public IncrementalEvaluator(bool extended) 
         {
-            current = (new FixedSituationEvaluator());
+            this.extended = extended;
             
-            evaluators.Push(new SimulationEvaluator());
-            if(extended)
-                evaluators.Push(new SimulationOnlySuccesFullEvaluator());            
             
-            if(extended)
-                evaluators.Push(new SimulationStayingAliveEvaluator());
 
         }
 
         public FitnessInfo Evaluate(IBlackBox phenome)
         {
-            if (avgFitness>=crossoverFitness)
+            //double fitness = 0.0;
+            FitnessInfo fsEv = this.fsEv.Evaluate(phenome);
+            double secfitness = fsEv._auxFitnessArr.First()._value;
+           double fitness=fsEv._fitness;
+            if (fitness >= crossoverFitness)
             {
-                if (evaluators.Count > 0)
+                FitnessInfo simEvFit = simEv.Evaluate(phenome);
+                fitness += simEvFit._fitness;
+                secfitness+=simEvFit._auxFitnessArr.First()._value;
+                if (extended && simEvFit._fitness >= crossoverFitness)
                 {
-                    current = evaluators.Pop();
-                    lock (lockO)
-                    {
-                        avgFitness = 0;
-                    }
-                }
-                else
-                {
-                    this.StopConditionSatisfied = true;
-                    if (!done)
-                    {
-                        done = true;
-                        Console.WriteLine("done");
-                    }
+                    
+                    
+                        FitnessInfo simSucFit = simSucEv.Evaluate(phenome);
+                        fitness += simSucFit._fitness;
+                        secfitness+=simSucFit._auxFitnessArr.First()._value;
+                        if (simSucFit._fitness >= crossoverFitness)
+                        {
+                            FitnessInfo simSaFit = simSaEv.Evaluate(phenome);
+                            secfitness =simSaFit._auxFitnessArr.First()._value;
+                            fitness += simSaFit._fitness;
+                        }                    
                 }
             }
-            return current.Evaluate(phenome);
+            return new FitnessInfo(fitness, secfitness);
         }
 
         public void Reset()

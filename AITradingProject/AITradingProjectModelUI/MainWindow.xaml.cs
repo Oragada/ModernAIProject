@@ -30,8 +30,8 @@ namespace AITradingProjectUI
             int turns = 100;
             //NEATProgram.Run();
 
+
             GameMaster master = new GameMaster(6, new TradeGenerator("tradegame_champion.xml"));
-           // master.startGame();
             //GameMaster master = new GameMaster(3);
 
             lock (MainWindow.cities)
@@ -198,12 +198,14 @@ namespace AITradingProjectUI
                     {
                         TextBlock l = new TextBlock();
 
+
                         l.Text += offer.ToString();
                         //"From: "+ offer.From.ID + " - ";
                         //foreach(Resource res in offer.ResourcesOffered.Keys)
                         //{
                         //    l.Text += res.ToString() + ": " + offer.ResourcesOffered[res]+ "  -";                            
                         //}
+
                         EdgeDrawn e = search(offer.From.ID, offer.E.Other(offer.From).ID);
                         double theX = e.city1.ID==offer.From.ID ? e.city2.x : e.city1.x;
                         double theY = e.city1.ID == offer.From.ID ? e.city2.y+10 : e.city1.y+10;

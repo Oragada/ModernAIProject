@@ -6,6 +6,7 @@ using log4net.Config;
 using SharpNeat.EvolutionAlgorithms;
 using SharpNeat.Genomes.Neat;
 using System.Diagnostics;
+using System.Text;
 namespace AITradingProject.NEATExperiment
 {
     public class NEATProgram
@@ -14,12 +15,14 @@ namespace AITradingProject.NEATExperiment
         private const string CHAMPION_FILE = "tradegame_champion.xml";
         private const string CHAMPIONBEST_FILE = "tradegame_champion_best.xml";
         private static double fitness = 0;
-        
+        private static StringBuilder sb = new StringBuilder();
+
+
         public static void Run()
         {
-            Trace.Listeners.Add(new TextWriterTraceListener("log.txt"));
 
-            Trace.Write("New Experiment:");
+            
+            sb.AppendLine("New Experiment:");
             // Initialise log4net (log to console).
             XmlConfigurator.Configure(new FileInfo("log4net.properties"));
 
@@ -44,6 +47,11 @@ namespace AITradingProject.NEATExperiment
            // Hit return to quit.
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();
+
+            //write 
+            string file = System.IO.Directory.GetCurrentDirectory() + "\\log.txt";
+
+            System.IO.File.AppendAllText(file, sb.ToString());
         }
 
         private static void ea_UpdateEvent(object sender, EventArgs e)
@@ -56,7 +64,7 @@ namespace AITradingProject.NEATExperiment
                 IncrementalEvaluator.genCount = (int)_ea.CurrentGeneration;
             }
             // Save the best genome to file
-            Trace.Write("gen=" + _ea.CurrentGeneration + " bestFitness=" + _ea.Statistics._maxFitness + ", avgFitness=" +_ea.Statistics._meanFitness);
+            sb.Append(_ea.CurrentGeneration + ";" + _ea.Statistics._maxFitness + ";" +_ea.Statistics._meanFitness+";");
             if (fitness < _ea.Statistics._maxFitness)
             {
                 var doc = NeatGenomeXmlIO.SaveComplete(
