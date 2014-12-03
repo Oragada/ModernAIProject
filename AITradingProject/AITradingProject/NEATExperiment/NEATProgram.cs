@@ -7,6 +7,8 @@ using SharpNeat.EvolutionAlgorithms;
 using SharpNeat.Genomes.Neat;
 using System.Diagnostics;
 using System.Text;
+using System.Linq;
+
 namespace AITradingProject.NEATExperiment
 {
     public class NEATProgram
@@ -16,6 +18,8 @@ namespace AITradingProject.NEATExperiment
         private const string CHAMPIONBEST_FILE = "tradegame_champion_best.xml";
         private static double fitness = 0;
         private static StringBuilder sb = new StringBuilder();
+        public static volatile XmlDocument[] lastGeneration;
+        public static bool saveSpecie = true;
 
 
         public static void Run()
@@ -51,18 +55,16 @@ namespace AITradingProject.NEATExperiment
             //write 
             string file = System.IO.Directory.GetCurrentDirectory() + "\\log.txt";
 
+            
             System.IO.File.AppendAllText(file, sb.ToString());
         }
 
         private static void ea_UpdateEvent(object sender, EventArgs e)
         {
-            Console.WriteLine("gen={0:N0} bestFitness={1:N3}, avgFitness={2:N3}", _ea.CurrentGeneration, _ea.Statistics._maxFitness, _ea.Statistics._meanFitness);
-            lock (IncrementalEvaluator.lockO)
-            {
-
-                IncrementalEvaluator.avgFitness = (float)_ea.Statistics._meanFitness;
-                IncrementalEvaluator.genCount = (int)_ea.CurrentGeneration;
-            }
+            Console.WriteLine("gen={0:N0} bestFitness={1:N3}, avgFitness={2:N3}", _ea.CurrentGeneration, _ea.Statistics._maxFitness, _ea.Statistics._meanFitness);                       
+           IncrementalEvaluator.avgFitness = (float)_ea.Statistics._meanFitness;
+           IncrementalEvaluator.genCount = (int)_ea.CurrentGeneration;
+           
             // Save the best genome to file
             sb.Append(_ea.CurrentGeneration + ";" + _ea.Statistics._maxFitness + ";" +_ea.Statistics._meanFitness+";");
             if (fitness < _ea.Statistics._maxFitness)
@@ -82,6 +84,21 @@ namespace AITradingProject.NEATExperiment
             }
 
 
+            if (saveSpecie)
+            {
+                lastGeneration = new XmlDocument[_ea.SpecieList.Count()];
+                int i = 0;
+                foreach (SharpNeat.Core.Specie<NeatGenome> ng in _ea.SpecieList)
+                {
+
+                    NeatGenome a = ng.GenomeList.First(x => x.EvaluationInfo.Fitness >= ng.GenomeList.Max(p => p.EvaluationInfo.Fitness)); //not pretty but gets the best element
+                    lastGeneration[i] = NeatGenomeXmlIO.SaveComplete(
+                       new List<NeatGenome> { a },
+                       false);
+                    lastGeneration[i].Save(CHAMPION_FILE.Replace(".xml", i + ".xml"));
+                    i++;
+                }
+            }
            
         }
     }
