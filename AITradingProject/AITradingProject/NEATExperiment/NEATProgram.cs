@@ -19,7 +19,7 @@ namespace AITradingProject.NEATExperiment
         private static double fitness = 0;
         private static StringBuilder sb = new StringBuilder();
         public static volatile XmlDocument[] lastGeneration;
-        public static bool saveSpecie = false;
+        public static bool saveSpecie = true;
 
 
         public static void Run()
@@ -55,6 +55,7 @@ namespace AITradingProject.NEATExperiment
             //write 
             string file = System.IO.Directory.GetCurrentDirectory() + "\\log.txt";
 
+            
             System.IO.File.AppendAllText(file, sb.ToString());
         }
 
@@ -94,8 +95,8 @@ namespace AITradingProject.NEATExperiment
                     lastGeneration[i] = NeatGenomeXmlIO.SaveComplete(
                        new List<NeatGenome> { a },
                        false);
-
-
+                    lastGeneration[i].Save(CHAMPION_FILE.Replace(".xml", i + ".xml"));
+                    i++;
                 }
             }
            
