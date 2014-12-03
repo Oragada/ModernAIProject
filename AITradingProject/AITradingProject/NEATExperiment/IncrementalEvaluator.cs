@@ -25,9 +25,6 @@ namespace AITradingProject.NEATExperiment
         public IncrementalEvaluator(bool extended) 
         {
             this.extended = extended;
-            
-            
-
         }
 
         public FitnessInfo Evaluate(IBlackBox phenome)
@@ -36,12 +33,12 @@ namespace AITradingProject.NEATExperiment
             FitnessInfo fsEv = this.fsEv.Evaluate(phenome);
             double secfitness = fsEv._auxFitnessArr.First()._value;
             double fitness = fsEv._fitness;
-            if (avgFitness >= 0.9)
+            if (fitness >= 1.0)
             {
                 FitnessInfo simEvFit = simEv.Evaluate(phenome);
                 fitness += simEvFit._fitness;
                 secfitness += simEvFit._auxFitnessArr.First()._value;
-                if (avgFitness >= (1.2))
+                if (fitness >= (1.6))
                 {
                     FitnessInfo presFit = presEv.Evaluate(phenome);
                     fitness += presFit._fitness;
