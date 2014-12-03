@@ -1,0 +1,11 @@
+exp. 1:
+relativ normalisering efter max værdi.
+sat native resource som en enkelt input mellem 0 og 1
+brugt simuleringevaluator - only success
+exp. 2:
+fast normalisering efter konstant max værdi
+sat native resource som 3 input der er 0 eller 1.
+brugt simuleringevaluator - only success
+exp. 3:
+incrementalt 0.9 fitness crossover
+fixed situation -> simulation eval->simulation only success eval ->staying alive
