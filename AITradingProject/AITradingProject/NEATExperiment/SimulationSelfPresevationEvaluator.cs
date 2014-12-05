@@ -40,7 +40,7 @@ namespace AITradingProject.NEATExperiment
 
             totalFitness += city.Health/10.0;
 
-            totalFitness += city.Points/70;
+            totalFitness += city.Points/70.0;
             
             return new FitnessInfo(totalFitness/2, aliveCities);
             
