@@ -10,7 +10,6 @@ namespace AITradingProjectModel
     /// </summary>
     public class Utility
     {
-        public static Random RAND = new Random();
 
     }
 }

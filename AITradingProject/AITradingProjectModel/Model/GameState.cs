@@ -21,7 +21,11 @@ namespace AITradingProjectModel.Model
             {Resource.Water, 1},
             {Resource.Dolls, 0}
         };
-        public static readonly Dictionary<Resource, int> LuxuryConsume = new Dictionary<Resource, int>() { { Resource.Dolls, 1 } };
+
+        public static readonly Dictionary<Resource, int> LuxuryConsume = new Dictionary<Resource, int>()
+        {
+            {Resource.Dolls, 1}
+        };
         public static readonly List<Resource> availableresources = ((Resource[])Enum.GetValues(typeof(Resource))).ToList();
 
         public GameState(int cityNum, StatusUpdate statusUpdate)
@@ -47,7 +51,7 @@ namespace AITradingProjectModel.Model
             cities = new List<City>();
             for (int i = 0; i < cityCount; i++)
             {
-                if(i%3 == 0) CreateStackOfResources();
+                if(i%availableresources.Count == 0) CreateStackOfResources();
                 cities.Add(ConstructRandomTestCity(i, su));
             }
 

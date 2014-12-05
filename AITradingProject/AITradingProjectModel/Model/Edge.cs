@@ -19,7 +19,7 @@ namespace AITradingProjectModel.Model
         {
             city1 = first;
             city2 = second;
-            Weight = Utility.RAND.Next(MIN_WEIGHT, MAX_WEIGHT+1);
+            Weight = new Random().Next(MIN_WEIGHT, MAX_WEIGHT+1);
         }
 
         /// <summary>

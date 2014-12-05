@@ -16,7 +16,6 @@ namespace AITradingProject.Agent
 
         public RandomAgent(int MaxTradableResource)
         {
-
             rand = new Random();
             this.maxTradableResource = MaxTradableResource;
         }
@@ -78,8 +77,8 @@ namespace AITradingProject.Agent
                     {
                         break;
                     }
-                    int rand = Utility.RAND.Next(2);
-                    if (rand == 1 && e.Weight <= pointToGo)
+                    int randNum = rand.Next(2);
+                    if (randNum == 1 && e.Weight <= pointToGo)
                     {
                         Dictionary<Resource, int> offer = new Dictionary<Resource, int>();
 
@@ -87,8 +86,8 @@ namespace AITradingProject.Agent
                         //int amount = Utility.RAND.Next(GameState.availableresources.Count - 1);
                         //what to trade!?
                         //for which resource!!?
-                        offer.Add(GetRandomResource(), Utility.RAND.Next(maxTradableResource));
-                        offer.Add(GetRandomResource(), -Utility.RAND.Next(maxTradableResource));
+                        offer.Add(GetRandomResource(), rand.Next(maxTradableResource));
+                        offer.Add(GetRandomResource(), -rand.Next(maxTradableResource));
                         //Offer o = new Offer(city, e, offer);
                         offers.Add(new KeyValuePair<int, Dictionary<Resource, int>>(e.Other(city).ID,offer));
                         pointToGo -= e.Weight;
@@ -102,7 +101,7 @@ namespace AITradingProject.Agent
 
         private Resource GetRandomResource()
         {
-            return GameState.availableresources[Utility.RAND.Next(GameState.availableresources.Count)];
+            return GameState.availableresources[rand.Next(GameState.availableresources.Count)];
         }
 
         public override bool EvaluateTrade(Offer offer)

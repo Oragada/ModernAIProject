@@ -15,13 +15,15 @@ namespace AITradingProjectModel.Model
         private List<Edge> edges = new List<Edge>();        
         private bool alive = true;
         private StatusUpdate status;
+        private Random rand;
         
 
         internal City(Dictionary<Resource, int> startResources, Resource nativeResource, int ID, StatusUpdate statusUpdate)
         {
             resources = startResources; 
             this.nativeResource = nativeResource;
-            baseScale = Utility.RAND.Next(3,7);
+            rand = new Random();
+            baseScale = rand.Next(3,7);
             this.ID = ID;
             status = statusUpdate;
 
@@ -99,7 +101,7 @@ namespace AITradingProjectModel.Model
         /// </summary>
         internal void Produce()
         {
-            int produce = Utility.RAND.Next(-3, 3);
+            int produce = rand.Next(-3, 3);
             if((baseScale+produce)<1)
             {
                 resources[nativeResource] += 1;
