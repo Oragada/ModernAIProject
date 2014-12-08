@@ -34,12 +34,14 @@ namespace AITradingProject
 
             agents = new Dictionary<int, Agent.Agent>();
 
+            if(coEvo) coEvo = File.Exists("tradegame_champion0.xml");
+
             agents.Add(0, new LeMasterMindAgent(tg));
             for (int i = 1; i < 6; i++)
             {
                 agents.Add(i,
                     coEvo
-                        ? new LeMasterMindAgent(new TradeGenerator("tradegame_champion" + i + ".xml"))
+                        ? new LeMasterMindAgent(new TradeGenerator("tradegame_champion" + (i-1) + ".xml"))
                         : new LeMasterMindAgent(tg));
             }
         }
