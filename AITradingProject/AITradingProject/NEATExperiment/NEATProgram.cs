@@ -9,6 +9,10 @@ using System.Diagnostics;
 using System.Text;
 using System.Linq;
 
+//The code in this class is heavily based on the code from
+// http://www.nashcoding.com/2010/07/17/tutorial-evolving-neural-networks-with-sharpneat-2-part-1/
+// and any similar elements are to be credited to them  
+
 namespace AITradingProject.NEATExperiment
 {
     public class NEATProgram
@@ -101,12 +105,12 @@ namespace AITradingProject.NEATExperiment
                 }
             }
 
-            if (_ea.Statistics._maxFitness >= 3)
+            /*if (_ea.Statistics._maxFitness >= 3)
             {
                 string file = System.IO.Directory.GetCurrentDirectory() + "\\autolog.txt";
                 System.IO.File.AppendAllText(file, sb.ToString());
                 _ea.Stop();
-            }
+            }*/
 
            
         }

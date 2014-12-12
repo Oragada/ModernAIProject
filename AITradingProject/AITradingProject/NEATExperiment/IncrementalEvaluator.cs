@@ -17,14 +17,14 @@ namespace AITradingProject.NEATExperiment
         private readonly double crossoverFitness = 0.9;
         IPhenomeEvaluator<IBlackBox> current;
         private static bool done = false;
-        private bool extended = false;
+        //private bool extended = false;
         public static volatile int genCount = 0;
         public static volatile float avgFitness=0;
         public static object lockO = new object();
 
-        public IncrementalEvaluator(bool extended) 
+        public IncrementalEvaluator() 
         {
-            this.extended = extended;
+            //this.extended = extended;
         }
 
         public FitnessInfo Evaluate(IBlackBox phenome)
@@ -33,12 +33,12 @@ namespace AITradingProject.NEATExperiment
             FitnessInfo fsEv = this.fsEv.Evaluate(phenome);
             double secfitness = fsEv._auxFitnessArr.First()._value;
             double fitness = fsEv._fitness;
-            if (fitness >= 1.0)
+            if (avgFitness >= 0.9)
             {
                 FitnessInfo simEvFit = simEv.Evaluate(phenome);
                 fitness += simEvFit._fitness;
                 secfitness += simEvFit._auxFitnessArr.First()._value;
-                if (fitness >= (1.6))
+                if (avgFitness >= (1.5))
                 {
                     FitnessInfo presFit = presEv.Evaluate(phenome);
                     fitness += presFit._fitness;
